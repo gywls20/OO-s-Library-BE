@@ -19,14 +19,6 @@ spring:
     hibernate:
       ddl-auto: create-drop
 
-
-#  H2 / MySQL
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/test;MODE=MYSQL
-#    driver-class-name: org.h2.Driver
-#    username: sa
-#    password:
-
   datasource:
     driver-class-name: ${DB_DRIVER_CLASS}
     url: ${DB_URL}
