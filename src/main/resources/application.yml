@@ -19,27 +19,19 @@ spring:
     hibernate:
       ddl-auto: create-drop
 
-
-#  H2 / MySQL
   datasource:
-    url: jdbc:h2:tcp://localhost/~/test;MODE=MYSQL
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://[ip]:3306/[DB schema]?serverTimezone=Asia/Seoul
-#    username: [username]
-#    password: '[password]'
+    driver-class-name: ${DB_DRIVER_CLASS}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
 #  security:
 #    oauth2:
 #      client:
 #        registration:
 #          naver:
-##            client-id: [Naver Dev application client-id]
-##            client-secret: [Naver Dev application client-secret]
+#            client-id: ${NAVER_DEV_APP_CLIENT_ID}
+#            client-secret: ${NAVER_DEV_APP_CLIENT_SECRET}
 #            scope:
 #              - name
 #              - email
@@ -47,7 +39,7 @@ spring:
 #              - gender
 #            client-name: Naver
 #            authorization-grant-type: authorization_code # authorization-grant type
-#            redirect-uri: http://localhost:8080/login/oauth2/code/naver # redirect - uri
+#            redirect-uri: ${OAUTH2_NAVER_REDIRECT_URI} # redirect - uri
 #        provider:
 #          naver:
 #            authorization-uri: https://nid.naver.com/oauth2.0/authorize
@@ -64,9 +56,9 @@ spring:
 #    s3:
 #      endpoint: https://kr.object.ncloudstorage.com
 #    credentials:
-##      access-key: [ncp access key]
-##      secret-key: [ncp secret key]
-##      bucket: [ncp object storage bucket name]
+#      access-key: ${NCP_S3_ACCESS_KEY}
+#      secret-key: ${NCP_S3_SECRET_KEY}
+#      bucket: ${BUCKET_NAME}
 #    region:
 #      static: kr-standard
 #      auto: false
