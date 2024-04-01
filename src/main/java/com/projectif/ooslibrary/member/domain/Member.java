@@ -15,6 +15,7 @@ import java.util.Collection;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Member extends BaseEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -125,7 +126,11 @@ public class Member extends BaseEntity implements UserDetails {
     }
 
     public void memberDelete() {
-        this.setIsDeleted(1); // 삭제여부 플래그에 1 도입 -> 삭제됨을 의미.
+        if (getIsDeleted() != 1) {
+            this.setIsDeleted(1); // 삭제여부 플래그에 1 도입 -> 삭제됨을 의미.
+        } else {
+
+        }
     }
 
     public MemberResponseDTO convertToDTO() {
