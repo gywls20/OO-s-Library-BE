@@ -58,13 +58,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         // 네이버 로그인 API 성별은 M / F / U String으로 받아오므로 변환하기.
         String gender = (String) attributes.get("gender");
-        Integer memberGender = -1;
+        Integer memberGender = 2;
         if (gender.equals("M")) {
             memberGender = 0;
         } else if (gender.equals("F")) {
             memberGender = 1;
-        } else {
-            memberGender = 2;
         }
 
         if (findMember == null) { // 최초 로그인이므로 회원가입 처리하기
