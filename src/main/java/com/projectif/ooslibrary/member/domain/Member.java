@@ -1,6 +1,8 @@
 package com.projectif.ooslibrary.member.domain;
 
 import com.projectif.ooslibrary.config.auditing.BaseEntity;
+import com.projectif.ooslibrary.member.dto.MemberResponseDTO;
+import com.projectif.ooslibrary.member.dto.MemberUpdateRequestDTO;
 import com.projectif.ooslibrary.team.domain.Team;
 import jakarta.persistence.*;
 import lombok.*;
@@ -55,7 +57,7 @@ public class Member extends BaseEntity implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return memberPassword;
     }
 
     // 사용자 만료 여부 반환
@@ -83,38 +85,59 @@ public class Member extends BaseEntity implements UserDetails {
     }
 
     // oauth2용 비밀번호 없는 빌더 -> oauth2로 등록한 회원은 비밀번호 NULL
-    @Builder
-    public Member(String memberId, String memberName, String memberEmail, Role role, String memberProfileImg, String memberGender) {
+    @Builder(builderMethodName = "oauth2Builder", buildMethodName = "buildOauth2")
+    public Member(String memberId, String memberName, String memberEmail, Role role, String memberProfileImg, Integer memberGender) {
         this.memberId = memberId;
         this.memberName = memberName;
         this.memberEmail = memberEmail;
         this.role = role;
         this.memberProfileImg = memberProfileImg;
-        if (memberGender.equals("M")) {
-            this.memberGender = 0;
-        } else if (memberGender.equals("F")) {
-            this.memberGender = 1;
-        } else {
-            this.memberGender = 2;
-        }
+        this.memberGender = memberGender;
 
     }
 
     // 기본 회원 빌더 -> 성별은 Integer 타입 매개변수, 비밀번호를 매개변수로 받음.
-    @Builder
-    public Member(String memberId, String memberName, String memberEmail, String memberPassword, Role role, String memberProfileImg, Integer memberGender) {
+    @Builder(builderMethodName = "generalBuilder", buildMethodName = "buildGeneral")
+    public Member(String memberId, String memberName, String memberEmail, String memberPassword, Integer memberGender) {
         this.memberId = memberId;
         this.memberName = memberName;
         this.memberEmail = memberEmail;
         this.memberPassword = memberPassword;
-        this.role = role;
-        this.memberProfileImg = memberProfileImg;
         this.memberGender = memberGender;
+        this.role = Role.USER;
     }
 
+    // setter 대신 직관적으로 보이는 메서드들로 업데이트
+    
     public void oauth2ChangeFields(String name, String picture, Role role) {
         this.memberName = name;
         this.memberProfileImg = picture;
         this.role = role;
+    }
+
+    public void memberUpdate(MemberUpdateRequestDTO dto) {
+        this.memberId = dto.getMemberId();
+        this.memberName = dto.getMemberName();
+        this.memberEmail = dto.getMemberEmail();
+        this.memberPassword = dto.getMemberPassword();
+        this.memberGender = dto.getMemberGender();
+        this.memberProfileImg = dto.getMemberProfileImg();
+    }
+
+    public void memberDelete() {
+        this.setIsDeleted(1); // 삭제여부 플래그에 1 도입 -> 삭제됨을 의미.
+    }
+
+    public MemberResponseDTO convertToDTO() {
+        return MemberResponseDTO.builder()
+                .memberPk(this.memberPk)
+                .memberId(this.memberId)
+                .memberName(this.memberName)
+                .memberEmail(this.memberEmail)
+                .memberPassword(this.memberPassword)
+                .memberGender(this.memberGender)
+                .memberProfileImg(this.memberProfileImg)
+                .build();
+
     }
 }
