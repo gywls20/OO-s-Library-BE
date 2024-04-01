@@ -7,5 +7,17 @@
 </head>
 <body>
   <h1>인덱스 페이지</h1>
+  <th:block th:if="${session.id} == null">
+      <a th:href="@{/login}">로그인</a>
+      <a href = "/oauth2/authorization/naver">네이버 로그인</a>
+  </th:block>
+  <th:block th:if="${session.id} != null">
+      <h2 th:text="${session.id}"></h2>
+      <h2 th:text="${session.name}"></h2>
+      <img th:src="@{${session.picture}}" th:alt="profile_picture"/>
+      <br>
+      <br>
+      <a th:href="@{/logout}">로그아웃</a>
+  </th:block>
 </body>
 </html>
