@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Login</title>
+</head>
+<body>
+    <form th:action="@{/login}" method="post">
+        <div th:if="${param.error}">
+            <p style="color: red;">Invalid username and/or password.</p>
+        </div>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <label for="username">USERNAME</label>
+        <input type="text" name="username" id="username" placeholder="Enter userId" required autofocus>
+        <label for="password">PASSWORD</label>
+        <input type="password" name="password" id="password" placeholder="Enter Password" required autofocus>
+        <br>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
