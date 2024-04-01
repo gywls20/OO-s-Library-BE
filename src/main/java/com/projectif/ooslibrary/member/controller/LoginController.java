@@ -28,7 +28,7 @@ public class LoginController {
         // 현재 인증된 사용자 정보 가져오기
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        // 사용자 이름 가져오기 > member의 userId값
+        // 사용자 이름 가져오기 > member의 memberId값
         String id = ((UserDetails) auth.getPrincipal()).getUsername();
 
 

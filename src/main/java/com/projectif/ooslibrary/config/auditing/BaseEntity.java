@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -18,6 +19,7 @@ public class BaseEntity {
     @Column(updatable = false)
     private LocalDateTime created_date;
 
+    @Setter
     @Column(name = "is_deleted")
     private int isDeleted; // 기본 값 0 (삭제되지 않음 표시)
 
