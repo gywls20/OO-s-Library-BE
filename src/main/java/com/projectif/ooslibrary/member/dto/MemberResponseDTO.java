@@ -1,9 +1,12 @@
 package com.projectif.ooslibrary.member.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class MemberResponseDTO {
     /**
      * 회원 정보 응답 DTO -> 회원 수정 or 회원 정보 확인을 위해 정보창을 열었을 때 가져오는 회원 정보들
@@ -24,15 +27,4 @@ public class MemberResponseDTO {
     private Integer memberGender;
     private String memberProfileImg;
 
-
-    @Builder
-    public MemberResponseDTO(Long memberPk, String memberId, String memberName, String memberEmail, String memberPassword, Integer memberGender, String memberProfileImg) {
-        this.memberPk = memberPk;
-        this.memberId = memberId;
-        this.memberName = memberName;
-        this.memberEmail = memberEmail;
-        this.memberPassword = memberPassword;
-        this.memberGender = memberGender;
-        this.memberProfileImg = memberProfileImg;
-    }
 }

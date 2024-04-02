@@ -65,6 +65,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             memberGender = 1;
         }
 
+        // PK값 받아오기
+        Long pk = null;
+
         if (findMember == null) { // 최초 로그인이므로 회원가입 처리하기
             Member member = Member.oauth2Builder()
                     .memberId(oAuth2User.getName())
@@ -74,7 +77,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     .memberGender(memberGender)
                     .role(Role.valueOf(auth))
                     .buildOauth2();
-            memberRepository.save(member);
+            Member savedMember = memberRepository.save(member);
+            pk = savedMember.getMemberPk();
         } else if (!findMember.getMemberName().equals(attributes.get("name")) || !findMember.getMemberProfileImg().equals(attributes.get("picture"))
                 || !findMember.getRole().name().equals(auth)) {
             // 이 후 로그인이라도 혹시 naver 계정의 정보가 바뀔 수 있으니 바꾸는 로직을 추가할 지 고민해보기.
@@ -82,6 +86,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             // JPA Dirty Checking
             findMember.oauth2ChangeFields((String) attributes.get("name"), (String) attributes.get("picture"), Role.valueOf(auth));
         }
+        pk = findMember.getMemberPk();
 
         String targetUrl = UriComponentsBuilder.fromUriString("/")
 //                .queryParam("token", "token")
@@ -95,8 +100,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         // pk값, 회원아이디, 프로필사진
         session.setAttribute("id", oAuth2User.getName()); // 웬만하면 세션에는 id같은 핵심 정보만 넣기.
+        session.setAttribute("pk", pk);
         session.setAttribute("name", attributes.get("name"));
-        session.setAttribute("picture", attributes.get("picture"));
+        session.setAttribute("profile", attributes.get("picture"));
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }

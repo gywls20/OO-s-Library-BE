@@ -87,7 +87,6 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                                 .loginPage("/login") // GET
-//                                .loginProcessingUrl("/login") // POST
                                 .successForwardUrl("/login_success") // POST
                                 .permitAll()
                 )
@@ -152,11 +151,24 @@ public class SecurityConfig {
     }
 
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+
+        return new BCryptPasswordEncoder();
+
+//        return new PasswordEncoder() {
+//            @Override
+//            public String encode(CharSequence rawPassword) {
+//                return (String) rawPassword;
+//            }
 //
-//        return new BCryptPasswordEncoder();
-//    }
+//            @Override
+//            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+//                return String.valueOf(rawPassword).equals(encodedPassword);
+//            }
+//        };
+
+    }
 
 
     @Getter

@@ -13,8 +13,9 @@
   </th:block>
   <th:block th:if="${session.id} != null">
       <h2 th:text="${session.id}"></h2>
+      <h2 th:text="${session.pk}"></h2>
       <h2 th:text="${session.name}"></h2>
-      <img th:src="@{${session.picture}}" th:alt="profile_picture"/>
+      <img th:src="@{${session.profile}}" th:alt="profile_picture"/>
       <br>
       <br>
       <a th:href="@{/logout}">로그아웃</a>
