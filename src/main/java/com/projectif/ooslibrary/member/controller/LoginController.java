@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,8 +36,7 @@ public class LoginController {
 
     @PostMapping("/login_success")
     @ResponseBody
-//    public String login_success(HttpServletRequest request) {
-    public String login_success(HttpServletRequest request) {
+    public Map<String, String> login_success(HttpServletRequest request) {
 
         // 현재 인증된 사용자 정보 가져오기
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -54,8 +55,11 @@ public class LoginController {
          *  - 세션 / 쿠키 방식을 위해 굳이 쿠키를 생성하지 않고 스프링 시큐리티가 생성해 보내주는 세션아이디를 쓰면 될 것 같음.
          */
 
+        HashMap<String, String> map = new HashMap<>();
+        map.put("pk", String.valueOf(member.getMemberPk()));
+        map.put("id", memberId);
+        map.put("profile", member.getMemberProfileImg());
 
-//        return "redirect:/";
-        return "세션 테스트!!! ID=" + memberId + " PK=" + member.getMemberPk() + " ProfileSrc=" + member.getMemberProfileImg();
+        return map;
     }
 }
