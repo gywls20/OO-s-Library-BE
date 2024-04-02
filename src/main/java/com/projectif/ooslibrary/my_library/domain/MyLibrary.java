@@ -1,4 +1,4 @@
-package com.projectif.ooslibrary.member.domain;
+package com.projectif.ooslibrary.my_library.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
