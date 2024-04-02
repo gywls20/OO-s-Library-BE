@@ -3,7 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.2.4'
     id 'io.spring.dependency-management' version '1.1.4'
     //querydsl 추가
-    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+//    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.projectIf'
@@ -45,10 +45,10 @@ dependencies {
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
     testImplementation 'org.springframework.security:spring-security-test'
     // QueryDSL
-    implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"
-    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
-    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+//    implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"
+//    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+//    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+//    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 tasks.named('test') {
@@ -56,23 +56,23 @@ tasks.named('test') {
 }
 
 // Querydsl config
-def generated = 'src/main/generated'
-
-querydsl {
-    jpa = true
-    querydslSourcesDir = generated
-}
-sourceSets {
-    main.java.srcDir generated
-}
-
-compileQuerydsl{
-    options.annotationProcessorPath = configurations.querydsl
-}
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-    querydsl.extendsFrom compileClasspath
-}
+//def generated = 'src/main/generated'
+//
+//querydsl {
+//    jpa = true
+//    querydslSourcesDir = generated
+//}
+//sourceSets {
+//    main.java.srcDir generated
+//}
+//
+//compileQuerydsl{
+//    options.annotationProcessorPath = configurations.querydsl
+//}
+//
+//configurations {
+//    compileOnly {
+//        extendsFrom annotationProcessor
+//    }
+//    querydsl.extendsFrom compileClasspath
+//}
