@@ -16,6 +16,8 @@ public interface MemberService {
     boolean memberDelete(Long memberPk, String memberPassword);
     // 회원 한 건 조회
     MemberResponseDTO getMember(Long memberPk);
+    // 회원 한 건 조회 by memberId
+    MemberResponseDTO getMember(String memberId);
     // 회원 전체 조회
     List<MemberResponseDTO> getMemberList();
 }

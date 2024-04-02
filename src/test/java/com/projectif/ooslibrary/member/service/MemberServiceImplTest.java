@@ -8,6 +8,7 @@ import com.projectif.ooslibrary.member.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,6 +42,11 @@ class MemberServiceImplTest {
         memberRepository.save(member2);
         Member member3 = new Member("test3", "test Kim", "test3@naver.com", "1234", 1);
         memberRepository.save(member3);
+    }
+
+    @AfterEach
+    void clear() {
+        memberRepository.deleteAll();
     }
 
     @Test
@@ -81,7 +88,13 @@ class MemberServiceImplTest {
                 .memberProfileImg("zzz")
                 .build();
 
+        List<MemberResponseDTO> memberList = memberService.getMemberList();
+        for (MemberResponseDTO memberResponseDTO : memberList) {
+            log.info("[Iter member List] {}", memberResponseDTO);
+        }
+
         memberService.memberUpdate(dto);
+
 
         memberRepository.flush();
         em.clear();
