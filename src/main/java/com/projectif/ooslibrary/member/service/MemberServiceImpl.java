@@ -59,7 +59,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public boolean memberDelete(Long memberPk, String memberPassword) {
-        Member findMember = memberRepository.findById(memberPk)
+        Member findMember = memberRepository.checkBeforeDelete(memberPk, memberPassword)
                 .orElseThrow(() -> new RuntimeException("[MemberServiceImpl] - [memberDelete] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
         // 회원 is_deleted 플래그 업데이트 (회원 삭제 기능)
         findMember.memberDelete();

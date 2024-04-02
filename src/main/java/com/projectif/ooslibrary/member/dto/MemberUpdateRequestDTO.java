@@ -1,8 +1,10 @@
 package com.projectif.ooslibrary.member.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class MemberUpdateRequestDTO {
     /**
      * 회원 수정 요청 DTO

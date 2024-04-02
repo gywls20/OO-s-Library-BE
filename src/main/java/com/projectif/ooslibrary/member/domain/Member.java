@@ -3,6 +3,7 @@ package com.projectif.ooslibrary.member.domain;
 import com.projectif.ooslibrary.config.auditing.BaseEntity;
 import com.projectif.ooslibrary.member.dto.MemberResponseDTO;
 import com.projectif.ooslibrary.member.dto.MemberUpdateRequestDTO;
+import com.projectif.ooslibrary.my_library.domain.MyLibrary;
 import com.projectif.ooslibrary.team.domain.Team;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,6 +17,7 @@ import java.util.Collection;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString(exclude = {"team", "myLibrary"})
 public class Member extends BaseEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +26,6 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(unique = true, nullable = false)
     private String memberId;
     private String memberName;
-    @Column(unique = true, nullable = false)
     private String memberEmail;
     private String memberPassword;
     @Enumerated(EnumType.STRING)
