@@ -55,16 +55,25 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         } catch (RuntimeException e) {
             log.info("[OAuth2SuccessHandler] : 찾는 회원이 없으므로 null 반환 / 최초 로그인이므로 회원 가입 수행");
         }
-        
+
+        // 네이버 로그인 API 성별은 M / F / U String으로 받아오므로 변환하기.
+        String gender = (String) attributes.get("gender");
+        Integer memberGender = 2;
+        if (gender.equals("M")) {
+            memberGender = 0;
+        } else if (gender.equals("F")) {
+            memberGender = 1;
+        }
+
         if (findMember == null) { // 최초 로그인이므로 회원가입 처리하기
-            Member member = Member.builder()
+            Member member = Member.oauth2Builder()
                     .memberId(oAuth2User.getName())
                     .memberName((String) attributes.get("name"))
                     .memberEmail((String) attributes.get("email"))
                     .memberProfileImg((String) attributes.get("picture"))
-                    .memberGender((String) attributes.get("gender"))
+                    .memberGender(memberGender)
                     .role(Role.valueOf(auth))
-                    .build();
+                    .buildOauth2();
             memberRepository.save(member);
         } else if (!findMember.getMemberName().equals(attributes.get("name")) || !findMember.getMemberProfileImg().equals(attributes.get("picture"))
                 || !findMember.getRole().name().equals(auth)) {

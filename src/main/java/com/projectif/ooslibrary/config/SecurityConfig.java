@@ -142,8 +142,7 @@ public class SecurityConfig {
 
     @Bean
     public SessionRegistry sessionRegistry() {
-        SessionRegistry sessionRegistry = new SessionRegistryImpl();
-        return sessionRegistry;
+        return new SessionRegistryImpl();
     }
 
     // Register HttpSessionEventPublisher

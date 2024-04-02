@@ -1,5 +1,52 @@
 package com.projectif.ooslibrary.member.controller;
 
+import com.projectif.ooslibrary.member.dto.MemberJoinRequestDTO;
+import com.projectif.ooslibrary.member.dto.MemberResponseDTO;
+import com.projectif.ooslibrary.member.dto.MemberUpdateRequestDTO;
+import com.projectif.ooslibrary.member.service.MemberService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Slf4j
+@RestController
+@RequestMapping("/members")
+@RequiredArgsConstructor
 public class MemberController {
+
+    private final MemberService memberService;
+
+    // 회원 정보 한 건 조회 -> 나중에 삭제 처리된 회원은 안나오도록 하기.
+    @GetMapping("/{id}")
+    public MemberResponseDTO getMember(@PathVariable("id") Long id) {
+        return memberService.getMember(id);
+    }
+
+    // 회원 전체 리스트 조회
+    @GetMapping("")
+    public List<MemberResponseDTO> getMemberList() {
+        return memberService.getMemberList();
+    }
+
+    // 회원 가입
+    @PostMapping("")
+    public boolean memberJoin(@RequestBody MemberJoinRequestDTO member) {
+        return memberService.memberJoin(member);
+    }
+
+    // 회원 수정
+    @PutMapping("/{id}")
+    public boolean memberUpdate(@PathVariable("id") Long id, @RequestBody MemberUpdateRequestDTO dto) {
+        dto.setMemberPk(id);
+        return memberService.memberUpdate(dto);
+    }
+
+    // 회원 삭제
+    @DeleteMapping("/{id}")
+    public boolean memberDelete(@PathVariable("id") Long id, @RequestBody String memberPassword) {
+        return memberService.memberDelete(id, memberPassword);
+    }
 
 }
