@@ -6,6 +6,7 @@ import com.projectif.ooslibrary.member.dto.MemberUpdateRequestDTO;
 import com.projectif.ooslibrary.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,13 +33,13 @@ public class MemberController {
 
     // 회원 가입
     @PostMapping("")
-    public boolean memberJoin(@RequestBody MemberJoinRequestDTO member) {
+    public boolean memberJoin(@RequestBody @Validated MemberJoinRequestDTO member) {
         return memberService.memberJoin(member);
     }
 
     // 회원 수정
     @PutMapping("/{id}")
-    public boolean memberUpdate(@PathVariable("id") Long id, @RequestBody MemberUpdateRequestDTO dto) {
+    public boolean memberUpdate(@PathVariable("id") Long id, @RequestBody @Validated MemberUpdateRequestDTO dto) {
         dto.setMemberPk(id);
         return memberService.memberUpdate(dto);
     }
