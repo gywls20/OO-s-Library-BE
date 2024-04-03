@@ -2,6 +2,7 @@ package com.projectif.ooslibrary.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,9 +13,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
-//                .allowedOrigins("http://:3000")
+                .allowedOrigins("http://localhost:3000", "http://192.168.0.8:3000", "https://libraryif.vercel.app:3000")
                 .allowCredentials(true)
-                .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE");
+                .allowedHeaders("*")
+                .allowedMethods(HttpMethod.OPTIONS.name(), HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(), HttpMethod.DELETE.name());
     }
 }

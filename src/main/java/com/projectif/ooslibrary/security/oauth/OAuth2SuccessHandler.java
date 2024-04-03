@@ -78,7 +78,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     .role(Role.valueOf(auth))
                     .buildOauth2();
             Member savedMember = memberRepository.save(member);
-            pk = savedMember.getMemberPk();
+            findMember = savedMember;
         } else if (!findMember.getMemberName().equals(attributes.get("name")) || !findMember.getMemberProfileImg().equals(attributes.get("picture"))
                 || !findMember.getRole().name().equals(auth)) {
             // 이 후 로그인이라도 혹시 naver 계정의 정보가 바뀔 수 있으니 바꾸는 로직을 추가할 지 고민해보기.
