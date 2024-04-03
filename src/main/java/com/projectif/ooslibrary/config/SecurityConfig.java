@@ -104,7 +104,7 @@ public class SecurityConfig {
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                                 .requestMatchers("/", "/oauth2/authorization/naver", "/login").permitAll()
                                 .requestMatchers("/user/**").hasRole(Role.USER.name())
-                                .requestMatchers("/admin/**", "/api/v1/**").hasRole(Role.ADMIN.name())
+                                .requestMatchers("/mapper/admin.findallmember/admin/**", "/api/v1/**", "/adminPage/**").hasRole(Role.ADMIN.name())
                                 .anyRequest().permitAll()
                 )
                 // 세션 관리 기능

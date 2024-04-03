@@ -20,4 +20,5 @@ public interface MemberService {
     MemberResponseDTO getMember(String memberId);
     // 회원 전체 조회
     List<MemberResponseDTO> getMemberList();
+
 }
