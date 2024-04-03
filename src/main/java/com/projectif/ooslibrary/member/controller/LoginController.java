@@ -12,16 +12,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.0.8:3000", "https://libraryif.vercel.app:3000"}, maxAge = 3600)
 @Slf4j
 @RequiredArgsConstructor
 @Controller
@@ -34,9 +32,10 @@ public class LoginController {
         return "test/login";
     }
 
+    // 로그인 성공
     @PostMapping("/login_success")
     @ResponseBody
-    public Map<String, String> login_success(HttpServletRequest request) {
+    public Map<String, String> loginSuccess(HttpServletRequest request) {
 
         // 현재 인증된 사용자 정보 가져오기
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -58,8 +57,47 @@ public class LoginController {
         HashMap<String, String> map = new HashMap<>();
         map.put("pk", String.valueOf(member.getMemberPk()));
         map.put("id", memberId);
+        map.put("name", member.getMemberName());
         map.put("profile", member.getMemberProfileImg());
 
         return map;
     }
+
+    // 로그인 실패
+    @PostMapping("/login_failure")
+    @ResponseBody
+    public String loginFailure(HttpServletRequest request) {
+
+        String errorMessage = (String) request.getAttribute("errorMessage");
+        log.info("로그인 실패!! 에러 정보 = {}", errorMessage);
+
+        return errorMessage;
+    }
+
+    @GetMapping("/logout/result")
+    @ResponseBody
+    public String logoutResult(HttpServletResponse response) {
+        log.info("logout success url");
+
+        // CORS header 설정
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+
+        return "로그아웃 성공!!";
+    }
+
+    @GetMapping("/login/oauth2/fail")
+    @ResponseBody
+    public String oauthLoginFail(HttpServletResponse response, HttpServletRequest request) {
+        log.info("login failure url");
+
+        // CORS header 설정
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Origin", "http://192.168.0.8:3000");
+
+        request.getSession().invalidate();
+
+        return "멍충멍충";
+    }
+
 }

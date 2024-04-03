@@ -3,6 +3,7 @@ package com.projectif.ooslibrary.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projectif.ooslibrary.member.domain.Role;
 import com.projectif.ooslibrary.member.repository.MemberRepository;
+import com.projectif.ooslibrary.security.CustomAuthFailureHandler;
 import com.projectif.ooslibrary.security.CustomUserDetailsService;
 import com.projectif.ooslibrary.security.oauth.OAuth2SuccessHandler;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,6 +29,9 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.io.PrintWriter;
 
@@ -85,27 +90,32 @@ public class SecurityConfig {
                 .headers((headerConfig) ->
                         headerConfig.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
                 )
+                .addFilter(corsFilter())
                 .formLogin(form -> form
                                 .loginPage("/login") // GET
                                 .successForwardUrl("/login_success") // POST
+                                .failureHandler(customAuthFailureHandler())
+//                                .failureForwardUrl("/login_failure") // failureHandler 설정과 동시에 할 수 없음 -> 핸들러 내에서 포워딩을 수행해서 그런듯함
                                 .permitAll()
                 )
                 .oauth2Login(oauth2 -> {
                     oauth2.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService));
                     oauth2.successHandler(oAuth2SuccessHandler);
+                    oauth2.failureUrl("/login/oauth2/fail");
                 })
                 .logout(logoutConfigurer -> {
-                    logoutConfigurer.logoutSuccessUrl("/");
+                    logoutConfigurer.logoutSuccessUrl("/logout/result");
                     logoutConfigurer.invalidateHttpSession(true); // 세션 무효화 설정
                     logoutConfigurer.deleteCookies("JSESSIONID");
                 })
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
-                                .requestMatchers("/", "/oauth2/authorization/naver", "/login").permitAll()
-                                .requestMatchers("/user/**").hasRole(Role.USER.name())
+                                .requestMatchers("/", "/oauth2/authorization/naver", "/login", "login_failure", "/logout/**", "/login/oauth2/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/members").permitAll() // 회원 등록
+                                .requestMatchers("/members/**").hasRole(Role.USER.name())
                                 .requestMatchers("/admin/**", "/api/v1/**").hasRole(Role.ADMIN.name())
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                 )
                 // 세션 관리 기능
                 .sessionManagement((sessionManagement) ->
@@ -132,6 +142,11 @@ public class SecurityConfig {
     }
     // 스프링 시큐리티는 ExceptionHandling 을 통해 인증, 인가 과정에서 발생한 예외를 처리할 수 있습니다.
 
+    // CustomAuthFailureHandler - 로그인 실패 시, 동작하는 핸들러 등록
+    @Bean
+    public CustomAuthFailureHandler customAuthFailureHandler() {
+        return new CustomAuthFailureHandler();
+    }
 
     // Custom UserDetailsService 등록
     @Bean
@@ -170,10 +185,22 @@ public class SecurityConfig {
 
     }
 
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://192.168.0.8:3000");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**",config);
+        return new CorsFilter(source);
+    }
+
 
     @Getter
     @RequiredArgsConstructor
-    public class ErrorResponse {
+    public static class ErrorResponse {
 
         private final HttpStatus status;
         private final String message;
