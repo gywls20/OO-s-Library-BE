@@ -111,7 +111,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
-                                .requestMatchers("/", "/oauth2/authorization/naver", "/login", "login_failure", "/logout/**", "/login/oauth2/**").permitAll()
+                                .requestMatchers("/", "/oauth2/authorization/naver", "/login", "login_failure",
+                                        "/logout/**", "/login/oauth2/**", "/login/oauth2/code/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/members").permitAll() // 회원 등록
                                 .requestMatchers("/members/**").hasRole(Role.USER.name())
                                 .requestMatchers("/admin/**", "/api/v1/**").hasRole(Role.ADMIN.name())
