@@ -27,7 +27,7 @@ public class MemberController {
     }
 
     // 회원 마이페이지 접근 시 -> 비밀 번호 체크 기능
-    @PostMapping("/checkPassoword")
+    @PostMapping("/checkPassword")
     public boolean checkPassword(@RequestBody @Validated MemberCheckPasswordRequestDTO dto) {
         log.info("[MemberController] - [checkPassword] : pk = {}, password = {}", dto.getMemberPk(), dto.getPassword());
         return memberService.checkPassword(dto);
