@@ -9,6 +9,5 @@ public class MemberCheckPasswordRequestDTO {
 
     @NotNull(message = "회원 PK는 비어있어서는 안됩니다")
     private Long memberPk;
-    @NotBlank(message = "회원 비밀번호는 비어있어서는 안됩니다")
     private String password;
 }
