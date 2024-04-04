@@ -118,7 +118,6 @@ public class Member extends BaseEntity implements UserDetails {
     }
 
     public void memberUpdate(MemberUpdateRequestDTO dto) {
-        this.memberId = dto.getMemberId();
         this.memberName = dto.getMemberName();
         this.memberEmail = dto.getMemberEmail();
         this.memberPassword = dto.getMemberPassword();

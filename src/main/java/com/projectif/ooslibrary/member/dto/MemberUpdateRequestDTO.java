@@ -25,9 +25,6 @@ public class MemberUpdateRequestDTO {
      * - 프로필 사진 : member_profile
      */
     private Long memberPk;
-    @NotBlank(message = "빈 아이디는 허용되지 않습니다")
-    @Size(max = 20, message = "아이디는 100자 이하여야 합니다.")
-    private String memberId;
     @NotBlank(message = "빈 이름은 허용되지 않습니다")
     @Size(max = 20, message = "이름은 100자 이하여야 합니다.")
     private String memberName;
