@@ -17,7 +17,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/Books")
+    @GetMapping("/books")
     public List<BookDTO> bookList(){
         //System.out.println(" 연결 성공 ");
         return bookService.getBookList();

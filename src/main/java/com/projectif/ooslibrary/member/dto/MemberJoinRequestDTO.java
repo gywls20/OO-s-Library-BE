@@ -1,10 +1,7 @@
 package com.projectif.ooslibrary.member.dto;
 
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +27,7 @@ public class MemberJoinRequestDTO {
     private String memberEmail;
     @Size(max = 100)
     private String memberPassword;
-    @Size(max = 3)
+    @NotNull(message = "성별을 골라주세요")
     private Integer memberGender;
 
 }

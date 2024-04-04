@@ -1,6 +1,7 @@
 package com.projectif.ooslibrary.member.service;
 
 import com.projectif.ooslibrary.member.domain.Member;
+import com.projectif.ooslibrary.member.dto.MemberCheckPasswordRequestDTO;
 import com.projectif.ooslibrary.member.dto.MemberJoinRequestDTO;
 import com.projectif.ooslibrary.member.dto.MemberResponseDTO;
 import com.projectif.ooslibrary.member.dto.MemberUpdateRequestDTO;
@@ -64,11 +65,25 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public boolean memberDelete(Long memberPk, String memberPassword) {
-        Member findMember = memberRepository.checkBeforeDelete(memberPk, memberPassword)
+        Member findMember = memberRepository.checkPkAndPassword(memberPk, memberPassword)
                 .orElseThrow(() -> new RuntimeException("[MemberServiceImpl] - [memberDelete] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
         // 회원 is_deleted 플래그 업데이트 (회원 삭제 기능)
         findMember.memberDelete();
         return true;
+    }
+
+    // 회원 마이페이지 비밀번호 체크
+    @Override
+    public boolean checkPassword(MemberCheckPasswordRequestDTO dto) {
+        try {
+            Member checkMember = memberRepository.checkPkAndPassword(dto.getMemberPk(), dto.getPassword())
+                    .orElseThrow(() -> new RuntimeException("[MemberServiceImpl] - [checkPassword] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
+            return true;
+        } catch (RuntimeException e) {
+            log.info("[MemberServiceImpl] - [checkPassword] : error 내용 : {}", e);
+            return false;
+        }
+
     }
 
     // 회원 한 건 조회
@@ -116,6 +131,15 @@ public class MemberServiceImpl implements MemberService {
     public List<MemberResponseDTO> getMemberList() {
         List<Member> members = memberRepository.findAll();
 
+        return members
+                .stream()
+                .map(Member::convertToDTO)
+                .toList();
+    }
+
+    @Override
+    public List<MemberResponseDTO> getMemberListExceptDeleted() {
+        List<Member> members = memberRepository.findAllNotDeleted();
         return members
                 .stream()
                 .map(Member::convertToDTO)
