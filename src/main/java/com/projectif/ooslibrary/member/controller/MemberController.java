@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -60,7 +61,9 @@ public class MemberController {
 
     // 회원 삭제
     @DeleteMapping("/{id}")
-    public boolean memberDelete(@PathVariable("id") Long id, @RequestBody String memberPassword) {
+    public boolean memberDelete(@PathVariable("id") Long id, @RequestBody Map<String, String> passwordMap) {
+        String memberPassword = passwordMap.get("memberPassword");
+        log.info("memberPassword = {}", memberPassword);
         return memberService.memberDelete(id, memberPassword);
     }
 
