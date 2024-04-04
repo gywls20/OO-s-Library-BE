@@ -76,11 +76,14 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean checkPassword(MemberCheckPasswordRequestDTO dto) {
         try {
-            Member checkMember = memberRepository.checkPkAndPassword(dto.getMemberPk(), dto.getPassword())
+
+            Member checkMember = memberRepository.findById(dto.getMemberPk())
                     .orElseThrow(() -> new RuntimeException("[MemberServiceImpl] - [checkPassword] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
-            return true;
+            String memberPassword = checkMember.getMemberPassword();
+            boolean matches = passwordEncoder.matches(dto.getPassword(), memberPassword);
+            return matches;
         } catch (RuntimeException e) {
-            log.info("[MemberServiceImpl] - [checkPassword] : error 내용 : {}", e);
+            log.info("[MemberServiceImpl] - [checkPassword] : error 내용 : {}", e.getMessage());
             return false;
         }
 
