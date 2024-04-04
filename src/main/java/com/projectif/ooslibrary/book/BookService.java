@@ -2,17 +2,19 @@ package com.projectif.ooslibrary.book;
 
 import com.projectif.ooslibrary.book.domain.Book;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class BookService {
 
-    final BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     @Transactional
     public List<BookDTO> getBookList() {
@@ -40,6 +42,9 @@ public class BookService {
         return bookDTOList;
     }
 
-
-
+    @Transactional(readOnly = true)
+    public BookTextDTO getBookPath(Long book_pk) {
+        Optional<Book> optionalBook = bookRepository.findById(book_pk);
+        return optionalBook.map(book -> new BookTextDTO(book.getBook_text_path())).orElse(null);
+    }
 }
