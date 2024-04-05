@@ -25,4 +25,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("select m from Member m where m.isDeleted != 1")
     List<Member> findAllNotDeleted();
+
+    /**
+     * 회원 이메일로 회원 정보 찾기
+     * @param memberEmail
+     * @return
+     */
+    Optional<Member> findByMemberEmailAndMemberName(String memberEmail, String memberName);
 }

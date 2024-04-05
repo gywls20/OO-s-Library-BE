@@ -20,7 +20,7 @@ public class MemberExceptionController {
      */
 
     /**
-     * 회원 기능 중 관련되어 발생 된 커스텀 예외 핸들링
+     * 회원 기능 중 관련되어 발생 된 커스텀 예외  (Member / Mail)
      * - MemberNotFoundException : pk값으로 회원을 못찾을 시 발생한 예외
      * -
      *

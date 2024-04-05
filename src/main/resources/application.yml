@@ -77,6 +77,8 @@ mybatis:
   mapper-locations: mapper/**/*.xml
   type-aliases-package: com.projectif.ooslibrary.mapper
 
+mail-password: ${NAVER_LOGIN_MAIL_PASSOWRD}
+
 ---
 
 spring:
