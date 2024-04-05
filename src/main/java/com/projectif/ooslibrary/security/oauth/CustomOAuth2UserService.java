@@ -2,6 +2,7 @@ package com.projectif.ooslibrary.security.oauth;
 
 import com.projectif.ooslibrary.member.domain.Member;
 import com.projectif.ooslibrary.member.domain.Role;
+import com.projectif.ooslibrary.member.exception.NoSuchMemberException;
 import com.projectif.ooslibrary.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,8 +46,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         Member findMember = null;
         try {
             findMember = memberRepository.findByMemberId((String) oAuth2Attribute.getAttributes().get("email"))
-                    .orElseThrow(() -> new RuntimeException("[CustomOAuth2UserService] - [loadUser] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
-        } catch (RuntimeException e) {
+                    .orElseThrow(() -> new NoSuchMemberException("[CustomOAuth2UserService] - [loadUser] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
+        } catch (NoSuchMemberException e) {
             log.info("[CustomOAuth2UserService] : 찾는 회원이 없으므로 findMember = NULL 반환");
         }
         String role = "USER";

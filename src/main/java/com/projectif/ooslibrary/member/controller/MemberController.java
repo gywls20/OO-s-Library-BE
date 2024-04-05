@@ -30,7 +30,7 @@ public class MemberController {
     // 회원 마이페이지 접근 시 -> 비밀 번호 체크 기능
     @PostMapping("/checkPassword")
     public boolean checkPassword(@RequestBody @Validated MemberCheckPasswordRequestDTO dto) {
-        log.info("[MemberController] - [checkPassword] : pk = {}, password = {}", dto.getMemberPk(), dto.getPassword());
+//        log.info("[MemberController] - [checkPassword] : pk = {}, password = {}", dto.getMemberPk(), dto.getPassword());
         return memberService.checkPassword(dto);
     }
 
@@ -63,7 +63,7 @@ public class MemberController {
     @DeleteMapping("/{id}")
     public boolean memberDelete(@PathVariable("id") Long id, @RequestBody Map<String, String> passwordMap) {
         String memberPassword = passwordMap.get("memberPassword");
-        log.info("memberPassword = {}", memberPassword);
+//        log.info("memberPassword = {}", memberPassword);
         return memberService.memberDelete(id, memberPassword);
     }
 

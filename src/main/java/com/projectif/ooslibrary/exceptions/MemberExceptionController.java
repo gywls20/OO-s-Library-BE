@@ -1,5 +1,6 @@
 package com.projectif.ooslibrary.exceptions;
 
+import com.projectif.ooslibrary.member.exception.NoSuchMemberException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -30,6 +31,16 @@ public class MemberExceptionController {
         headers.set("Error", "RuntimeException");
 
         log.info("RuntimeException Exception 발생 [MemberControllerAdvice] : {}", ex.getMessage());
+
+        return new ResponseEntity<>(ex.toString(), headers, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({NoSuchMemberException.class})
+    public ResponseEntity<String> noSuchMemberException(NoSuchMemberException ex) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Error", "NoSuchMemberException");
+
+        log.info("NoSuchMemberException 예외 발생 [MemberControllerAdvice] : {}", ex.getMessage());
 
         return new ResponseEntity<>(ex.toString(), headers, HttpStatus.BAD_REQUEST);
     }

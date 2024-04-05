@@ -1,6 +1,7 @@
 package com.projectif.ooslibrary.security;
 
 import com.projectif.ooslibrary.member.domain.Member;
+import com.projectif.ooslibrary.member.exception.NoSuchMemberException;
 import com.projectif.ooslibrary.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
@@ -18,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 
         Member findMember = memberRepository.findByMemberId(userId)
-                .orElseThrow(() -> new RuntimeException("[CustomUserDetailsService] - [loadUserByUsername] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
+                .orElseThrow(() -> new NoSuchMemberException("[CustomUserDetailsService] - [loadUserByUsername] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
 
         return User.builder()
                 .username(findMember.getMemberId())

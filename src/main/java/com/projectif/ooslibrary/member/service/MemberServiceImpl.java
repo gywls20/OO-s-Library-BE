@@ -5,6 +5,7 @@ import com.projectif.ooslibrary.member.dto.MemberCheckPasswordRequestDTO;
 import com.projectif.ooslibrary.member.dto.MemberJoinRequestDTO;
 import com.projectif.ooslibrary.member.dto.MemberResponseDTO;
 import com.projectif.ooslibrary.member.dto.MemberUpdateRequestDTO;
+import com.projectif.ooslibrary.member.exception.NoSuchMemberException;
 import com.projectif.ooslibrary.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
         // Dirty Checking을 활용해 수정
         log.info("memberUpdateRequestDTO.getMemberPk() = {}", memberUpdateRequestDTO.getMemberPk());
         Member findMember = memberRepository.findById(memberUpdateRequestDTO.getMemberPk())
-                .orElseThrow(() -> new RuntimeException("[MemberServiceImpl] - [memberUpdate] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
+                .orElseThrow(() -> new NoSuchMemberException("[MemberServiceImpl] - [memberUpdate] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
         // 비밀번호 Bcrypt로 인코딩
         memberUpdateRequestDTO.setMemberPassword(passwordEncoder.encode(memberUpdateRequestDTO.getMemberPassword()));
         findMember.memberUpdate(memberUpdateRequestDTO);
@@ -67,7 +68,7 @@ public class MemberServiceImpl implements MemberService {
     public boolean memberDelete(Long memberPk, String memberPassword) {
         log.info("memberPk = {}, memberPassword = {}", memberPk, memberPassword);
         Member findMember = memberRepository.findById(memberPk)
-                .orElseThrow(() -> new RuntimeException("[MemberServiceImpl] - [memberDelete] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
+                .orElseThrow(() -> new NoSuchMemberException("[MemberServiceImpl] - [memberDelete] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
         boolean matches = passwordEncoder.matches(memberPassword, findMember.getMemberPassword());
         log.info("findMember = {}", findMember);
         log.info("findMember.getMemberPassword() = {}", findMember.getMemberPassword());
@@ -88,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
         try {
 
             Member checkMember = memberRepository.findById(dto.getMemberPk())
-                    .orElseThrow(() -> new RuntimeException("[MemberServiceImpl] - [checkPassword] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
+                    .orElseThrow(() -> new NoSuchMemberException("[MemberServiceImpl] - [checkPassword] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
             String memberPassword = checkMember.getMemberPassword();
             boolean matches = passwordEncoder.matches(dto.getPassword(), memberPassword);
             return matches;
@@ -104,7 +105,7 @@ public class MemberServiceImpl implements MemberService {
     public MemberResponseDTO getMember(Long memberPk) {
 
         Member findMember = memberRepository.findById(memberPk)
-                .orElseThrow(() -> new RuntimeException("[MemberServiceImpl] - [getMember] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
+                .orElseThrow(() -> new NoSuchMemberException("[MemberServiceImpl] - [getMember] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
 
         MemberResponseDTO dto = MemberResponseDTO.builder()
                 .memberPk(findMember.getMemberPk())
@@ -124,7 +125,7 @@ public class MemberServiceImpl implements MemberService {
     public MemberResponseDTO getMember(String memberId) {
 
         Member findMember = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new RuntimeException("[MemberServiceImpl] - [getMember] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
+                .orElseThrow(() -> new NoSuchMemberException("[MemberServiceImpl] - [getMember] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
 
         MemberResponseDTO dto = MemberResponseDTO.builder()
                 .memberPk(findMember.getMemberPk())
