@@ -1,6 +1,7 @@
 package com.projectif.ooslibrary.exceptions;
 
 import com.projectif.ooslibrary.member.exception.NoSuchMemberException;
+import com.projectif.ooslibrary.member.exception.OAuth2LoginNoSessionValueException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -22,6 +23,7 @@ public class MemberExceptionController {
      * 회원 기능 중 관련되어 발생 된 커스텀 예외 핸들링
      * - MemberNotFoundException : pk값으로 회원을 못찾을 시 발생한 예외
      * -
+     *
      * @param ex
      * @return
      */
@@ -43,6 +45,16 @@ public class MemberExceptionController {
         log.info("NoSuchMemberException 예외 발생 [MemberControllerAdvice] : {}", ex.getMessage());
 
         return new ResponseEntity<>(ex.toString(), headers, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({OAuth2LoginNoSessionValueException.class})
+    public ResponseEntity<String> oAuth2LoginNoSessionValueException(OAuth2LoginNoSessionValueException ex) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Error", "OAuth2LoginNoSessionValueException");
+
+        log.info("OAuth2LoginNoSessionValueException 예외 발생 [MemberControllerAdvice] : {}", ex.getMessage());
+
+        return new ResponseEntity<>(ex.toString(), headers, HttpStatus.NOT_FOUND);
     }
 
 }
