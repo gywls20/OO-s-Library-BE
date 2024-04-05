@@ -116,6 +116,7 @@ hu       * AccessDeniedHandler : 권한(인가) 예외처리, 403(Forbidden) 상
                                 .requestMatchers(HttpMethod.POST, "/members").permitAll() // 회원 등록
 //                                .requestMatchers("/members/**").hasRole(Role.USER.name())
                                 .requestMatchers("/members/**").permitAll()
+                                .requestMatchers("/mail/**").permitAll()
                                 .requestMatchers("/books/**").permitAll()
                                 .requestMatchers("/comment/**").permitAll()
                                 .requestMatchers("/admin/**", "/api/v1/**").hasRole(Role.ADMIN.name())

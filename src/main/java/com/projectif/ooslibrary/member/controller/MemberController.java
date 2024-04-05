@@ -5,6 +5,10 @@ import com.projectif.ooslibrary.member.dto.MemberJoinRequestDTO;
 import com.projectif.ooslibrary.member.dto.MemberResponseDTO;
 import com.projectif.ooslibrary.member.dto.MemberUpdateRequestDTO;
 import com.projectif.ooslibrary.member.service.MemberService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +24,7 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
+    private final HttpSession session;
 
     // 회원 정보 한 건 조회 -> 나중에 삭제 처리된 회원은 안나오도록 하기.
     @GetMapping("/{id}")
@@ -61,10 +66,16 @@ public class MemberController {
 
     // 회원 삭제
     @DeleteMapping("/{id}")
-    public boolean memberDelete(@PathVariable("id") Long id, @RequestBody Map<String, String> passwordMap) {
+    public boolean memberDelete(@PathVariable("id") Long id, @RequestBody Map<String, String> passwordMap, HttpServletResponse response) {
         String memberPassword = passwordMap.get("memberPassword");
 //        log.info("memberPassword = {}", memberPassword);
-        return memberService.memberDelete(id, memberPassword);
+        boolean isDeleted = memberService.memberDelete(id, memberPassword);
+        if (isDeleted) {
+            log.info("회원 삭제 성공 -> 로그아웃하기");
+            session.invalidate();
+            // JSESSIONID 쿠키 삭제는 기본적으로 관리하는 서블릿 컨테이너가 시큐리티에서 HTTP 세션 초기화를 하면 삭제시켜줌.
+        }
+        return isDeleted;
     }
 
 }

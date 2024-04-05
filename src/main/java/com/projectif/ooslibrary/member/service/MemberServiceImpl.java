@@ -7,6 +7,7 @@ import com.projectif.ooslibrary.member.dto.MemberResponseDTO;
 import com.projectif.ooslibrary.member.dto.MemberUpdateRequestDTO;
 import com.projectif.ooslibrary.member.exception.NoSuchMemberException;
 import com.projectif.ooslibrary.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
