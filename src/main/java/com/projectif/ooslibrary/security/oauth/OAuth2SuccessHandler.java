@@ -3,6 +3,7 @@ package com.projectif.ooslibrary.security.oauth;
 
 import com.projectif.ooslibrary.member.domain.Member;
 import com.projectif.ooslibrary.member.domain.Role;
+import com.projectif.ooslibrary.member.exception.NoSuchMemberException;
 import com.projectif.ooslibrary.member.repository.MemberRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,8 +52,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Member findMember = null;
         try {
             findMember = memberRepository.findByMemberId(oAuth2User.getName())
-                    .orElseThrow(() -> new RuntimeException("[OAuth2SuccessHandler] - [onAuthenticationSuccess] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
-        } catch (RuntimeException e) {
+                    .orElseThrow(() -> new NoSuchMemberException("[OAuth2SuccessHandler] - [onAuthenticationSuccess] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
+        } catch (NoSuchMemberException e) {
             log.info("[OAuth2SuccessHandler] : 찾는 회원이 없으므로 null 반환 / 최초 로그인이므로 회원 가입 수행");
         }
 
