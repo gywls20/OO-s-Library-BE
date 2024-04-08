@@ -118,6 +118,7 @@ hu       * AccessDeniedHandler : 권한(인가) 예외처리, 403(Forbidden) 상
                                 .requestMatchers("/members/**").permitAll()
                                 .requestMatchers("/mail/**").permitAll()
                                 .requestMatchers("/books/**").permitAll()
+                                .requestMatchers("/boards/**").permitAll()
                                 .requestMatchers("/comment/**").permitAll()
                                 .requestMatchers("/admin/**", "/api/v1/**").hasRole(Role.ADMIN.name())
                                 .anyRequest().authenticated()
