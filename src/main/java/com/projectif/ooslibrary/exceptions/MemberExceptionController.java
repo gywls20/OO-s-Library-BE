@@ -1,9 +1,6 @@
 package com.projectif.ooslibrary.exceptions;
 
-import com.projectif.ooslibrary.member.exception.MailNotVerifiedException;
-import com.projectif.ooslibrary.member.exception.NoSuchMemberException;
-import com.projectif.ooslibrary.member.exception.NoSuchVerifyCodeException;
-import com.projectif.ooslibrary.member.exception.OAuth2LoginNoSessionValueException;
+import com.projectif.ooslibrary.member.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -81,6 +78,16 @@ public class MemberExceptionController {
         headers.set("Error", "MailNotVerifiedException");
 
         log.info("MailNotVerifiedException 예외 발생 [MemberControllerAdvice] : {}", ex.getMessage());
+
+        return new ResponseEntity<>(ex.toString(), headers, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({MailNotSendException.class})
+    public ResponseEntity<String> mailNotSendException(MailNotSendException ex) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Error", "MailNotSendException");
+
+        log.info("MailNotSendException 예외 발생 [MemberControllerAdvice] : {}", ex.getMessage());
 
         return new ResponseEntity<>(ex.toString(), headers, HttpStatus.BAD_REQUEST);
     }

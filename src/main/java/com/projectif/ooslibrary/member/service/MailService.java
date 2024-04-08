@@ -2,6 +2,7 @@ package com.projectif.ooslibrary.member.service;
 
 import com.projectif.ooslibrary.member.domain.Mail;
 import com.projectif.ooslibrary.member.domain.Member;
+import com.projectif.ooslibrary.member.exception.MailNotSendException;
 import com.projectif.ooslibrary.member.exception.MailNotVerifiedException;
 import com.projectif.ooslibrary.member.exception.NoSuchMemberException;
 import com.projectif.ooslibrary.member.exception.NoSuchVerifyCodeException;
@@ -42,8 +43,7 @@ public class MailService {
         MimeMessage message = javaMailSender.createMimeMessage();
         message.addRecipients(Message.RecipientType.TO, email);
         message.setSubject("OO의 서재 인증 번호입니다.");
-        message.setText("안녕하세요 OO의 서재 입니다. \n" +
-                "이메일 인증코드: " + code);
+        message.setText("안녕하세요 OO의 서재 입니다. \n" + code);
 
         message.setFrom(new InternetAddress(NAVER_LOGIN_MAIL_ID + "@naver.com", "OO의 서재 관리센터", StandardCharsets.UTF_8.name()));
         return message;
@@ -65,17 +65,17 @@ public class MailService {
         Member findMember = memberRepository.findByMemberEmailAndMemberName(email, name)
                 .orElseThrow(() -> new NoSuchMemberException("유효하지 않은 회원의 Email 입니다!!!"));
         if(!findMember.getMemberEmail().equals(email)){
-            throw new RuntimeException("[MailService] - [sendCertificationMail] NOT FOUND EMAIL");
+            throw new MailNotSendException("[MailService] - [sendCertificationMail] NOT FOUND EMAIL");
         }
         try{
             String  code = UUID.randomUUID().toString().substring(0, 8);
-            sendMail(code, email);
+            sendMail(("이메일 인증코드: " + code), email);
 
             mailRepository.save(new Mail(code, email));
             return code;
         }catch (Exception exception){
             log.info("error = {}", exception.toString());
-            throw new RuntimeException("Mail이 발송되지 못했습니다");
+            throw new MailNotSendException("Mail이 발송되지 못했습니다");
         }
     }
 
@@ -104,22 +104,22 @@ public class MailService {
         Member findMember = memberRepository.findByMemberEmailAndMemberName(email, name)
                 .orElseThrow(() -> new NoSuchMemberException("유효하지 않은 회원의 Email 입니다!!!"));
         if(!findMember.getMemberEmail().equals(email)){
-            throw new RuntimeException("[MailService] - [sendCertificationMail] NOT FOUND EMAIL");
+            throw new MailNotSendException("[MailService] - [sendNewPasswordMail] NOT FOUND EMAIL");
         }
         try{
             String  code = UUID.randomUUID().toString().substring(0, 10);
-            sendMail(code, email);
+            sendMail("새 비밀번호 : " + code + "\n 임시 비밀번호는 반드시 회원수정을 통해 바꿔주세요.", email);
 
             mailRepository.save(new Mail(code, email));
             Member member = memberRepository.findByMemberEmailAndMemberName(email, name)
-                    .orElseThrow(() -> new NoSuchMemberException("[MemberServiceImpl] - [getMember] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
+                    .orElseThrow(() -> new NoSuchMemberException("[MailService] - [sendNewPasswordMail] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
             // 임시 비밀번호 저장
             member.changePassword(passwordEncoder.encode(code));
 
             return code;
         }catch (Exception exception){
             log.info("error = {}", exception.toString());
-            throw new RuntimeException("Mail이 발송되지 못했습니다");
+            throw new MailNotSendException("Mail이 발송되지 못했습니다");
         }
     }
 }

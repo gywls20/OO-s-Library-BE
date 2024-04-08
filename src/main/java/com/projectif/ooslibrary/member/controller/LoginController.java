@@ -42,17 +42,23 @@ public class LoginController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         // 사용자 이름 가져오기 > member의 memberId값 & 회원 정보 가져오기
         String memberId = ((UserDetails) auth.getPrincipal()).getUsername();
-        MemberResponseDTO member = memberService.getMember(memberId);
-        // 세션에 로그인 정보 넣기 - PK, Id, Profile 이미지 3개
-        HttpSession session = request.getSession(false);
-        session.setAttribute("id", memberId);
-        session.setAttribute("pk", member.getMemberPk());
-        session.setAttribute("name", member.getMemberName());
-        session.setAttribute("profile", member.getMemberProfileImg());
+        MemberResponseDTO member = null;
+        try {
+            member = memberService.getMember(memberId);
+            // 세션에 로그인 정보 넣기 - PK, Id, Profile 이미지 3개
+            HttpSession session = request.getSession(false);
+            session.setAttribute("id", memberId);
+            session.setAttribute("pk", member.getMemberPk());
+            session.setAttribute("name", member.getMemberName());
+            session.setAttribute("profile", member.getMemberProfileImg());
+        } catch (Exception e) {
+            throw new OAuth2LoginNoSessionValueException("해당 회원은 없거나 탈퇴 처리된 회원입니다");
+        }
 
-        /** TODO : 리액트에 session / cookie를 어떻게 던져줄 지 고민.
-         *  - 스프링 컨트롤러로 오브젝트 or String을 보내도 헤더에 JSESSIONID 쿠키를 생성해서 보내줌
-         *  - 세션 / 쿠키 방식을 위해 굳이 쿠키를 생성하지 않고 스프링 시큐리티가 생성해 보내주는 세션아이디를 쓰면 될 것 같음.
+
+        /**
+         *  - 스프링 컨트롤러로 오브젝트 or String을 보내도 헤더에 JSESSIONID 쿠키를 생성해서 보내줌.
+         *  - 세션 / 쿠키 방식을 위해 굳이 쿠키를 생성하지 않고 스프링 시큐리티가 생성해 보내주는 세션아이디 JSESSIONID 사용.
          */
 
         HashMap<String, String> map = new HashMap<>();
