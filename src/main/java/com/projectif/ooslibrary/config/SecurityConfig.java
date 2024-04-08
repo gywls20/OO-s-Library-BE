@@ -111,7 +111,7 @@ hu       * AccessDeniedHandler : 권한(인가) 예외처리, 403(Forbidden) 상
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
-                                .requestMatchers("/", "/oauth2/authorization/naver", "/login", "/login_failure",
+                                .requestMatchers("/", "/oauth2/authorization/**", "/login", "/login_failure",
                                         "/logout/**", "/login/oauth2/**", "/login/oauth2/code/**").permitAll() // login 관련 기능
                                 .requestMatchers(HttpMethod.POST, "/members").permitAll() // 회원 등록
 //                                .requestMatchers("/members/**").hasRole(Role.USER.name())
