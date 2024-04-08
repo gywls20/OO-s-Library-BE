@@ -19,7 +19,7 @@ public class Mail {
     private Long mailPk;
     private String code;
     private String email;
-    private boolean isVerified = false;
+    private byte isVerified = 0;
     private LocalDateTime createdDate = LocalDateTime.now();
 
     public Mail(String code, String email) {

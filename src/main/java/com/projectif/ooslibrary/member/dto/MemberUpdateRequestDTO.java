@@ -1,9 +1,6 @@
 package com.projectif.ooslibrary.member.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,15 +23,17 @@ public class MemberUpdateRequestDTO {
      */
     private Long memberPk;
     @NotBlank(message = "빈 이름은 허용되지 않습니다")
-    @Size(max = 20, message = "이름은 100자 이하여야 합니다.")
+    @Size(max = 50, message = "이름은 50자 이하여야 합니다.")
     private String memberName;
     @NotBlank(message = "빈 이메일은 허용되지 않습니다")
-    @Size(max = 20, message = "이메일은 100자 이하여야 합니다.")
+    @Size(max = 50, message = "이메일은 50자 이하여야 합니다.")
     @Email(message = "이메일 형식으로 적으세요")
     private String memberEmail;
     @Size(max = 100)
     private String memberPassword;
     @NotNull(message = "성별을 골라주세요")
+    @Max(value = 2, message = "성별을 제대로 골라주세요")
+    @Min(value = 0, message = "성별을 제대로 골라주세요")
     private Integer memberGender;
     private String memberProfileImg;
 

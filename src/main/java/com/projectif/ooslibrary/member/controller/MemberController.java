@@ -29,6 +29,9 @@ public class MemberController {
     // 회원 정보 한 건 조회 -> 나중에 삭제 처리된 회원은 안나오도록 하기.
     @GetMapping("/{id}")
     public MemberResponseDTO getMember(@PathVariable("id") Long id) {
+        if (id != session.getAttribute("pk")) {
+            throw new RuntimeException("접근이 허용되지 않는 정보입니다");
+        }
         return memberService.getMember(id);
     }
 
