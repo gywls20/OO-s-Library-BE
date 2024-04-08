@@ -6,10 +6,10 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 public class BookTextDTO {
-    private String book_text_path;
+    private String bookTextPath;
 
 
-    public BookTextDTO(String book_text_path){
-        this.book_text_path = book_text_path;
+    public BookTextDTO(String bookTextPath){
+        this.bookTextPath = bookTextPath;
     }
 }
