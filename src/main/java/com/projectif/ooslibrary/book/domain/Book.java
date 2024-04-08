@@ -15,20 +15,33 @@ public class Book {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_pk")
-    private Long book_pk;
-    private String book_title;
-    private String book_author;
-    private String book_publisher;
-    private String book_publish_date;
-    private int book_price;
-    private String book_isbn;
-    private String book_category;
-    private String cover_image_path;
-    private String book_text_path;
-    private String aladin_link;
-    private int book_page;
-    private String book_content;
-    private String book_original_title;
+    private Long bookPk;
+    @Column(name = "book_title")
+    private String bookTitle;
+    @Column(name = "book_author")
+    private String bookAuthor;
+    @Column(name = "book_publisher")
+    private String bookPublisher;
+    @Column(name = "book_publish_date")
+    private String bookPublishDate;
+    @Column(name = "book_price")
+    private int bookPrice;
+    @Column(name = "book_isbn")
+    private String bookIsbn;
+    @Column(name = "book_category")
+    private String bookCategory;
+    @Column(name = "cover_image_path")
+    private String coverImagePath;
+    @Column(name = "book_text_path")
+    private String bookTextPath;
+    @Column(name = "aladin_link")
+    private String aladinLink;
+    @Column(name = "book_page")
+    private int bookPage;
+    @Column(name = "book_content")
+    private String bookContent;
+    @Column(name = "book_original_title")
+    private String bookOriginalTitle;
     @CreationTimestamp
     private LocalDateTime created_date;
     private boolean is_deleted;
