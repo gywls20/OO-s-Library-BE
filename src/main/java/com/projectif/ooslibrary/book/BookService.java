@@ -60,6 +60,7 @@ public List<BookDTO> getAllBooks(String sortOrder) {
 
     public BookTextDTO getBookPath(Long book_pk) {
         Optional<Book> optionalBook = bookRepository.findById(book_pk);
-        return optionalBook.map(book -> new BookTextDTO(book.getBookTextPath())).orElse(null);
+        return optionalBook.map(book -> new BookTextDTO(book.getBookTextPath()))
+                .orElseThrow(() -> new RuntimeException("해당하는 책을 찾을 수 없습니다."));
     }
 }
