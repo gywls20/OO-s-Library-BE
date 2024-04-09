@@ -3,10 +3,7 @@ package com.projectif.ooslibrary.board.domain;
 import com.projectif.ooslibrary.config.auditing.BaseEntity;
 import com.projectif.ooslibrary.member.domain.Member;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,7 +13,9 @@ import java.util.List;
 @Getter
 @ToString(exclude = {"member"})
 @Table(name = "board")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,12 +39,12 @@ public class Board extends BaseEntity {
     private LocalDateTime modifiedDate;
 
     // 생성자
-    public Board(String boardTitle, String boardCategory, String boardContent, Member member, Board parent, Integer level, LocalDateTime modifiedDate) {
+    public Board(String boardTitle, String boardCategory, String boardContent, Member member, Board parent, Integer level) {
         this.boardTitle = boardTitle;
         this.boardCategory = boardCategory;
         this.boardContent = boardContent;
         this.member = member;
-        this.modifiedDate = modifiedDate;
+        this.modifiedDate = LocalDateTime.now();
         this.parent = parent;
         if (parent == null) {
             this.level = 0;
@@ -54,7 +53,13 @@ public class Board extends BaseEntity {
         }
     }
 
-    // 연관관계 편의 메서드
+    // 업데이트 메서드
+    public void changeBoard(String boardTitle, String boardCategory, String boardContent) {
+        this.boardTitle = boardTitle;
+        this.boardCategory = boardCategory;
+        this.boardContent = boardContent;
+        this.modifiedDate = LocalDateTime.now();
+    }
 
 
 

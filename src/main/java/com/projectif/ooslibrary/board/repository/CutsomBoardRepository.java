@@ -7,4 +7,5 @@ import java.util.List;
 public interface CutsomBoardRepository {
 
     List<Board> findBoardList();
+    long countBoardList();
 }

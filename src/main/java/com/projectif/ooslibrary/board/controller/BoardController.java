@@ -25,22 +25,22 @@ public class BoardController {
 
     // 예) /boards?page=0&size=3&sort=id,desc&sort=boardTitle,desc
     @GetMapping("")
-    public Page<Board> getBoardList(@PageableDefault(size = 20, page = 0, sort = "boardPk", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Page<Board> getBoardList(@PageableDefault(size = 10, page = 0, sort = "boardPk", direction = Sort.Direction.DESC) Pageable pageable) {
         return boardService.getBoardList(pageable);
     }
 
     @PostMapping("")
-    public String insertBoard(@RequestBody Board board) {
-        return "문의 게시판 등록 미구현";
+    public boolean insertBoard(@RequestBody Board board) {
+        return boardService.insertBoard(board);
     }
 
     @PutMapping("/{boardPk}")
-    public String updateBoard(@PathVariable("boardPk") Long boardPk, @RequestBody Board board) {
-        return "문의 게시판 수정 미구현";
+    public boolean updateBoard(@PathVariable("boardPk") Long boardPk, @RequestBody Board board) {
+        return boardService.updateBoard(boardPk, board);
     }
 
     @DeleteMapping("/{boardPk}")
-    public String deleteBoard(@PathVariable("boardPk") Long boardPk) {
-        return "문의 게시판 삭제 미구현";
+    public boolean deleteBoard(@PathVariable("boardPk") Long boardPk) {
+        return boardService.deleteBoard(boardPk);
     }
 }
