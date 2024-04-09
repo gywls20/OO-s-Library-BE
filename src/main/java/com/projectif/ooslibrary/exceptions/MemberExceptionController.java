@@ -33,13 +33,13 @@ public class MemberExceptionController {
      * @return
      */
     @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<String> memberException(RuntimeException ex) {
+    public ResponseEntity<String> runTimeException(RuntimeException ex) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "RuntimeException");
 
-        log.info("RuntimeException Exception 발생 [MemberControllerAdvice] : {}", ex.getMessage());
+        log.info("RuntimeException Exception 발생 [MemberControllerAdvice] : {}", ex.toString());
 
-        return new ResponseEntity<>(ex.toString(), headers, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ex.getMessage(), headers, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({NoSuchMemberException.class})
@@ -47,9 +47,9 @@ public class MemberExceptionController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "NoSuchMemberException");
 
-        log.info("NoSuchMemberException 예외 발생 [MemberControllerAdvice] : {}", ex.getMessage());
+        log.info("NoSuchMemberException 예외 발생 [MemberControllerAdvice] : {}", ex.toString());
 
-        return new ResponseEntity<>(ex.toString(), headers, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ex.getMessage(), headers, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({OAuth2LoginNoSessionValueException.class})
@@ -57,9 +57,9 @@ public class MemberExceptionController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "OAuth2LoginNoSessionValueException");
 
-        log.info("OAuth2LoginNoSessionValueException 예외 발생 [MemberControllerAdvice] : {}", ex.getMessage());
+        log.info("OAuth2LoginNoSessionValueException 예외 발생 [MemberControllerAdvice] : {}", ex.toString());
 
-        return new ResponseEntity<>(ex.toString(), headers, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ex.getMessage(), headers, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({NoSuchVerifyCodeException.class})
@@ -67,9 +67,9 @@ public class MemberExceptionController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "NoSuchVerifyCodeException");
 
-        log.info("NoSuchVerifyCodeException 예외 발생 [MemberControllerAdvice] : {}", ex.getMessage());
+        log.info("NoSuchVerifyCodeException 예외 발생 [MemberControllerAdvice] : {}", ex.toString());
 
-        return new ResponseEntity<>(ex.toString(), headers, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ex.getMessage(), headers, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({MailNotVerifiedException.class})
@@ -77,9 +77,9 @@ public class MemberExceptionController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "MailNotVerifiedException");
 
-        log.info("MailNotVerifiedException 예외 발생 [MemberControllerAdvice] : {}", ex.getMessage());
+        log.info("MailNotVerifiedException 예외 발생 [MemberControllerAdvice] : {}", ex.toString());
 
-        return new ResponseEntity<>(ex.toString(), headers, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ex.getMessage(), headers, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({MailNotSendException.class})
@@ -87,9 +87,9 @@ public class MemberExceptionController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "MailNotSendException");
 
-        log.info("MailNotSendException 예외 발생 [MemberControllerAdvice] : {}", ex.getMessage());
+        log.info("MailNotSendException 예외 발생 [MemberControllerAdvice] : {}", ex.toString());
 
-        return new ResponseEntity<>(ex.toString(), headers, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ex.getMessage(), headers, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
@@ -109,7 +109,7 @@ public class MemberExceptionController {
 
         log.info("HttpMessageNotReadableException 예외 발생 [MemberControllerAdvice] : {}", ex.toString());
 
-        return new ResponseEntity<>("잘못된 데이터 접근입니다!!!", headers, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("잘못된 데이터 접근입니다!!!", headers, HttpStatus.FORBIDDEN);
     }
 
     /**
@@ -127,4 +127,13 @@ public class MemberExceptionController {
         return new ResponseEntity<>("ID나 Email은 중복될 수 없습니다", headers, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({SessionMemberNotMatchException.class})
+    public ResponseEntity<String> sessionMemberNotMatchException(SessionMemberNotMatchException ex) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Error", "SessionMemberNotMatchException");
+
+        log.info("SessionMemberNotMatchException 예외 발생 [MemberControllerAdvice] : {}", ex.toString());
+
+        return new ResponseEntity<>(ex.getMessage(), headers, HttpStatus.FORBIDDEN);
+    }
 }
