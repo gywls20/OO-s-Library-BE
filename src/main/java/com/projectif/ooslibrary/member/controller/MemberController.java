@@ -41,7 +41,11 @@ public class MemberController {
     // 회원 마이페이지 접근 시 -> 비밀 번호 체크 기능
     @PostMapping("/checkPassword")
     public boolean checkPassword(@RequestBody @Validated MemberCheckPasswordRequestDTO dto) {
-//        log.info("[MemberController] - [checkPassword] : pk = {}, password = {}", dto.getMemberPk(), dto.getPassword());
+
+        if (dto.getMemberPk() != session.getAttribute("pk")) {
+            throw new SessionMemberNotMatchException("접근이 허용되지 않는 정보입니다");
+        }
+
         return memberService.checkPassword(dto);
     }
 
@@ -54,6 +58,11 @@ public class MemberController {
     // 회원 전체 리스트 조회 - 삭제 안된 회원들
     @GetMapping("")
     public List<MemberResponseDTO> getMemberListNotDeleted() {
+
+        if (session.getAttribute("pk") == null) {
+            throw new SessionMemberNotMatchException("접근이 허용되지 않는 정보입니다");
+        }
+
         return memberService.getMemberListExceptDeleted();
     }
 
