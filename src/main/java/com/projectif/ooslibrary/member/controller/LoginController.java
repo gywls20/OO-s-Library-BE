@@ -35,8 +35,7 @@ public class LoginController {
 
     // 로그인 성공
     @PostMapping("/login_success")
-    @ResponseBody
-    public Map<String, String> loginSuccess(HttpServletRequest request) {
+    public String loginSuccess(HttpServletRequest request) {
 
         // 현재 인증된 사용자 정보 가져오기
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -51,23 +50,13 @@ public class LoginController {
             session.setAttribute("pk", member.getMemberPk());
             session.setAttribute("name", member.getMemberName());
             session.setAttribute("profile", member.getMemberProfileImg());
+            session.setAttribute("myLibraryPk", member.getMyLibraryPk());
+            log.info("member.getMyLibraryPk() = {}", member.getMyLibraryPk());
         } catch (Exception e) {
             throw new OAuth2LoginNoSessionValueException("해당 회원은 없거나 탈퇴 처리된 회원입니다");
         }
 
-
-        /**
-         *  - 스프링 컨트롤러로 오브젝트 or String을 보내도 헤더에 JSESSIONID 쿠키를 생성해서 보내줌.
-         *  - 세션 / 쿠키 방식을 위해 굳이 쿠키를 생성하지 않고 스프링 시큐리티가 생성해 보내주는 세션아이디 JSESSIONID 사용.
-         */
-
-        HashMap<String, String> map = new HashMap<>();
-        map.put("pk", String.valueOf(member.getMemberPk()));
-        map.put("id", memberId);
-        map.put("name", member.getMemberName());
-        map.put("profile", member.getMemberProfileImg());
-
-        return map;
+        return "redirect:/";
     }
 
     // 로그인 실패
@@ -81,36 +70,33 @@ public class LoginController {
         return errorMessage;
     }
 
-    @GetMapping("/logoutResult")
-    @ResponseBody
-    public String logoutResult(HttpServletResponse response) {
-        log.info("logout success url");
-
-        // CORS header 설정
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-
-        return "로그아웃 성공!!";
-    }
+//    @GetMapping("/logoutResult")
+//    public String logoutResult(HttpServletResponse response) {
+//        log.info("logout success url");
+//
+//        // CORS header 설정
+//        response.setHeader("Access-Control-Allow-Credentials", "true");
+//        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//
+//        return "로그아웃 성공!!";
+//    }
 
     @GetMapping("/login/oauth2/fail")
-    @ResponseBody
     public String oauthLoginFail(HttpServletResponse response, HttpServletRequest request) {
         log.info("login failure url");
 
         // CORS header 설정
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("Access-Control-Allow-Origin", "http://192.168.0.8:3000");
+//        response.setHeader("Access-Control-Allow-Credentials", "true");
+//        response.setHeader("Access-Control-Allow-Origin", "http://192.168.0.8:3000");
 
         request.getSession().invalidate();
 
-        return "멍충멍충";
+        return "redirect:/login";
     }
 
     // 네이버 로그인 성공
     @GetMapping("/login/oauth2/success")
-    @ResponseBody
-    public Map<String, String> oAuth2LoginSuccess(HttpServletRequest request) {
+    public String oAuth2LoginSuccess(HttpServletRequest request) {
 
         // 세션에 로그인 정보 넣기 - PK, Id, Profile, name 4개
         HttpSession session = request.getSession(false);
@@ -118,22 +104,11 @@ public class LoginController {
         MemberResponseDTO member = memberService.getMember(id);
         if (id == null) {
             log.info("oAuth2 성공 핸들러 후, 세션이 안가져와 짐");
-            throw new OAuth2LoginNoSessionValueException("oAuth2 성공 핸들러 후, 세션이 안가져와 짐");
+            throw new OAuth2LoginNoSessionValueException("oAuth2 성공 핸들러 후, 세션을 가져오지 못했습니다");
         }
         log.info("oauth2 성공 핸들러에서 세션을 성공적으로 받아옴");
 
-        /** TODO : 리액트에 session / cookie를 어떻게 던져줄 지 고민.
-         *  - 스프링 컨트롤러로 오브젝트 or String을 보내도 헤더에 JSESSIONID 쿠키를 생성해서 보내줌
-         *  - 세션 / 쿠키 방식을 위해 굳이 쿠키를 생성하지 않고 스프링 시큐리티가 생성해 보내주는 세션아이디를 쓰면 될 것 같음.
-         */
-
-        HashMap<String, String> map = new HashMap<>();
-        map.put("pk", String.valueOf(member.getMemberPk()));
-        map.put("id", id);
-        map.put("name", member.getMemberName());
-        map.put("profile", member.getMemberProfileImg());
-
-        return map;
+        return "redirect:/";
     }
 
 }

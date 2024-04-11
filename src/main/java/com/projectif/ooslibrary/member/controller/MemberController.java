@@ -1,5 +1,6 @@
 package com.projectif.ooslibrary.member.controller;
 
+import ch.qos.logback.core.model.Model;
 import com.projectif.ooslibrary.member.dto.MemberCheckPasswordRequestDTO;
 import com.projectif.ooslibrary.member.dto.MemberJoinRequestDTO;
 import com.projectif.ooslibrary.member.dto.MemberResponseDTO;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@RestController
+@Controller
 @RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
@@ -29,6 +31,7 @@ public class MemberController {
 
     // 회원 정보 한 건 조회 -> 나중에 삭제 처리된 회원은 안나오도록 하기.
     @GetMapping("/{id}")
+    @ResponseBody
     public MemberResponseDTO getMember(@PathVariable("id") Long id) {
 
         if (id != session.getAttribute("pk")) {
@@ -40,6 +43,7 @@ public class MemberController {
 
     // 회원 마이페이지 접근 시 -> 비밀 번호 체크 기능
     @PostMapping("/checkPassword")
+    @ResponseBody
     public boolean checkPassword(@RequestBody @Validated MemberCheckPasswordRequestDTO dto) {
 
         if (dto.getMemberPk() != session.getAttribute("pk")) {
@@ -57,6 +61,7 @@ public class MemberController {
 
     // 회원 전체 리스트 조회 - 삭제 안된 회원들
     @GetMapping("")
+    @ResponseBody
     public List<MemberResponseDTO> getMemberListNotDeleted() {
 
         if (session.getAttribute("pk") == null) {
@@ -66,14 +71,22 @@ public class MemberController {
         return memberService.getMemberListExceptDeleted();
     }
 
+    // 회원 가입 페이지 이동
+    @GetMapping("/join")
+    public String memberJoinPage(Model model) {
+        return "members/join";
+    }
+
     // 회원 가입
     @PostMapping("")
+    @ResponseBody
     public boolean memberJoin(@RequestBody @Validated MemberJoinRequestDTO member) {
         return memberService.memberJoin(member);
     }
 
     // 회원 수정
     @PutMapping("/{id}")
+    @ResponseBody
     public boolean memberUpdate(@PathVariable("id") Long id, @RequestBody @Validated MemberUpdateRequestDTO dto) {
 
         if (id != session.getAttribute("pk")) {
@@ -86,6 +99,7 @@ public class MemberController {
 
     // 회원 삭제
     @DeleteMapping("/{id}")
+    @ResponseBody
     public boolean memberDelete(@PathVariable("id") Long id, @RequestBody Map<String, String> passwordMap) {
 
         if (id != session.getAttribute("pk")) {

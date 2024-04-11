@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>문의</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <h1>여기는 문의 게시판</h1>
+
+    <div>
+        <ul>
+            <li th:each="board : ${boardList}">
+                <span th:text="${board.boardTitle}">제목</span>
+                <span th:text="${board.boardCategory}">카테고리</span>
+                <span th:text="${board.memberName}">작성자</span>
+                <span th:text="${board.boardContent}">내용</span>
+                <span th:text="${board.createdDate}">작성일</span>
+                <span th:text="${board.modifiedDate}">수정일</span>
+            </li>
+        </ul>
+    </div>
+
+</div>
+</body>
+</html>

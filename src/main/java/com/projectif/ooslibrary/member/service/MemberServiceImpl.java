@@ -118,7 +118,7 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = memberRepository.findByIdNotDeleted(memberPk)
                 .orElseThrow(() -> new NoSuchMemberException("[MemberServiceImpl] - [getMember] 해당하는 아이디를 가진 회원을 찾지 못함!!!"));
 
-        MemberResponseDTO dto = MemberResponseDTO.builder()
+        return MemberResponseDTO.builder()
                 .memberPk(findMember.getMemberPk())
                 .memberId(findMember.getMemberId())
                 .memberName(findMember.getMemberName())
@@ -126,9 +126,8 @@ public class MemberServiceImpl implements MemberService {
                 .memberPassword(findMember.getMemberPassword())
                 .memberGender(findMember.getMemberGender())
                 .memberProfileImg(findMember.getMemberProfileImg())
+                .myLibraryPk(findMember.getMyLibrary().getMyLibraryPk())
                 .build();
-
-        return dto;
     }
 
     // 회원 한 건 조회 / 오버로딩
@@ -146,6 +145,7 @@ public class MemberServiceImpl implements MemberService {
                 .memberPassword(findMember.getMemberPassword())
                 .memberGender(findMember.getMemberGender())
                 .memberProfileImg(findMember.getMemberProfileImg())
+                .myLibraryPk(findMember.getMyLibrary().getMyLibraryPk())
                 .build();
 
         return dto;
