@@ -104,7 +104,7 @@ hu       * AccessDeniedHandler : 권한(인가) 예외처리, 403(Forbidden) 상
                     oauth2.failureUrl("/login/oauth2/fail");
                 })
                 .logout(logoutConfigurer -> {
-                    logoutConfigurer.logoutSuccessUrl("/logout/result");
+                    logoutConfigurer.logoutSuccessUrl("/logoutResult");
                     logoutConfigurer.invalidateHttpSession(true); // 세션 무효화 설정
                     logoutConfigurer.deleteCookies("JSESSIONID");
                 })
@@ -112,9 +112,11 @@ hu       * AccessDeniedHandler : 권한(인가) 예외처리, 403(Forbidden) 상
                         authorizeRequests
                                 .requestMatchers(PathRequest.toH2Console()).permitAll()
                                 .requestMatchers("/", "/oauth2/authorization/**", "/login", "/login_failure",
-                                        "/logout/**", "/login/oauth2/**", "/login/oauth2/code/**").permitAll() // login 관련 기능
+                                        "/login/oauth2/**", "/login/oauth2/code/**").permitAll() // login 관련 기능
                                 .requestMatchers(HttpMethod.POST, "/members").permitAll() // 회원 등록
 //                                .requestMatchers("/members/**").hasRole(Role.USER.name())
+                                .requestMatchers("/logout").hasAnyRole(Role.USER.name(), Role.ADMIN.name()) // 로그인한 인원만 로그아웃에 접근하도록.
+                                .requestMatchers("/logoutResult").permitAll()
                                 .requestMatchers("/members/**").permitAll()
                                 .requestMatchers("/mail/**").permitAll()
                                 .requestMatchers("/books/**").permitAll()

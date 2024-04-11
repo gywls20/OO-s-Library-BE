@@ -45,7 +45,7 @@ public class Member extends BaseEntity implements UserDetails {
     private Integer memberGender;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities() {;
         Collection<GrantedAuthority> collection = new ArrayList<>();
         collection.add((GrantedAuthority) () -> role.name());
         return collection;
@@ -118,6 +118,10 @@ public class Member extends BaseEntity implements UserDetails {
 
     public void changePassword(String memberPassword) {
         this.memberPassword = memberPassword;
+    }
+
+    public void addMyLibrary(MyLibrary myLibrary) {
+        this.myLibrary = myLibrary;
     }
 
     public void memberUpdate(MemberUpdateRequestDTO dto) {

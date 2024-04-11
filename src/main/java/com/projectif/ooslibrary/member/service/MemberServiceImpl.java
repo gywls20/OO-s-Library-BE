@@ -7,6 +7,8 @@ import com.projectif.ooslibrary.member.dto.MemberResponseDTO;
 import com.projectif.ooslibrary.member.dto.MemberUpdateRequestDTO;
 import com.projectif.ooslibrary.member.exception.NoSuchMemberException;
 import com.projectif.ooslibrary.member.repository.MemberRepository;
+import com.projectif.ooslibrary.my_library.domain.MyLibrary;
+import com.projectif.ooslibrary.my_library.repository.MyLibraryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +25,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MyLibraryRepository myLibraryRepository;
 
     // 회원 가입
     @Transactional
@@ -39,6 +42,14 @@ public class MemberServiceImpl implements MemberService {
 
         // repository 저장
         Member savedMember = memberRepository.save(newMember);
+
+        // 영속화한 member에 내서재 영속화 후, member에 참조
+        MyLibrary myLibrary = MyLibrary.builder()
+                .myLibraryName(savedMember.getMemberName() + "의 서재")
+                .build();
+        MyLibrary savedMyLibrary = myLibraryRepository.save(myLibrary);
+
+        savedMember.addMyLibrary(savedMyLibrary);
 
         if (savedMember.getMemberPk() != null) {
             return true;
