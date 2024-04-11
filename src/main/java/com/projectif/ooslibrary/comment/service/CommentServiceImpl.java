@@ -1,7 +1,7 @@
 package com.projectif.ooslibrary.comment.service;
 
 import com.projectif.ooslibrary.comment.domain.CommentVO;
-import com.projectif.ooslibrary.comment.dto.CommentResponseDTO;
+import com.projectif.ooslibrary.comment.dto.CommentRequestDTO;
 import com.projectif.ooslibrary.comment.dto.PageInfo;
 import com.projectif.ooslibrary.mapper.CommentMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +16,9 @@ public class CommentServiceImpl implements  CommentService{
 
     //코멘트 등록
     @Override
-    public Long insertComment(CommentResponseDTO commentResponseDTO) {
-        commentMapper.insertComment(commentResponseDTO);
-        return commentResponseDTO.getComment_pk();
+    public Long insertComment(CommentRequestDTO commentRequestDTO) {
+        commentMapper.insertComment(commentRequestDTO);
+        return commentRequestDTO.getComment_pk();
     }
     //코멘트 리스트로 조회(페이징 처리)
     @Override
@@ -41,8 +41,8 @@ public class CommentServiceImpl implements  CommentService{
 
     //코멘트 수정
     @Override
-    public void updateComment(CommentResponseDTO commentResponseDTO) {
-        commentMapper.updateComment(commentResponseDTO);
+    public void updateComment(CommentRequestDTO commentRequestDTO) {
+        commentMapper.updateComment(commentRequestDTO);
     }
 
     //코멘트 삭제
