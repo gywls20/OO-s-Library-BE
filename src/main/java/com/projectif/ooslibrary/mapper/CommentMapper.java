@@ -1,7 +1,7 @@
 package com.projectif.ooslibrary.mapper;
 
 import com.projectif.ooslibrary.comment.domain.CommentVO;
-import com.projectif.ooslibrary.comment.dto.CommentResponseDTO;
+import com.projectif.ooslibrary.comment.dto.CommentRequestDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface CommentMapper {
 
-    void insertComment(CommentResponseDTO commentResponseDTO);
+    void insertComment(CommentRequestDTO commentRequestDTO);
 
     //댓글 리스트 조회 / return : 댓글 리스트
     //List<CommentVO> getComments();
@@ -20,7 +20,7 @@ public interface CommentMapper {
 
     CommentVO getCommentsById(Long member_pk);
 
-    void updateComment(CommentResponseDTO commentResponseDTO);
+    void updateComment(CommentRequestDTO commentRequestDTO);
 
     void deleteComment(Long comment_pk);
 }

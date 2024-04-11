@@ -1,14 +1,11 @@
 package com.projectif.ooslibrary.comment.controller;
 
 import com.projectif.ooslibrary.comment.domain.CommentVO;
-import com.projectif.ooslibrary.comment.dto.CommentResponseDTO;
+import com.projectif.ooslibrary.comment.dto.CommentRequestDTO;
 import com.projectif.ooslibrary.comment.dto.PageInfo;
 import com.projectif.ooslibrary.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 //@Slf4j
 @RestController
@@ -19,8 +16,8 @@ public class CommentController {
 
     //코멘드 생성
     @PostMapping("")
-    public CommentVO insertComment(@RequestBody CommentResponseDTO commentResponseDTO) {
-        Long comment_pk = commentService.insertComment(commentResponseDTO);
+    public CommentVO insertComment(@RequestBody CommentRequestDTO commentRequestDTO) {
+        Long comment_pk = commentService.insertComment(commentRequestDTO);
         return commentService.getCommentsById(comment_pk);
     }
     //전체 리스트로 불러오기
@@ -41,8 +38,8 @@ public class CommentController {
     //코멘트 수정
     @PutMapping("/{comment_pk}")
     public CommentVO updateComment(@PathVariable("comment_pk") Long comment_pk,
-                                   @RequestBody CommentResponseDTO commentResponseDTO) {
-        commentService.updateComment(commentResponseDTO);
+                                   @RequestBody CommentRequestDTO commentRequestDTO) {
+        commentService.updateComment(commentRequestDTO);
         return commentService.getCommentsById(comment_pk);
     }
     //코멘트 삭제

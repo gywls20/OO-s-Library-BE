@@ -7,41 +7,37 @@
         comment_title,
         comment_content,
         level,
-        created_date,
-        modified_date,
-        is_deleted,
         total_like,
         total_report,
+        modified_date,
         parent_pk,
         book_pk,
         my_library_pk
     </sql>
     <sql id="commentList">
-        comment_pk,
         member_pk,
         comment_title,
         comment_content,
         level,
-        created_date,total_like,
+        created_date,
+        total_like,
         total_report,
         book_pk
     </sql>
 
     <!-- 코멘트 저장 -->
-    <insert id="insertComment" parameterType="com.projectif.ooslibrary.comment.dto.CommentResponseDTO" useGeneratedKeys="true" keyProperty="comment_pk">
+    <insert id="insertComment" parameterType="com.projectif.ooslibrary.comment.dto.CommentRequestDTO" useGeneratedKeys="true" keyProperty="comment_pk">
         INSERT INTO comment (
             <include refid="commentColumns" />
         ) VALUES (
             #{member_pk},
             #{comment_title},
             #{comment_content},
-            null,
-            now(),
-            null,
+            0,
+            0,
             0,
             null,
-            null,
-            null,
+            #{comment_pk},
             null,
             null
         )
@@ -80,12 +76,12 @@
         SELECT
             <include refid="commentList" />
         FROM
-        comment
+            comment
         WHERE
         member_pk = #{member_pk}
     </select>
     <!-- 코멘트 수정 -->
-    <update id="updateComment" parameterType="com.projectif.ooslibrary.comment.dto.CommentResponseDTO">
+    <update id="updateComment" parameterType="com.projectif.ooslibrary.comment.dto.CommentRequestDTO">
         UPDATE comment
         SET
             comment_title = #{comment_title},

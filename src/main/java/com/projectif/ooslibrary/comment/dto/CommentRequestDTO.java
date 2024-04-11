@@ -4,7 +4,7 @@ import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommentResponseDTO { //등록, 수정
+public class CommentRequestDTO { //등록, 수정
     private Long comment_pk;
     private Long member_pk;
     private String comment_title;
