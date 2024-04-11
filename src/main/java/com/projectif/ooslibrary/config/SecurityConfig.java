@@ -117,6 +117,7 @@ hu       * AccessDeniedHandler : 권한(인가) 예외처리, 403(Forbidden) 상
 //                                .requestMatchers("/members/**").hasRole(Role.USER.name())
                                 .requestMatchers("/logout").hasAnyRole(Role.USER.name(), Role.ADMIN.name()) // 로그인한 인원만 로그아웃에 접근하도록.
                                 .requestMatchers("/logoutResult").permitAll()
+                                .requestMatchers("/bookPlus").permitAll()
                                 .requestMatchers("/members/**").permitAll()
                                 .requestMatchers("/mail/**").permitAll()
                                 .requestMatchers("/books/**").permitAll()
