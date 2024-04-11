@@ -122,4 +122,12 @@ public class MailService {
             throw new MailNotSendException("Mail이 발송되지 못했습니다");
         }
     }
+
+    @Transactional
+    public String sendMemberId(String email, String name) {
+        Member findMember = memberRepository.findByMemberEmailAndMemberName(email, name)
+                .orElseThrow(() -> new NoSuchMemberException("유효하지 않은 회원의 Email 입니다!!!"));
+        return findMember.getMemberId();
+    }
+
 }
