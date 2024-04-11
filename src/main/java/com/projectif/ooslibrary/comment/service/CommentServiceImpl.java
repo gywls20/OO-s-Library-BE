@@ -22,9 +22,9 @@ public class CommentServiceImpl implements  CommentService{
     }
     //코멘트 리스트로 조회(페이징 처리)
     @Override
-    public PageInfo<CommentVO> getComments(int pageIndex, int pageSize) {
+    public PageInfo<CommentVO> getComments(int pageIndex, int pageSize, Long book_pk, Long my_library_pk) {
         int totalCount = commentMapper.getCount();
-        List<CommentVO> commentVOList = commentMapper.getComments((pageIndex - 1) * pageSize, pageSize);
+        List<CommentVO> commentVOList = commentMapper.getComments((pageIndex - 1) * pageSize, pageSize, book_pk, my_library_pk);
         return new PageInfo<>(pageIndex, pageSize, totalCount, commentVOList);
     }
 
@@ -51,8 +51,6 @@ public class CommentServiceImpl implements  CommentService{
         commentMapper.deleteComment(comment_pk);
         return comment_pk;
     }
-    //
 
 }
-    //코멘드 등록
 

@@ -13,7 +13,7 @@ public interface CommentMapper {
 
     //댓글 리스트 조회 / return : 댓글 리스트
     //List<CommentVO> getComments();
-    List<CommentVO> getComments(int offset, int limit);
+    List<CommentVO> getComments(int offset, int limit, Long book_pk, Long my_library_pk);
 
     //댓글 수 카운팅 / return : 댓글 수
     int getCount();

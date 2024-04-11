@@ -31,7 +31,7 @@ public class CommentReportController {
             return  ResponseEntity.badRequest().body("false");
     }
     //신고 수정
-    @PutMapping("/posts/comments/report")
+    @PutMapping("/report")
     public ResponseEntity<String> updateReportComment(@RequestBody CommentReportRequestDTO commentReportRequestDTO){
         boolean result = commentReportService.updateReportComment(commentReportRequestDTO);
         if(result)
@@ -40,7 +40,7 @@ public class CommentReportController {
             return ResponseEntity.badRequest().body("false");
     }
     //신고 삭제(코멘트 + 멤버아이디)
-    @DeleteMapping("/posts/comments/report")
+    @DeleteMapping("/report")
     public ResponseEntity<String> deleteReportComment(@RequestBody Map<String, Long> ReportRequest){
         Long comment_pk = ReportRequest.get("comment_pk");
         Long member_pk = ReportRequest.get("member_pk");

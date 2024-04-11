@@ -16,7 +16,7 @@ public interface CommentReportMapper {
 
     void updateReportComment(CommentReportRequestDTO commentReportRequestDTO);
 
-    void deleteReportComment(Long commentPk, Long memberPk);
+    void deleteReportComment(Long comment_pk, Long member_pk);
 
-    void remove_total_report(Long commentPk);
+    void remove_total_report(Long comment_pk);
 }
