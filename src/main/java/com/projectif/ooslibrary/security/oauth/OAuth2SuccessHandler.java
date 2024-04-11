@@ -89,7 +89,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         }
         pk = findMember.getMemberPk();
 
-        String targetUrl = UriComponentsBuilder.fromUriString("/login_success")
+        String targetUrl = UriComponentsBuilder.fromUriString("/login/oauth2/success")
 //                .queryParam("token", "token")
                 .build().toUriString();
 

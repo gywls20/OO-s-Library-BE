@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.projectif.ooslibrary.mapper.CommentReportMapper">
+    <!-- 코멘트 또는 멤버 신고 리스트 -->
+    <select id="listReportComment" parameterType="com.projectif.ooslibrary.comment.dto.CommentReportRequestDTO" resultType="com.projectif.ooslibrary.comment.domain.CommentReportVO">
+        select * from comment_report where comment_pk=#{comment_pk} or member_pk=#{member_pk}
+    </select>
+
+    <!-- 신고 등록 -->
+    <insert id="insertReportComment" parameterType="com.projectif.ooslibrary.comment.dto.CommentReportRequestDTO">
+        insert into comment_report(report_category,
+                                   report_name,
+                                   report_content,
+                                   comment_pk,
+                                   member_pk)
+                            values(#{report_category},
+                                   #{report_name},
+                                   #{report_content},
+                                   #{comment_pk},
+                                   #{member_pk})
+    </insert>
+    <!-- 등록 시 total_report 증가 -->
+    <update id="add_total_report" parameterType="com.projectif.ooslibrary.comment.dto.CommentReportRequestDTO">
+        update comment
+        set
+            total_report = total_report + 1
+        where
+            post_id=#{comment_pk}
+    </update>
+
+    <!-- 신고 수정 -->
+    <update id="updateReportComment" parameterType="com.projectif.ooslibrary.comment.dto.CommentReportRequestDTO" >
+        update comment_report
+        set
+            report_category=#{report_category},
+            report_name=#{report_name},
+            report_content=#{report_content}
+        where
+            comment_pk=#{comment_pk}
+          and
+            member_pk=#{member_pk}
+    </update>
+
+    <!-- 신고 삭제 -->
+    <delete id="deleteReportComment" parameterType="map">
+        delete from comment_report
+        where
+            comment_pk=#{comment_pk}
+          and
+            member_pk=#{member_pk}
+    </delete>
+    <!-- 삭제 시 total_report 감소 -->
+    <update id="remove_total_report" parameterType="long">
+        update comment
+        set
+            total_report = total_report - 1
+        where
+            post_id=#{comment_pk}
+    </update>
+</mapper>

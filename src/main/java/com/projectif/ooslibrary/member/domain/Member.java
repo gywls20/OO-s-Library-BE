@@ -37,7 +37,7 @@ public class Member extends BaseEntity implements UserDetails {
     private Team team;
 
     // my_library_pk -> 1:1 단방향
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinColumn(name = "my_library_pk")
     private MyLibrary myLibrary;
 
@@ -45,7 +45,7 @@ public class Member extends BaseEntity implements UserDetails {
     private Integer memberGender;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities() {;
         Collection<GrantedAuthority> collection = new ArrayList<>();
         collection.add((GrantedAuthority) () -> role.name());
         return collection;
@@ -110,11 +110,18 @@ public class Member extends BaseEntity implements UserDetails {
     }
 
     // setter 대신 직관적으로 보이는 메서드들로 업데이트
-    
     public void oauth2ChangeFields(String name, String picture, Role role) {
         this.memberName = name;
         this.memberProfileImg = picture;
         this.role = role;
+    }
+
+    public void changePassword(String memberPassword) {
+        this.memberPassword = memberPassword;
+    }
+
+    public void addMyLibrary(MyLibrary myLibrary) {
+        this.myLibrary = myLibrary;
     }
 
     public void memberUpdate(MemberUpdateRequestDTO dto) {

@@ -17,7 +17,7 @@ public class BaseEntity {
 
     @CreatedDate
     @Column(updatable = false)
-    private LocalDateTime created_date;
+    private LocalDateTime createdDate;
 
     @Setter
     @Column(name = "is_deleted")
