@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.0.8:3000", "https://libraryif.vercel.app:3000"}, maxAge = 3600)
+//@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.0.8:3000", "https://libraryif.vercel.app:3000"}, maxAge = 3600)
 @Slf4j
 @RequiredArgsConstructor
 @Controller
