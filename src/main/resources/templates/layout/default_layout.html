@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>default_layout</title>
+<!--  만일 각 페이지 마다 설정할 js / css 파일이 있을 시, 생성해서 여기에 등록    -->
+<!--    <th:block layout:fragment="js"></th:block>-->
+<!--    <th:block layout:fragment="css"></th:block>-->
+    <div th:replace="~{layout/fragments/head::head}"></div>
+</head>
+<body>
+    <div th:replace="~{layout/fragments/nav::nav}"></div>
+
+    <div layout:fragment="content"></div>
+
+    <div th:replace="~{layout/fragments/footer::footer}"></div>
+</body>
+</html>

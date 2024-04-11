@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="nav">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+            <div class="container px-5">
+                <th:block th:if="${session.pk} != null">
+                    <a class="navbar-brand" href="/"><span class="fw-bolder text-primary" th:text="${session.name} + '의 서재'"></span></a>
+                </th:block>
+                <th:block th:if="${session.pk} == null">
+                    <a class="navbar-brand" href="/"><span class="fw-bolder text-primary">OO의 서재</span></a>
+                </th:block>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/myLibrary/{pk}(pk=${session.myLibraryPk})}">내 서재</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/team}">나의 팀</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/boards}">문의</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</html>

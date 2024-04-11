@@ -1,5 +1,6 @@
 package com.projectif.ooslibrary.my_library.domain;
 
+import com.projectif.ooslibrary.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString(exclude = {"member"})
 public class MyLibrary {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +19,8 @@ public class MyLibrary {
     private Long myLibraryPk;
     @Column(length = 500)
     private String myLibraryName;
+    @OneToOne(mappedBy = "myLibrary")
+    private Member member;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "myLibrary")
     private List<BookPlus> bookPlusList = new ArrayList<>();
 

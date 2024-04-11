@@ -1,6 +1,7 @@
 package com.projectif.ooslibrary.board.controller;
 
 import com.projectif.ooslibrary.board.domain.Board;
+import com.projectif.ooslibrary.board.dto.BoardResponseDTO;
 import com.projectif.ooslibrary.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,10 +9,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
-@RestController
+@Controller
 @RequestMapping("/boards")
 @RequiredArgsConstructor
 public class BoardController {
@@ -24,9 +29,29 @@ public class BoardController {
     }
 
     // 예) /boards?page=0&size=3&sort=id,desc&sort=boardTitle,desc
+    // @PageableDefault(size = 10, page = 0, sort = "boardPk", direction = Sort.Direction.DESC) Pageable pageable, Model model
     @GetMapping("")
-    public Page<Board> getBoardList(@PageableDefault(size = 10, page = 0, sort = "boardPk", direction = Sort.Direction.DESC) Pageable pageable) {
-        return boardService.getBoardList(pageable);
+    public String getBoardList(Model model) {
+        List<Board> boardList = boardService.getBoardList();
+        List<BoardResponseDTO> list = boardList.stream().map(board ->
+            BoardResponseDTO.builder()
+                    .boardPk(board.getBoardPk())
+                    .boardTitle(board.getBoardTitle())
+                    .boardContent(board.getBoardContent())
+                    .boardCategory(board.getBoardCategory())
+                    .memberName(board.getMember().getMemberName())
+                    .createdDate(board.getCreatedDate())
+                    .modifiedDate(board.getModifiedDate())
+                    .build()
+        ).toList();
+
+        for (BoardResponseDTO board : list) {
+            log.info("board : {}", board.getBoardPk());
+        }
+
+        model.addAttribute("boardList", list);
+
+        return "boards/boardList";
     }
 
     @PostMapping("")

@@ -1,5 +1,6 @@
 package com.projectif.ooslibrary.my_library.domain;
 
+import com.projectif.ooslibrary.book.domain.Book;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,8 +19,9 @@ public class BookPlus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookPlusPk;
 
-    @Column(name = "book_pk")
-    private Long bookPk;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_pk")
+    private Book book;
 
 //    @Column(name = "my_library_pk")
 //    private Long myLibraryPk;

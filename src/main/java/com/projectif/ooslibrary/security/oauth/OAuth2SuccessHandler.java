@@ -5,6 +5,8 @@ import com.projectif.ooslibrary.member.domain.Member;
 import com.projectif.ooslibrary.member.domain.Role;
 import com.projectif.ooslibrary.member.exception.NoSuchMemberException;
 import com.projectif.ooslibrary.member.repository.MemberRepository;
+import com.projectif.ooslibrary.my_library.domain.MyLibrary;
+import com.projectif.ooslibrary.my_library.repository.MyLibraryRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +29,7 @@ import java.util.Map;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final MemberRepository memberRepository;
+    private final MyLibraryRepository myLibraryRepository;
 
     @Transactional
     @Override
@@ -80,6 +83,15 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     .buildOauth2();
             Member savedMember = memberRepository.save(member);
             findMember = savedMember;
+            // 영속화한 member에 내서재 영속화 후, member에 참조
+            MyLibrary myLibrary = MyLibrary.builder()
+                    .myLibraryName(findMember.getMemberName() + "의 서재")
+                    .build();
+            MyLibrary savedMyLibrary = myLibraryRepository.save(myLibrary);
+
+            findMember.addMyLibrary(savedMyLibrary);
+
+            savedMember.addMyLibrary(savedMyLibrary);
         } else if (!findMember.getMemberName().equals(attributes.get("name")) || !findMember.getMemberProfileImg().equals(attributes.get("picture"))
                 || !findMember.getRole().name().equals(auth)) {
             // 이 후 로그인이라도 혹시 naver 계정의 정보가 바뀔 수 있으니 바꾸는 로직을 추가할 지 고민해보기.
@@ -104,6 +116,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         session.setAttribute("pk", pk);
         session.setAttribute("name", attributes.get("name"));
         session.setAttribute("profile", attributes.get("picture"));
+        session.setAttribute("myLibraryPk", findMember.getMyLibrary().getMyLibraryPk());
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }

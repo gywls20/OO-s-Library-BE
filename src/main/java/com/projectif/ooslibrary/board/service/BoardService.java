@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @Transactional(readOnly = true)
@@ -24,9 +26,10 @@ public class BoardService {
     }
 
     // 여러건 조회 -> 간단 페이징
-    public Page<Board> getBoardList(Pageable pageable) {
+    public List<Board> getBoardList() {
 //        return boardRepository.findAllByIsDeletedIs(0, pageable);
-        return boardRepository.boardPage(pageable);
+//        return boardRepository.boardPage(pageable);
+        return boardRepository.findAll();
     }
 
     // 원글 등록

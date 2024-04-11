@@ -5,10 +5,11 @@ import com.projectif.ooslibrary.member.dto.EmailVerifyRequestDTO;
 import com.projectif.ooslibrary.member.service.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@RestController
+@Controller
 @RequestMapping("/mail")
 @RequiredArgsConstructor
 public class MailController {
@@ -17,6 +18,7 @@ public class MailController {
 
     // 이메일 인증 발송
     @PostMapping("")
+    @ResponseBody
     public String sendEmail(@RequestBody EmailVerifyRequestDTO dto) {
 
         String verifyCode = mailService.sendCertificationMail(dto.getEmail(), dto.getName());
@@ -27,6 +29,7 @@ public class MailController {
 
     // 이메일 인증 버튼 -> 이메일 인증
     @PostMapping("/verify")
+    @ResponseBody
     public String verifyEmail(@RequestBody EmaiCodelVerifyDTO code) {
 
         String verifiedEmail = mailService.verifyEmailByCode(code.getCode());
@@ -40,6 +43,7 @@ public class MailController {
      * @return 새로운 패스워드 발송
      */
     @PostMapping("/findPassword")
+    @ResponseBody
     public String findPassword(@RequestBody EmailVerifyRequestDTO dto) {
         String newPassword = mailService.sendNewPasswordMail(dto.getEmail(), dto.getName());
         log.info("새 비밀번호 = {}", newPassword);
@@ -52,6 +56,7 @@ public class MailController {
      * @return memberId
      */
     @PostMapping("/findId")
+    @ResponseBody
     public String findMemberId(@RequestBody EmailVerifyRequestDTO dto) {
         String memberId = mailService.sendMemberId(dto.getEmail(), dto.getName());
         log.info("아이디 = {}", memberId);

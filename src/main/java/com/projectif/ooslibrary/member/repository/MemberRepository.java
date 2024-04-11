@@ -1,6 +1,7 @@
 package com.projectif.ooslibrary.member.repository;
 
 import com.projectif.ooslibrary.member.domain.Member;
+import com.projectif.ooslibrary.my_library.domain.MyLibrary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,4 +31,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
      * @return
      */
     Optional<Member> findByMemberEmailAndMemberName(String memberEmail, String memberName);
+
 }

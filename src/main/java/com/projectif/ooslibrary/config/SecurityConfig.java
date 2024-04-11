@@ -44,14 +44,17 @@ public class SecurityConfig {
 
     private final AuthenticationEntryPoint authenticationEntryPoint =
             (request, response, authException) -> {
-                ErrorResponse fail = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Spring security 인증 실패!!!");
+//                ErrorResponse fail = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Spring security 인증 실패!!!");
+
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                String json = new ObjectMapper().writeValueAsString(fail);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.setCharacterEncoding("UTF-8");
-                PrintWriter writer = response.getWriter();
-                writer.write(json);
-                writer.flush();
+                response.sendRedirect("/login");
+
+//                String json = new ObjectMapper().writeValueAsString(fail);
+//                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//                response.setCharacterEncoding("UTF-8");
+//                PrintWriter writer = response.getWriter();
+//                writer.write(json);
+//                writer.flush();
             };
 
     private final AccessDeniedHandler accessDeniedHandler =
@@ -104,7 +107,7 @@ hu       * AccessDeniedHandler : 권한(인가) 예외처리, 403(Forbidden) 상
                     oauth2.failureUrl("/login/oauth2/fail");
                 })
                 .logout(logoutConfigurer -> {
-                    logoutConfigurer.logoutSuccessUrl("/logoutResult");
+                    logoutConfigurer.logoutSuccessUrl("/");
                     logoutConfigurer.invalidateHttpSession(true); // 세션 무효화 설정
                     logoutConfigurer.deleteCookies("JSESSIONID");
                 })
@@ -115,11 +118,12 @@ hu       * AccessDeniedHandler : 권한(인가) 예외처리, 403(Forbidden) 상
                                         "/login/oauth2/**", "/login/oauth2/code/**").permitAll() // login 관련 기능
                                 .requestMatchers(HttpMethod.POST, "/members").permitAll() // 회원 등록
                                 .requestMatchers("/css/**", "/js/**", "/assets/**").permitAll()
+                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .requestMatchers("/resume", "/contact", "/projects").permitAll()
 //                                .requestMatchers("/members/**").hasRole(Role.USER.name())
                                 .requestMatchers("/logout").hasAnyRole(Role.USER.name(), Role.ADMIN.name()) // 로그인한 인원만 로그아웃에 접근하도록.
-                                .requestMatchers("/logoutResult").permitAll()
                                 .requestMatchers("/bookPlus").permitAll()
+                                .requestMatchers("/myLibrary/**").permitAll()
                                 .requestMatchers("/members/**").permitAll()
                                 .requestMatchers("/mail/**").permitAll()
                                 .requestMatchers("/books/**").permitAll()
