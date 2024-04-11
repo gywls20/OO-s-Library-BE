@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>나의 팀 서재</title>
+</head>
+<body>
+    <div layout:fragment="content">
+
+        <h1>여기는 팀 서재</h1>
+
+        <div th:each="pk, stat : ${myLibraryPkList}">
+            <p th:text="${pk}"></p>
+            <p th:text="${stat.index}">인덱스</p>
+        </div>
+
+    </div>
+</body>
+</html>

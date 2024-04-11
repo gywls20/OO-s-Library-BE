@@ -79,9 +79,13 @@ public class MemberController {
 
     // 회원 가입
     @PostMapping("")
-    @ResponseBody
-    public boolean memberJoin(@RequestBody @Validated MemberJoinRequestDTO member) {
-        return memberService.memberJoin(member);
+    public String memberJoin(@RequestBody @Validated MemberJoinRequestDTO member) {
+        if (memberService.memberJoin(member)) {
+            return "redirect:/login";
+        } else {
+            return "redirect:/members/join";
+        }
+
     }
 
     // 회원 수정
