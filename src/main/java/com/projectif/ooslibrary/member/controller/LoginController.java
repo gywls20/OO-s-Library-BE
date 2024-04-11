@@ -81,7 +81,7 @@ public class LoginController {
         return errorMessage;
     }
 
-    @GetMapping("/logout/result")
+    @GetMapping("/logoutResult")
     @ResponseBody
     public String logoutResult(HttpServletResponse response) {
         log.info("logout success url");
