@@ -7,6 +7,9 @@ import com.projectif.ooslibrary.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 //@Slf4j
 @RestController
 @RequestMapping("/comment")
@@ -25,10 +28,14 @@ public class CommentController {
     public List<CommentVO> getComments() {
         return commentService.getComments();
     }*/
+    //코멘트 조회(+ 페이징)
     @GetMapping("")
     public PageInfo<CommentVO> getComments(@RequestParam(defaultValue = "1") int pageIndex,
-                                           @RequestParam(defaultValue = "10") int pageSize) {
-        return commentService.getComments(pageIndex, pageSize);
+                                           @RequestParam(defaultValue = "10") int pageSize,
+                                           @RequestBody Map<String, Long> comment) {
+        Long book_pk = comment.get("book_pk");
+        Long my_library_pk = comment.get("my_library_pk");
+        return commentService.getComments(pageIndex, pageSize, book_pk, my_library_pk);
     }
     //멤버 아이디로 검색
     @GetMapping("/{member_pk}")

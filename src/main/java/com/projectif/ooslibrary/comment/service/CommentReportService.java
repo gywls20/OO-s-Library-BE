@@ -12,5 +12,5 @@ public interface CommentReportService {
 
     boolean updateReportComment(CommentReportRequestDTO commentReportRequestDTO);
 
-    boolean deleteReportComment(Long commentPk, Long memberPk);
+    boolean deleteReportComment(Long comment_pk, Long member_pk);
 }

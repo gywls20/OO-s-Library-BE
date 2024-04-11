@@ -26,7 +26,7 @@
         set
             total_report = total_report + 1
         where
-            post_id=#{comment_pk}
+            comment_pk=#{comment_pk}
     </update>
 
     <!-- 신고 수정 -->
@@ -56,6 +56,6 @@
         set
             total_report = total_report - 1
         where
-            post_id=#{comment_pk}
+            comment_pk=#{comment_pk}
     </update>
 </mapper>

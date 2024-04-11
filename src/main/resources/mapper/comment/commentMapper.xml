@@ -53,13 +53,17 @@
         LIMIT #{limitStart}, #{recordSize}
     </select>-->
 
-    <select id="getComments" resultType="com.projectif.ooslibrary.comment.domain.CommentVO">
+    <select id="getComments" resultType="com.projectif.ooslibrary.comment.domain.CommentVO" parameterType="map">
         SELECT
             <include refid="commentList" />
         FROM
             comment
         WHERE
             is_deleted = 0
+        and
+            book_pk = #{book_pk}
+        and
+            my_library_pk=#{my_library_pk}
         LIMIT #{limit} OFFSET #{offset}
     </select>
     <!-- -->
