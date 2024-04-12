@@ -6,6 +6,7 @@ import com.projectif.ooslibrary.member.service.MailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -16,15 +17,26 @@ public class MailController {
 
     private final MailService mailService;
 
+    @GetMapping("/findId")
+    public String findId(Model model){
+
+        return "mail/findId";
+    }
+
+    @GetMapping("/findPassword")
+    public String findPassword(Model model){
+
+        return "mail/findPassword";
+    }
+
     // 이메일 인증 발송
     @PostMapping("")
-    @ResponseBody
-    public String sendEmail(@RequestBody EmailVerifyRequestDTO dto) {
+    public boolean sendEmail(@RequestBody EmailVerifyRequestDTO dto) {
 
         String verifyCode = mailService.sendCertificationMail(dto.getEmail(), dto.getName());
         log.info("인증 코드 = {}", verifyCode);
 
-        return "인증코드 발송 완료!!";
+        return true;
     }
 
     // 이메일 인증 버튼 -> 이메일 인증
@@ -43,11 +55,10 @@ public class MailController {
      * @return 새로운 패스워드 발송
      */
     @PostMapping("/findPassword")
-    @ResponseBody
     public String findPassword(@RequestBody EmailVerifyRequestDTO dto) {
         String newPassword = mailService.sendNewPasswordMail(dto.getEmail(), dto.getName());
         log.info("새 비밀번호 = {}", newPassword);
-        return newPassword;
+        return "redirect:/login";
     }
 
     /**
@@ -56,10 +67,10 @@ public class MailController {
      * @return memberId
      */
     @PostMapping("/findId")
-    @ResponseBody
-    public String findMemberId(@RequestBody EmailVerifyRequestDTO dto) {
+    public String findMemberId(@RequestBody EmailVerifyRequestDTO dto, Model model) {
         String memberId = mailService.sendMemberId(dto.getEmail(), dto.getName());
         log.info("아이디 = {}", memberId);
-        return memberId;
+        model.addAttribute("memberId", memberId);
+        return "members/findId";
     }
 }

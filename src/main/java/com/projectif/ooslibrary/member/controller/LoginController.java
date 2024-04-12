@@ -30,7 +30,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginPage() {
-        return "test/login";
+        return "login/login";
     }
 
     // 로그인 성공
@@ -53,6 +53,7 @@ public class LoginController {
             session.setAttribute("myLibraryPk", member.getMyLibraryPk());
             log.info("member.getMyLibraryPk() = {}", member.getMyLibraryPk());
         } catch (Exception e) {
+            log.info("error ", e);
             throw new OAuth2LoginNoSessionValueException("해당 회원은 없거나 탈퇴 처리된 회원입니다");
         }
 

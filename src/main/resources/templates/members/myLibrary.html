@@ -13,9 +13,14 @@
         <h1>여기는 내서재임</h1>
 
         <div>
-            <div th:each="book : ${bookList}">
+            <div th:each="book, bookStat : ${bookList}">
                 <div>
                     <hr>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <img th:src="${book.coverImagePath}" alt="북커버">
+                    </button>
+                    <input type="hidden" th:text="${book.bookPk}">
                     <p th:text="${book.bookTitle}" readonly/>
                     <p th:text="${book.bookAuthor}" readonly/>
                     <p th:text="${book.bookCategory}" readonly/>
@@ -23,33 +28,31 @@
                     <p th:text="${book.bookPrice}" readonly/>
                     <p th:text="${book.bookPublisher}" readonly/>
                     <p th:text="${book.bookPublishDate}" readonly/>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Launch demo modal
-                    </button>
                     <hr>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h1>여기에 대충 댓글 넣고 쓰기 되게 하기</h1>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h1>여기에 대충 댓글 넣고 쓰기 되게 하기</h1>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         <script type="text/javascript">
             // const myModal = document.getElementById('myModal')
