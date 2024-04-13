@@ -4,31 +4,88 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>Custom Login</title>
+    <style>
+        /*body {*/
+        /*    font-family: Arial, sans-serif;*/
+        /*    background-color: #f4f4f4;*/
+        /*    display: flex;*/
+        /*    justify-content: center;*/
+        /*    align-items: center;*/
+        /*    height: 100vh;*/
+        /*    margin: 0;*/
+        /*}*/
+        #zzz {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60vh;
+        }
+        form {
+            display: inline-block;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-naver {
+            background-color: #2db400;
+            color: #fff;
+        }
+        .btn-naver:hover {
+            background-color: #1f8101;
+        }
+    </style>
 </head>
 <body>
     <div layout:fragment="content">
         <main class="flex-shrink-0">
             <header class="py-5">
-                <div class="container px-5 pb-5">
+                <div class="container px-5 pb-5" id="zzz">
                     <form th:action="@{/login}" method="post">
-                        <div th:if="${param.error}">
-                            <p style="color: red;">Invalid username and/or password.</p>
+                        <div th:if="${errorMessage}">
+                            <p style="color: red;">아이디 혹은 비밀번호를 잘못 입력하셨습니다.</p>
                         </div>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <label for="username">USERNAME</label>
-                        <input type="text" name="username" id="username" placeholder="Enter userId" required autofocus>
-                        <label for="password">PASSWORD</label>
-                        <input type="password" name="password" id="password" placeholder="Enter Password" required autofocus>
+                        <label for="username">아이디</label>
+                        <input type="text" name="username" id="username" placeholder="아이디 입력" required autofocus>
+                        <label for="password">비밀번호</label>
+                        <input type="password" name="password" id="password" placeholder="비밀번호 입력" required autofocus>
                         <br>
                         <br>
-                        <button type="submit">Submit</button>
+                        <button class="btn-primary" type="submit">로그인</button>
+                        <br>
+                        <br>
+                        <button class="btn-naver" type="button" th:onclick="|location.href='@{/oauth2/authorization/naver}'|">네이버 로그인</button>
+                        <br>
+                        <br>
+                        <a class="btn btn-primary" th:href="@{/mail/findId}">아이디 찾기</a>
+                        <a class="btn btn-primary" th:href="@{/mail/findPassword}">비밀번호 찾기</a>
                     </form>
-                    <br>
-                    <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" th:href="@{/oauth2/authorization/naver}">네이버 로그인</a>
-                    <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" th:href="@{/mail/findId}">아이디 찾기</a>
-                    <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" th:href="@{/mail/findPassword}">비밀번호 찾기</a>
                 </div>
             </header>
         </main>
