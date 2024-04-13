@@ -29,6 +29,7 @@ public class My_libraryController {
         return "members/myLibrary";
     }
 
+    //같은 사람 같은책 중복저장 못하게 예외처리하기
     @PutMapping("/bookPlus")
     @ResponseBody
     public ResponseEntity<String> saveBookToLibrary(@RequestParam Long bookPk,
