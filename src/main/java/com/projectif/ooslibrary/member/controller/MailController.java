@@ -31,6 +31,7 @@ public class MailController {
 
     // 이메일 인증 발송
     @PostMapping("")
+    @ResponseBody
     public boolean sendEmail(@RequestBody EmailVerifyRequestDTO dto) {
 
         String verifyCode = mailService.sendCertificationMail(dto.getEmail(), dto.getName());
