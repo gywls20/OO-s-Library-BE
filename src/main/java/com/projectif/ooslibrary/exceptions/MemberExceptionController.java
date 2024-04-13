@@ -1,5 +1,6 @@
 package com.projectif.ooslibrary.exceptions;
 
+import com.projectif.ooslibrary.member.dto.MemberJoinRequestDTO;
 import com.projectif.ooslibrary.member.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -10,14 +11,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
 @Slf4j
-@RestControllerAdvice
+@ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE) // 예외 핸들러 어드바이스 중 1순위 -> 어드바이스가 여러 개일 경우, order 설정해야 함.
 public class MemberExceptionController {
     /**
@@ -33,6 +34,7 @@ public class MemberExceptionController {
      * @return
      */
     @ExceptionHandler({RuntimeException.class})
+    @ResponseBody
     public ResponseEntity<String> runTimeException(RuntimeException ex) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "RuntimeException");
@@ -43,6 +45,7 @@ public class MemberExceptionController {
     }
 
     @ExceptionHandler({NoSuchMemberException.class})
+    @ResponseBody
     public ResponseEntity<String> noSuchMemberException(NoSuchMemberException ex) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "NoSuchMemberException");
@@ -53,6 +56,7 @@ public class MemberExceptionController {
     }
 
     @ExceptionHandler({OAuth2LoginNoSessionValueException.class})
+    @ResponseBody
     public ResponseEntity<String> oAuth2LoginNoSessionValueException(OAuth2LoginNoSessionValueException ex) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "OAuth2LoginNoSessionValueException");
@@ -63,6 +67,7 @@ public class MemberExceptionController {
     }
 
     @ExceptionHandler({NoSuchVerifyCodeException.class})
+    @ResponseBody
     public ResponseEntity<String> noSuchVerifyCodeException(NoSuchVerifyCodeException ex) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "NoSuchVerifyCodeException");
@@ -73,6 +78,7 @@ public class MemberExceptionController {
     }
 
     @ExceptionHandler({MailNotVerifiedException.class})
+    @ResponseBody
     public ResponseEntity<String> mailNotVerifiedException(MailNotVerifiedException ex) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "MailNotVerifiedException");
@@ -83,6 +89,7 @@ public class MemberExceptionController {
     }
 
     @ExceptionHandler({MailNotSendException.class})
+    @ResponseBody
     public ResponseEntity<String> mailNotSendException(MailNotSendException ex) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "MailNotSendException");
@@ -93,6 +100,7 @@ public class MemberExceptionController {
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
+    @ResponseBody
     public ResponseEntity<String> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "MethodArgumentNotValidException");
@@ -103,6 +111,7 @@ public class MemberExceptionController {
     }
 
     @ExceptionHandler({HttpMessageNotReadableException.class})
+    @ResponseBody
     public ResponseEntity<String> httpMessageNotReadableException(HttpMessageNotReadableException ex) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "HttpMessageNotReadableException");
@@ -118,16 +127,21 @@ public class MemberExceptionController {
      * @return
      */
     @ExceptionHandler({DataIntegrityViolationException.class})
-    public ResponseEntity<String> dataIntegrityViolationException(DataIntegrityViolationException ex) {
+    public String dataIntegrityViolationException(DataIntegrityViolationException ex, Model model) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "DataIntegrityViolationException");
 
         log.info("DataIntegrityViolationException 예외 발생 [MemberControllerAdvice] : {}", ex.toString());
 
-        return new ResponseEntity<>("ID나 Email은 중복될 수 없습니다", headers, HttpStatus.BAD_REQUEST);
+        model.addAttribute("duplicateError", "ID나 Email은 중복될 수 없습니다");
+        model.addAttribute("member", new MemberJoinRequestDTO());
+
+//        return new ResponseEntity<>("ID나 Email은 중복될 수 없습니다", headers, HttpStatus.BAD_REQUEST);
+        return "members/join";
     }
 
     @ExceptionHandler({SessionMemberNotMatchException.class})
+    @ResponseBody
     public ResponseEntity<String> sessionMemberNotMatchException(SessionMemberNotMatchException ex) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Error", "SessionMemberNotMatchException");

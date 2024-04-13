@@ -1,6 +1,5 @@
 package com.projectif.ooslibrary.member.controller;
 
-import ch.qos.logback.core.model.Model;
 import com.projectif.ooslibrary.member.dto.MemberCheckPasswordRequestDTO;
 import com.projectif.ooslibrary.member.dto.MemberJoinRequestDTO;
 import com.projectif.ooslibrary.member.dto.MemberResponseDTO;
@@ -14,6 +13,8 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,12 +75,18 @@ public class MemberController {
     // 회원 가입 페이지 이동
     @GetMapping("/join")
     public String memberJoinPage(Model model) {
+        model.addAttribute("member", new MemberJoinRequestDTO());
         return "members/join";
     }
 
     // 회원 가입
     @PostMapping("")
-    public String memberJoin(@RequestBody @Validated MemberJoinRequestDTO member) {
+    public String memberJoin(@ModelAttribute("member") @Validated MemberJoinRequestDTO member, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "members/join";
+        }
+
         if (memberService.memberJoin(member)) {
             return "redirect:/login";
         } else {

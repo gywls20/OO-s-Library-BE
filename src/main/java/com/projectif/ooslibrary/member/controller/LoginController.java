@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -62,13 +63,14 @@ public class LoginController {
 
     // 로그인 실패
     @PostMapping("/login_failure")
-    @ResponseBody
-    public String loginFailure(HttpServletRequest request) {
+    public String loginFailure(HttpServletRequest request, Model model) {
 
         String errorMessage = (String) request.getAttribute("errorMessage");
         log.info("로그인 실패!! 에러 정보 = {}", errorMessage);
 
-        return errorMessage;
+        model.addAttribute("errorMessage", errorMessage);
+
+        return "login/login";
     }
 
 //    @GetMapping("/logoutResult")
