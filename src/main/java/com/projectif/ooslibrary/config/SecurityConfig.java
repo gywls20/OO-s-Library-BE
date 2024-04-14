@@ -133,6 +133,7 @@ hu       * AccessDeniedHandler : 권한(인가) 예외처리, 403(Forbidden) 상
                                 .requestMatchers("/comment/**").permitAll()
                                 .requestMatchers("/admin/**", "/api/v1/**").hasRole(Role.ADMIN.name())
                                 .requestMatchers("/readData/**").permitAll()
+                                .requestMatchers("/library/**").permitAll()
                                 .anyRequest().authenticated() 
                 )
                 // 세션 관리 기능
