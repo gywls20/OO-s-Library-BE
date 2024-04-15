@@ -25,6 +25,8 @@
             <div class="col-lg-11 col-xl-9 col-xxl-8" id="libraryList">
 
                 <button class="btn btn-primary" type="button" onclick="addTeamMember()">팀원 추가</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-primary" type="button" onclick="deleteTeamMember()">팀원 삭제</button>
 
                 <div class="col-lg-11 col-xl-9 col-xxl-8">
                     <div th:each="member, stat : ${members}">
@@ -33,12 +35,14 @@
                             <div class="card-body p-0">
                                 <div class="d-flex align-items-center">
                                     <div class="p-5" id="info">
-<!--                                        <input type="hidden" th:text="${member.myLibraryPk}" id="pk">-->
-<!--                                        <p th:text="${stat.index}"></p>-->
                                         <h2 class="fw-bolder" th:text="${member.memberName} + '의 서재'">Project Name 1</h2>
                                     </div>
-                                    <img class="img-fluid" src="https://dummyimage.com/300x400/343a40/6c757d" alt="..." />
-<!--                                    <img class="img-fluid" th:src="${member.memberProfileImg}" alt="default" />-->
+                                    <th:block th:if="${member.memberProfileImg} == null">
+                                        <img class="img-fluid" src="https://dummyimage.com/300x400/343a40/6c757d" alt="..." />
+                                    </th:block>
+                                    <th:block th:if="${member.memberProfileImg} != null">
+                                        <img class="img-fluid" th:src="${member.memberProfileImg}" alt="default" />
+                                    </th:block>
                                 </div>
                             </div>
                         </div>
@@ -64,13 +68,52 @@
                     },
                     body: JSON.stringify(data)
                 })
-                    .then(res => res.json())
+                    .then(res => {
+                        if (!res.ok) {
+                            alert('이미 팀에 합류했거나 올바르지 않은 회원 아이디입니다')
+                            throw new Error('팀원 추가 실패 에러');
+                        }
+                        return res.json();
+                    })
                     .then(result => {
                         if (result === true) {
                             alert("팀원 추가 완료");
                             location.reload();
                         } else {
                             alert("팀원 추가 실패");
+                        }
+                    });
+            }
+
+            function deleteTeamMember() {
+                const teamPk = [[${teamPk}]];
+
+                let memberId = prompt("삭제할 팀원 아이디를 적어주세요");
+
+                let data = {
+                    memberId : memberId
+                };
+
+                fetch('/team/deleteMember/'+teamPk, {
+                    method : 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(res => {
+                        if (!res.ok) {
+                            alert('팀에 없거나 올바르지 않은 회원 아이디입니다')
+                            throw new Error('팀원 삭제 실패 에러');
+                        }
+                        return res.json();
+                    })
+                    .then(result => {
+                        if (result === true) {
+                            alert("팀원 삭제 완료");
+                            location.reload();
+                        } else {
+                            alert("팀원 삭제 실패");
                         }
                     });
             }

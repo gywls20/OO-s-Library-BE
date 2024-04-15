@@ -44,7 +44,23 @@ public class TeamService {
     public void addTeamMember(Long teamPk, String memberId) {
         Team team = getTeamByTeamPk(teamPk);
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(() -> new NoSuchMemberException("존재하지 않는 회원입니다"));
+        if (member.getTeam() != null) {
+            throw new RuntimeException("이미 팀에 합류한 인원입니다");
+        }
         team.addMember(member);
         member.addTeam(team);
+    }
+
+    // 팀원 삭제 로직
+    @Transactional
+    public void deleteTeamMember(Long teamPk, String memberId) {
+        Team team = getTeamByTeamPk(teamPk);
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow(() -> new NoSuchMemberException("존재하지 않는 회원입니다"));
+        if (member.getTeam() == null) {
+            throw new RuntimeException("이미 팀에 합류하지 않은 인원입니다");
+        }
+        // 연관관계 끊기
+        team.deleteMember(member);
+        member.deleteTeam();
     }
 }

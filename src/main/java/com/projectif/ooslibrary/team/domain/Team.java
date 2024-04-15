@@ -30,4 +30,8 @@ public class Team extends BaseEntity {
     public void addMember(Member member) {
         members.add(member);
     }
+
+    public void deleteMember(Member member) {
+        members.remove(member);
+    }
 }

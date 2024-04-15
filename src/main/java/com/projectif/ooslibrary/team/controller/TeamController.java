@@ -79,4 +79,16 @@ public class TeamController {
 
         return true;
     }
+
+    // 팀원 삭제 로직
+    @PostMapping("/deleteMember/{teamPk}")
+    @ResponseBody
+    public boolean deleteTeamMember(Model model,
+                                 @RequestBody Map<String, String> memberIdMap,
+                                 @PathVariable("teamPk") Long teamPk) {
+        String memberId = memberIdMap.get("memberId");
+        teamService.deleteTeamMember(teamPk, memberId);
+
+        return true;
+    }
 }
