@@ -26,4 +26,8 @@ public class Team extends BaseEntity {
     public Team(String teamName) {
         this.teamName = teamName;
     }
+
+    public void addMember(Member member) {
+        members.add(member);
+    }
 }
