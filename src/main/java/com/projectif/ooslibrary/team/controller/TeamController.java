@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -45,6 +46,7 @@ public class TeamController {
             ).toList();
 
             model.addAttribute("members", members);
+            model.addAttribute("teamPk", team.getTeamPk());
 
             return "team/team";
         }
@@ -64,5 +66,29 @@ public class TeamController {
         teamService.addTeam(teamName, memberPk);
 
         return "redirect:/";
+    }
+
+    // 팀원 추가 로직
+    @PostMapping("/addMember/{teamPk}")
+    @ResponseBody
+    public boolean addTeamMember(Model model,
+                                @RequestBody Map<String, String> memberIdMap,
+                                @PathVariable("teamPk") Long teamPk) {
+        String memberId = memberIdMap.get("memberId");
+        teamService.addTeamMember(teamPk, memberId);
+
+        return true;
+    }
+
+    // 팀원 삭제 로직
+    @PostMapping("/deleteMember/{teamPk}")
+    @ResponseBody
+    public boolean deleteTeamMember(Model model,
+                                 @RequestBody Map<String, String> memberIdMap,
+                                 @PathVariable("teamPk") Long teamPk) {
+        String memberId = memberIdMap.get("memberId");
+        teamService.deleteTeamMember(teamPk, memberId);
+
+        return true;
     }
 }

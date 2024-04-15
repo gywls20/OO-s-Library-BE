@@ -26,6 +26,10 @@ public class TeamService {
         return member.getTeam();
     }
 
+    public Team getTeamByTeamPk(Long teamPk) {
+        return teamRepository.findById(teamPk).orElseThrow(() -> new RuntimeException("팀 서재가 존재하지 않습니다"));
+    }
+
     @Transactional
     public void addTeam(String teamName, Long memberPk) {
         Member member = memberRepository.findById(memberPk)
@@ -33,5 +37,30 @@ public class TeamService {
         Team team = new Team(teamName);
         member.addTeam(team);
         teamRepository.save(team);
+    }
+
+    // 팀원 추가 로직
+    @Transactional
+    public void addTeamMember(Long teamPk, String memberId) {
+        Team team = getTeamByTeamPk(teamPk);
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow(() -> new NoSuchMemberException("존재하지 않는 회원입니다"));
+        if (member.getTeam() != null) {
+            throw new RuntimeException("이미 팀에 합류한 인원입니다");
+        }
+        team.addMember(member);
+        member.addTeam(team);
+    }
+
+    // 팀원 삭제 로직
+    @Transactional
+    public void deleteTeamMember(Long teamPk, String memberId) {
+        Team team = getTeamByTeamPk(teamPk);
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow(() -> new NoSuchMemberException("존재하지 않는 회원입니다"));
+        if (member.getTeam() == null) {
+            throw new RuntimeException("이미 팀에 합류하지 않은 인원입니다");
+        }
+        // 연관관계 끊기
+        team.deleteMember(member);
+        member.deleteTeam();
     }
 }
