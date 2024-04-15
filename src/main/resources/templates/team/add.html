@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>팀 추가</title>
+    <style>
+        form {
+            max-width: 400px;
+            margin: 6% auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="content">
+
+        <form th:action="@{/team/add}" method="post">
+            <label for="teamName">팀 서재 이름</label>
+            <input type="text" id="teamName" name="teamName" required>
+<!--            <p th:if="${#fields.hasErrors('teamName')}" th:errors="*{teamName}" class="fieldErrors"></p>-->
+            <br>
+            <button class="btn btn-primary" type="submit">팀 등록</button>
+        </form>
+
+    </div>
+</body>
+</html>

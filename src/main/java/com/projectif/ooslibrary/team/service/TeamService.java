@@ -25,4 +25,13 @@ public class TeamService {
 
         return member.getTeam();
     }
+
+    @Transactional
+    public void addTeam(String teamName, Long memberPk) {
+        Member member = memberRepository.findById(memberPk)
+                .orElseThrow(() -> new NoSuchMemberException("회원이 존재하지 않습니다"));
+        Team team = new Team(teamName);
+        member.addTeam(team);
+        teamRepository.save(team);
+    }
 }
