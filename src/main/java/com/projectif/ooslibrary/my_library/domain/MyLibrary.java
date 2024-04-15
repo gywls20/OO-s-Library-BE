@@ -1,6 +1,6 @@
 package com.projectif.ooslibrary.my_library.domain;
 
-import com.projectif.ooslibrary.book_calendar.domain.Book_calendar;
+import com.projectif.ooslibrary.book_calendar.domain.BookCalendar;
 import com.projectif.ooslibrary.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,10 +22,11 @@ public class MyLibrary {
     private String myLibraryName;
     @OneToOne(mappedBy = "myLibrary")
     private Member member;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "myLibrary")
     private List<BookPlus> bookPlusList = new ArrayList<>();
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "myLibrary")
-    private List<Book_calendar> bookCalendars = new ArrayList<>();
+    private List<BookCalendar> bookCalendars = new ArrayList<>();
 
     @Builder
     public MyLibrary(String myLibraryName) {

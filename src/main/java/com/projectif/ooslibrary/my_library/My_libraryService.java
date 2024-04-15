@@ -26,12 +26,19 @@ public class My_libraryService {
     private final BookPlusRepository bookPlusRepository;
     private final MyLibraryRepository myLibraryRepository;
 
-    @Transactional //빌더 패턴 사용안함,,
+    @Transactional
     public void saveBookPlus(Long bookPk, Long myLibraryPk) {
-        BookPlus bookPlus = new BookPlus();
-        bookRepository.findById(bookPk).ifPresent(bookPlus::setBook);
+
+        Book book = bookRepository.findById(bookPk)
+                .orElseThrow(() -> new RuntimeException("책이 존재하지 않습니다."));
         MyLibrary findMyLibrary = myLibraryRepository.findById(myLibraryPk)
                 .orElseThrow(() -> new RuntimeException("내 서재가 존재하지 않습니다"));
+
+        if(bookPlusRepository.existsByBookAndMyLibrary(book, findMyLibrary)) {
+            throw new RuntimeException("이미 저장된 책입니다.");
+        }
+        BookPlus bookPlus = new BookPlus();
+        bookPlus.setBook(book);
         bookPlus.setMyLibrary(findMyLibrary);
 
         bookPlusRepository.save(bookPlus);

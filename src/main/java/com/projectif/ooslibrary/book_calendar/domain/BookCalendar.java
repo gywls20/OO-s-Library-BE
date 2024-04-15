@@ -10,11 +10,10 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 @Entity @Getter @NoArgsConstructor
 @Setter
-public class Book_calendar {
+public class BookCalendar {
 
     @Id @Column(name = "book_calendar_pk")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,15 +38,13 @@ public class Book_calendar {
     private boolean is_deleted;
 
     @Builder
-    public Book_calendar(Long bookCalendarPk, int bookCalendarReadPercent,
+    public BookCalendar(Long bookCalendarPk, int bookCalendarReadPercent,
                             MyLibrary myLibrary, LocalDateTime bookCalendarScheduleDate,
                             BookPlus bookPlus){
-
         this.bookCalendarPk = bookCalendarPk;
         this.bookCalendarReadPercent = bookCalendarReadPercent;
         this.myLibrary = myLibrary;
         this.bookCalendarScheduleDate = bookCalendarScheduleDate;
         this.bookPlus = bookPlus;
     }
-
 }

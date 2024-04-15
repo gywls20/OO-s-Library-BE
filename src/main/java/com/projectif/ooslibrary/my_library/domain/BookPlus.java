@@ -23,9 +23,6 @@ public class BookPlus {
     @JoinColumn(name = "book_pk")
     private Book book;
 
-//    @Column(name = "my_library_pk")
-//    private Long myLibraryPk;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "my_library_pk")
     private MyLibrary myLibrary;
