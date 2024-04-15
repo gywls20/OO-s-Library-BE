@@ -15,10 +15,10 @@
       <div>
         <hr>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          <img th:src="${book.coverImagePath}" alt="북커버">
-        </button>
-        <input type="hidden" th:text="${book.bookPk}">
+          <button type="button" class="btn btn-light" data-bs-toggle="modal" th:attr="data-bs-target='#exampleModal' + ${bookStat.index}">
+              <img th:src="${book.coverImagePath}" alt="북커버">
+          </button>
+          <input type="hidden" th:text="${book.bookPk}">
         <p th:text="${book.bookTitle}" readonly/>
         <p th:text="${book.bookAuthor}" readonly/>
         <p th:text="${book.bookCategory}" readonly/>
@@ -30,7 +30,7 @@
       </div>
 
       <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" th:id="'exampleModal' + ${bookStat.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -38,11 +38,13 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <h1>내서재에 책을 추가 하려면 아래 PLUS 버튼을 눌러주세요.</h1>
+              <h3>내서재에 책을 추가 하려면 아래 PLUS 버튼을 눌러주세요.</h3>
+                <p th:text="${book.bookPk}" readonly/>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal" th:attr="data-book-pk=${book.bookPk}, my-library-pk=${session.myLibraryPk}" onclick="addBookToLibrary(this)">PLUS</button>
+
 
             </div>
           </div>
@@ -66,17 +68,10 @@
         method: 'PUT', // HTTP 메소드
       })
               .then(response => {
-                if (!response.ok) {
-                  throw new Error('네트워크 응답이 올바르지 않습니다.');
-                }
                 return response.text(); // 응답 텍스트를 반환합니다.
               })
               .then(data => {
-                alert('내서재에 책이 추가되었습니다.'); // 성공 메시지를 표시합니다.
-              })
-              .catch((error) => {
-                console.error('요청 중 에러가 발생했습니다:', error);
-                alert('책을 추가하는 데 실패했습니다.'); // 실패 메시지를 표시합니다.
+                alert(data);
               });
     }
   </script>
