@@ -62,11 +62,13 @@ public class MailService {
     // 인증 코드 보내기
     @Transactional
     public String sendCertificationMail(String email, String name)  throws RuntimeException {
-        Member findMember = memberRepository.findByMemberEmailAndMemberName(email, name)
-                .orElseThrow(() -> new NoSuchMemberException("유효하지 않은 회원의 Email 입니다!!!"));
-        if(!findMember.getMemberEmail().equals(email)){
-            throw new MailNotSendException("[MailService] - [sendCertificationMail] NOT FOUND EMAIL");
-        }
+
+//        Member findMember = memberRepository.findByMemberEmailAndMemberName(email, name)
+//                .orElseThrow(() -> new NoSuchMemberException("유효하지 않은 회원의 Email 입니다!!!나는 해커입니다."));
+//        if(!findMember.getMemberEmail().equals(email)){
+//            throw new MailNotSendException("[MailService] - [sendCertificationMail] NOT FOUND EMAIL");
+//        }
+
         try{
             String  code = UUID.randomUUID().toString().substring(0, 8);
             sendMail(("이메일 인증코드: " + code), email);

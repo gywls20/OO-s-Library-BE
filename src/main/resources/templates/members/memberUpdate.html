@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+    <style>
+        form {
+            max-width: 400px;
+            margin: 6% auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .fieldErrors {
+            font-weight: bold;
+            color: red;
+        }
+        #memberGender {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #333;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        #memberGender option {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #003366;
+            background-color: #e6f2ff;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <form th:action="@{/members/{pk}/update(pk=${session.pk})}" method="post" th:object="${member}">
+        <p th:if="${duplicateError != null}" th:text="${duplicateError}" class="fieldErrors"></p>
+        <label for="memberName">이름</label>
+        <input type="text" id="memberName" name="memberName" th:field="*{memberName}" required>
+        <p th:if="${#fields.hasErrors('memberName')}" th:errors="*{memberName}" class="fieldErrors"></p>
+        <label for="memberEmail">이메일</label>
+        <input type="email" id="memberEmail" name="memberEmail" th:field="*{memberEmail}" required>
+        <p th:if="${#fields.hasErrors('memberEmail')}" th:errors="*{memberEmail}" class="fieldErrors"></p>
+        <label for="memberPassword">비밀번호</label>
+        <input type="password" id="memberPassword" name="memberPassword" th:field="*{memberPassword}" required>
+        <p th:if="${#fields.hasErrors('memberPassword')}" th:errors="*{memberPassword}" class="fieldErrors"></p>
+        <label for="memberPassword2">비밀번호 확인</label>
+        <input type="password" id="memberPassword2" name="memberPassword2" onchange="validatePassword()" required>
+        <p th:if="${#fields.hasErrors('memberProfileImg')}" th:errors="*{memberProfileImg}" class="fieldErrors"></p>
+        <label for="memberProfileImg">프로필 이미지 설정</label>
+        <input type="file" id="memberProfileImg" name="memberProfileImg" required>
+        <br>
+        <br>
+        <label for="memberGender">성별</label>
+        <select id="memberGender" name="memberGender">
+            <option value="0">남성</option>
+            <option value="1">여성</option>
+        </select>
+        <br>
+        <br>
+        <button class="btn btn-primary" type="submit" disabled>회원 수정</button>
+        <br>
+        <br>
+        <button class="btn btn-primary" type="button" onclick="memberDelete()">회원 탈퇴</button>
+    </form>
+
+
+    <script th:inline="javascript">
+
+        document.addEventListener('DOMContentLoaded', e => {
+            // 초기에는 인증번호 칸과 버튼을 숨김
+            document.getElementById('verificationCode').style.display = 'none';
+            document.getElementById('verifyCodeBtn').style.display = 'none';
+
+        });
+
+        function validatePassword() {
+
+            var password = document.getElementById('memberPassword');
+            var confirmPassword = document.getElementById('memberPassword2');
+            var submitButton = document.querySelector('button[type="submit"]');
+
+            if (password.value !== confirmPassword.value) {
+                alert("비밀번호가 일치하지 않습니다");
+                submitButton.disabled = true;
+            } else {
+                submitButton.disabled = false;
+            }
+        }
+
+        function memberDelete() {
+            var memberPk = [[${session.pk}]]
+            var password = prompt("비밀번호 확인");
+            var data = {
+                memberPassword : password
+            };
+            fetch('/members/'+memberPk+'/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(res => res.json())
+                .then(result => {
+                    if (result === true) {
+                        alert("회원 탈퇴 완료!");
+                        location.href="/";
+                    } else {
+                        alert("회원 탈퇴 실패");
+                    }
+                })
+        }
+
+    </script>
+</div>
+</body>
+</html>

@@ -15,7 +15,50 @@
         <div th:each="pk, stat : ${myLibraryPkList}">
             <p th:text="${pk}"></p>
             <p th:text="${stat.index}">인덱스</p>
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-11 col-xl-9 col-xxl-8">
+                    <div class="col-lg-11 col-xl-9 col-xxl-8">
+                        <!-- Project Card 1-->
+                        <div class="card overflow-hidden shadow rounded-4 border-0 mb-5" th:id="'member' + ${pk}">
+                            <div class="card-body p-0">
+                                <div class="d-flex align-items-center">
+                                    <div class="p-5">
+                                        <input type="hidden" th:text="${pk}" id="pkk">
+                                        <h2 class="fw-bolder" th:text="${pk}">Project Name 1</h2>
+                                        <p th:text="${stat.index}"></p>
+                                    </div>
+                                    <img class="img-fluid" src="https://dummyimage.com/300x400/343a40/6c757d" alt="..." />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <script th:inline="javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                var projectCards = document.querySelectorAll('.card'); // 모든 카드 요소 가져오기
+                projectCards.forEach(function(card) {
+                    console.log(card);
+                    card.addEventListener('click', function() {
+                        var pk = card.querySelector('#pkk').value; // 해당 카드의 pk 값 가져오기
+                        console.log(pk);
+                        fetch('/myLibrary/' + pk)
+                            .then(response => response.json())
+                            .then(data => {
+                                // fetch API를 통해 받아온 데이터를 처리하는 코드를 작성합니다.
+                                console.log(data);
+                                alert(data);
+                            })
+                            .catch(error => {
+                                // 오류가 발생했을 때 처리하는 코드를 작성합니다.
+                                console.error('Fetch API 오류:', error);
+                            });
+                    });
+                });
+            });
+        </script>
 
     </div>
 </body>
