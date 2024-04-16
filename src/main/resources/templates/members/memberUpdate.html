@@ -13,6 +13,7 @@
             border-radius: 5px;
         }
         input {
+            border-radius: 5px;
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -80,6 +81,8 @@
         <label for="memberPassword2">비밀번호 확인</label>
         <input type="password" id="memberPassword2" name="memberPassword2" onchange="validatePassword()" required>
         <p th:if="${#fields.hasErrors('memberProfileImg')}" th:errors="*{memberProfileImg}" class="fieldErrors"></p>
+        <br/>
+        <br/>
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             프로필 이미지 설정

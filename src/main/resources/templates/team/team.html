@@ -27,11 +27,13 @@
                 <button class="btn btn-primary" type="button" onclick="addTeamMember()">팀원 추가</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <button class="btn btn-primary" type="button" onclick="deleteTeamMember()">팀원 삭제</button>
-
+                <br>
+                <br>
                 <div class="col-lg-11 col-xl-9 col-xxl-8">
                     <div th:each="member, stat : ${members}">
                         <!-- Project Card 1-->
-                        <div class="card overflow-hidden shadow rounded-4 border-0 mb-5" th:id="'member' + ${member.myLibraryPk}" th:onclick="|location.href='@{/myLibrary/{pk}(pk=${member.myLibraryPk})}'|">
+                        <div class="card overflow-hidden shadow rounded-4 border-0 mb-5" th:id="'member' + ${member.myLibraryPk}"
+                             th:onclick="|location.href='@{/myLibrary/{pk}(pk=${member.myLibraryPk})}'|" onmouseover="this.style.cursor='pointer'">
                             <div class="card-body p-0">
                                 <div class="d-flex align-items-center">
                                     <div class="p-5" id="info">
@@ -56,6 +58,11 @@
                 const teamPk = [[${teamPk}]];
 
                 let memberId = prompt("추가할 팀원 아이디를 적어주세요");
+
+                if (memberId === null || memberId === '') {
+                    alert("취소하였습니다")
+                    return;
+                }
 
                 let data = {
                     memberId : memberId
@@ -89,6 +96,11 @@
                 const teamPk = [[${teamPk}]];
 
                 let memberId = prompt("삭제할 팀원 아이디를 적어주세요");
+
+                if (memberId === null || memberId === '') {
+                    alert("취소하였습니다")
+                    return;
+                }
 
                 let data = {
                     memberId : memberId
