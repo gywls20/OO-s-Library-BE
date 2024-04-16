@@ -106,22 +106,49 @@
 
     <script th:inline="javascript">
         function boardDelete() {
-            let isDelete = confirm("정말로 삭제하시겠습니까?");
-            if (isDelete) {
-                let boardPk = document.getElementById("boardPk").value;
-                fetch("/boards/" + boardPk, {
-                    method : 'DELETE'
-                })
-                    .then(res => res.json())
-                    .then(result => {
-                        if (result === true) {
-                            alert("성공적으로 게시글을 삭제하였습니다");
-                            location.href="/boards";
-                        } else {
-                            alert("게시글을 삭제하지 못했습니다");
-                        }
-                    });
-            }
+            Swal.fire({
+                title: '정말로 삭제하시겠습니까?',
+                text: '한번 삭제하면 다시 되돌릴 수 없습니다',
+                icon: 'warning',
+
+                showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+                confirmButtonColor: 'gray', // confrim 버튼 색깔 지정
+                cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+                confirmButtonText: '삭제', // confirm 버튼 텍스트 지정
+                cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+
+                reverseButtons: true, // 버튼 순서 거꾸로
+
+            }).then(result => { // 만약 Promise리턴을 받으면,
+                if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+                    let boardPk = document.getElementById("boardPk").value;
+                    fetch("/boards/" + boardPk, {
+                        method : 'DELETE'
+                    })
+                        .then(res => res.json())
+                        .then(result => {
+                            if (result === true) {
+                                Swal.fire({
+                                    title : '성공적으로 게시글을 삭제하였습니다',
+                                    icon : 'success',
+                                    timer : 1500,
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    location.href="/boards";
+                                });
+                            } else {
+                                Swal.fire({
+                                    title : '게시글을 삭제하지 못했습니다',
+                                    icon : 'error',
+                                    timer : 1500,
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                });
+                            }
+                        });
+                }
+            });
         }
     </script>
 </div>
