@@ -11,5 +11,8 @@ import java.util.Optional;
 public interface BoardRepository extends JpaRepository<Board, Long>, CutsomBoardRepository {
 
     Optional<Board> findByBoardPkAndIsDeletedIs(Long memberPk, Integer isDeleted);
-    List<Board> findAllByIsDeletedIs(Integer isDeleted);
+
+    List<Board> findAllByIsDeletedIsOrderByBoardPkDesc(Integer isDeleted);
+
+    Page<Board> findAllByIsDeletedIs(Integer isDeleted, Pageable pageable);
 }

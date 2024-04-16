@@ -35,6 +35,14 @@
         h1 {
             text-align: center;
         }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .pagination .page-link {
+            color: black;
+        }
     </style>
 </head>
 <body>
@@ -48,7 +56,7 @@
             <div class="col-auto"><div class="small m-0"></div></div>
             <div class="col-auto">
                 <span class="mx-1">&middot;</span>
-                <a class="small" th:href="@{/boards/insert}" target="_blank" style="text-decoration-line: none; color: black">문의 적기</a>
+                <a class="small" th:href="@{/boards/insert}" style="text-decoration-line: none; color: black">문의 적기</a>
                 <span class="mx-1">&middot;</span>
             </div>
         </div>
@@ -63,7 +71,7 @@
                     <th>제목</th>
                     <th>카테고리</th>
                     <th>작성자</th>
-                    <th>내용</th>
+<!--                    <th>내용</th>-->
                     <th>작성일</th>
                     <th>수정일</th>
                 </tr>
@@ -75,12 +83,31 @@
                     <td th:text="${board.boardTitle}">제목</td>
                     <td th:text="${board.boardCategory}">카테고리</td>
                     <td th:text="${board.memberName}">작성자</td>
-                    <td th:text="${board.boardContent}">내용</td>
-                    <td th:text="${board.createdDate}">작성일</td>
-                    <td th:text="${board.modifiedDate}">수정일</td>
+<!--                    <td th:text="${board.boardContent}">내용</td>-->
+                    <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}">작성일</td>
+                    <td th:text="${#temporals.format(board.modifiedDate, 'yyyy-MM-dd')}">수정일</td>
                 </tr>
             </tbody>
         </table>
+    </div>
+    <br>
+    <br>
+    <div>
+        <!-- 페이징 처리 -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${1 == boardList.pageable.pageNumber + 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/boards(page=${boardList.pageable.pageNumber}-1)}" tabindex="-1" aria-disabled="true">이전</a>
+                </li>
+                <li class="page-item" th:classappend="${page == boardList.pageable.pageNumber + 1} ? 'disabled'" th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                    <a class="page-link" th:href="@{/boards(page=${page} - 1)}" th:text="${page}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${boardList.totalPages == boardList.pageable.pageNumber + 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/boards(page=${boardList.pageable.pageNumber} + 1)}">다음</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- // 페이징 처리 -->
     </div>
 </div>
 </body>
