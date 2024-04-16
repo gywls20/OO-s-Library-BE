@@ -1,8 +1,11 @@
 package com.projectif.ooslibrary.board.controller;
 
 import com.projectif.ooslibrary.board.domain.Board;
+import com.projectif.ooslibrary.board.dto.BoardInsertDTO;
 import com.projectif.ooslibrary.board.dto.BoardResponseDTO;
+import com.projectif.ooslibrary.board.dto.BoardUpdateDTO;
 import com.projectif.ooslibrary.board.service.BoardService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -11,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,10 +27,22 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final HttpSession session;
 
     @GetMapping("/{boardPk}")
-    public Board getBoard(@PathVariable("boardPk") Long boardPk) {
-        return boardService.getBoard(boardPk);
+    public String getBoard(@PathVariable("boardPk") Long boardPk, Model model) {
+        Board findBoard = boardService.getBoard(boardPk);
+        BoardResponseDTO board = BoardResponseDTO.builder()
+                .boardPk(findBoard.getBoardPk())
+                .boardTitle(findBoard.getBoardTitle())
+                .boardContent(findBoard.getBoardContent())
+                .boardCategory(findBoard.getBoardCategory())
+                .memberName(findBoard.getMember().getMemberName())
+                .createdDate(findBoard.getCreatedDate())
+                .modifiedDate(findBoard.getModifiedDate())
+                .build();
+        model.addAttribute("board", board);
+        return "boards/boardOne";
     }
 
     // 예) /boards?page=0&size=3&sort=id,desc&sort=boardTitle,desc
@@ -45,27 +62,71 @@ public class BoardController {
                     .build()
         ).toList();
 
-        for (BoardResponseDTO board : list) {
-            log.info("board : {}", board.getBoardPk());
-        }
-
         model.addAttribute("boardList", list);
 
         return "boards/boardList";
     }
 
-    @PostMapping("")
-    public boolean insertBoard(@RequestBody Board board) {
-        return boardService.insertBoard(board);
+    // 원글 등록 페이지
+    @GetMapping("/insert")
+    public String insertBoard(Model model) {
+
+        if (session.getAttribute("pk") == null) {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("board", new BoardInsertDTO());
+
+        return "boards/boardWriteForm";
     }
 
+    @PostMapping("")
+    public String insertBoard(@ModelAttribute("board") @Validated BoardInsertDTO board, BindingResult bindingResult, Model model) {
+
+        Long pk = (Long) session.getAttribute("pk");
+        if (pk != null) {
+            board.setMemberPk(pk);
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "boards/boardWriteForm";
+        }
+
+        boardService.insertBoard(board);
+        return "redirect:/boards";
+    }
+
+    // 글 수정 페이지 ㄱㄱ
+    @GetMapping("/{boardPk}/update")
+    public String updateBoardPage(@PathVariable("boardPk") Long boardPk, Model model) {
+        Board findBoard = boardService.getBoard(boardPk);
+        BoardResponseDTO board = BoardResponseDTO.builder()
+                .boardPk(findBoard.getBoardPk())
+                .boardTitle(findBoard.getBoardTitle())
+                .boardContent(findBoard.getBoardContent())
+                .boardCategory(findBoard.getBoardCategory())
+                .memberName(findBoard.getMember().getMemberName())
+                .createdDate(findBoard.getCreatedDate())
+                .modifiedDate(findBoard.getModifiedDate())
+                .build();
+        model.addAttribute("board", board);
+        return "boards/boardUpdateForm";
+    }
+
+
     @PutMapping("/{boardPk}")
-    public boolean updateBoard(@PathVariable("boardPk") Long boardPk, @RequestBody Board board) {
+    @ResponseBody
+    public boolean updateBoard(@PathVariable("boardPk") Long boardPk, @RequestBody BoardUpdateDTO board) {
         return boardService.updateBoard(boardPk, board);
     }
 
     @DeleteMapping("/{boardPk}")
+    @ResponseBody
     public boolean deleteBoard(@PathVariable("boardPk") Long boardPk) {
+        if (session.getAttribute("pk") == null) {
+            log.info("세션이 null 이므로 삭제 불가능");
+            return false;
+        }
         return boardService.deleteBoard(boardPk);
     }
 }

@@ -39,7 +39,7 @@ public class Board extends BaseEntity {
     private LocalDateTime modifiedDate;
 
     // 생성자
-    public Board(String boardTitle, String boardCategory, String boardContent, Member member, Board parent, Integer level) {
+    public Board(String boardTitle, String boardCategory, String boardContent, Member member, Board parent) {
         this.boardTitle = boardTitle;
         this.boardCategory = boardCategory;
         this.boardContent = boardContent;

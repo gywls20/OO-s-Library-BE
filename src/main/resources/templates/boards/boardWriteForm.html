@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>문의 글 수정</title>
+    <style>
+        .board-container {
+            display: block;
+            justify-content: center;
+            align-items: center;
+            height: 80%;
+            margin: 0 auto;
+            width: 65%;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        table {
+            align-items: center;
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        h1 {
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            border: none;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            height:300px;
+            padding: 12px 20px;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            font-size: 16px;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="board-container">
+
+    <h1>문의 글 등록</h1>
+    <br>
+    <br>
+
+    <form id="insertForm" th:action="@{/boards}" method="post">
+        <table th:object="${board}">
+            <tr>
+                <th>카테고리</th>
+                <td>
+                    <input th:type="text" th:value="*{boardCategory}" id="boardCategory" name="boardCategory"/>
+                </td>
+            </tr>
+            <tr>
+                <th>제목</th>
+                <td colspan="3" style="text-align: center">
+                    <input th:type="text" th:value="*{boardTitle}" id="boardTitle" name="boardTitle">
+                </td>
+            </tr>
+            <tr>
+                <th>내용</th>
+                <td colspan="3">
+                    <textarea th:text="*{boardContent}" id="boardContent" name="boardContent"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <br>
+    <div class="col-auto">
+        <a class="small" onclick="boardWrite()" style="text-decoration-line: none; color: black; font-weight: bold" onmouseover="this.style.cursor='pointer'">등록 완료</a>
+        <span class="mx-1">&middot;</span>
+        <a class="small" th:href="@{/boards}" style="text-decoration-line: none; color: black; font-weight: bold">뒤로 가기</a>
+    </div>
+
+    <script th:inline="javascript">
+        function boardWrite() {
+            document.getElementById("insertForm").submit();
+        }
+    </script>
+</div>
+</body>
+</html>

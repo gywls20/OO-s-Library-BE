@@ -6,25 +6,82 @@
 <head>
     <meta charset="UTF-8">
     <title>문의</title>
+    <style>
+        .board-container {
+            /*font-family: 'Noto Serif KR', serif;*/
+            display: block;
+            justify-content: center;
+            align-items: center;
+            height: 80%;
+            margin: 0 auto;
+            width: 80%;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<div layout:fragment="content">
+<div layout:fragment="content" class="board-container">
 
-    <h1>여기는 문의 게시판</h1>
-
+    <h1>문의</h1>
+    <br>
+    <br>
     <div>
-        <ul>
-            <li th:each="board : ${boardList}">
-                <span th:text="${board.boardTitle}">제목</span>
-                <span th:text="${board.boardCategory}">카테고리</span>
-                <span th:text="${board.memberName}">작성자</span>
-                <span th:text="${board.boardContent}">내용</span>
-                <span th:text="${board.createdDate}">작성일</span>
-                <span th:text="${board.modifiedDate}">수정일</span>
-            </li>
-        </ul>
+        <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+            <div class="col-auto"><div class="small m-0"></div></div>
+            <div class="col-auto">
+                <span class="mx-1">&middot;</span>
+                <a class="small" th:href="@{/boards/insert}" target="_blank" style="text-decoration-line: none; color: black">문의 적기</a>
+                <span class="mx-1">&middot;</span>
+            </div>
+        </div>
     </div>
-
+    <br>
+    <br>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>글번호</th>
+                    <th>제목</th>
+                    <th>카테고리</th>
+                    <th>작성자</th>
+                    <th>내용</th>
+                    <th>작성일</th>
+                    <th>수정일</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="board : ${boardList}" class="board-item"
+                    th:onclick="|location.href='@{/boards/{pk}(pk=${board.boardPk})}'|"  onmouseover="this.style.cursor='pointer'">
+                    <td th:text="${board.boardPk}">글번호</td>
+                    <td th:text="${board.boardTitle}">제목</td>
+                    <td th:text="${board.boardCategory}">카테고리</td>
+                    <td th:text="${board.memberName}">작성자</td>
+                    <td th:text="${board.boardContent}">내용</td>
+                    <td th:text="${board.createdDate}">작성일</td>
+                    <td th:text="${board.modifiedDate}">수정일</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>
