@@ -69,6 +69,7 @@
         </tr>
         <tr>
             <input th:type="hidden" th:value="${boardPk}" id="boardPk" />
+            <input th:type="hidden" th:value="${memberPk}" id="memberPk" />
             <th>글번호</th>
             <td th:text="*{boardPk}"></td>
             <th>카테고리</th>
@@ -94,7 +95,7 @@
 
         <div class="col-auto">
             <a class="small" th:href="@{/boards}" style="text-decoration-line: none; color: black; font-weight: bold">목록으로</a>
-            <th:block th:if="${session.name} == ${board.memberName}">
+            <th:block th:if="${session.name} == ${board.memberName} and ${session.pk} == ${board.memberPk}">
                 <span class="mx-1">&middot;</span>
                 <a class="small" th:href="@{/boards/{boardPk}/update(boardPk=${board.boardPk})}" style="text-decoration-line: none; color: black; font-weight: bold">글 수정</a>
                 <span class="mx-1">&middot;</span>

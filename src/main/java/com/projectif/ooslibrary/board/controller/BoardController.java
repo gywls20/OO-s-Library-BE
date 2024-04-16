@@ -38,6 +38,7 @@ public class BoardController {
                 .boardContent(findBoard.getBoardContent())
                 .boardCategory(findBoard.getBoardCategory())
                 .memberName(findBoard.getMember().getMemberName())
+                .memberPk(findBoard.getMember().getMemberPk())
                 .createdDate(findBoard.getCreatedDate())
                 .modifiedDate(findBoard.getModifiedDate())
                 .build();
