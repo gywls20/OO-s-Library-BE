@@ -33,10 +33,11 @@ public class BoardService {
     }
 
     // 여러건 조회 -> 간단 페이징
-    public List<Board> getBoardList() {
+    public Page<Board> getBoardList(Pageable pageable) {
 //        return boardRepository.findAllByIsDeletedIs(0, pageable);
 //        return boardRepository.boardPage(pageable);
-        return boardRepository.findAllByIsDeletedIs(0);
+//        return boardRepository.findAllByIsDeletedIsOrderByBoardPkDesc(0);
+        return boardRepository.findAllByIsDeletedIs(0, pageable);
     }
 
     // 원글 등록

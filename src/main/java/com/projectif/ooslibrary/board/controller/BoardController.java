@@ -48,21 +48,26 @@ public class BoardController {
     // 예) /boards?page=0&size=3&sort=id,desc&sort=boardTitle,desc
     // @PageableDefault(size = 10, page = 0, sort = "boardPk", direction = Sort.Direction.DESC) Pageable pageable, Model model
     @GetMapping("")
-    public String getBoardList(Model model) {
-        List<Board> boardList = boardService.getBoardList();
-        List<BoardResponseDTO> list = boardList.stream().map(board ->
-            BoardResponseDTO.builder()
-                    .boardPk(board.getBoardPk())
-                    .boardTitle(board.getBoardTitle())
-                    .boardContent(board.getBoardContent())
-                    .boardCategory(board.getBoardCategory())
-                    .memberName(board.getMember().getMemberName())
-                    .createdDate(board.getCreatedDate())
-                    .modifiedDate(board.getModifiedDate())
-                    .build()
-        ).toList();
+    public String getBoardList(@PageableDefault(size = 5, page = 0, sort = "boardPk", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        Page<Board> boardPage = boardService.getBoardList(pageable);
+        Page<BoardResponseDTO> list = boardPage.map(board ->
+                BoardResponseDTO.builder()
+                        .boardPk(board.getBoardPk())
+                        .boardTitle(board.getBoardTitle())
+                        .boardContent(board.getBoardContent())
+                        .boardCategory(board.getBoardCategory())
+                        .memberName(board.getMember().getMemberName())
+                        .createdDate(board.getCreatedDate())
+                        .modifiedDate(board.getModifiedDate())
+                        .build()
+        );
+
+        int startPage = Math.max(1, boardPage.getPageable().getPageNumber() - 10);
+        int endPage = Math.min(boardPage.getTotalPages(), boardPage.getPageable().getPageNumber() + 10);
 
         model.addAttribute("boardList", list);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
 
         return "boards/boardList";
     }
