@@ -30,7 +30,7 @@
                                     <th:block th:if="${session.id} != null">
                                         <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" th:href="@{/myLibrary/{pk}(pk=${session.myLibraryPk})}">내서재로</a>
                                         <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" th:href="@{/logout}">Log Out</a>
-                                        <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" th:href="@{/logout}">관리자페이지</a>
+                                        <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" th:href="@{/adminPage}">관리자페이지</a>
                                     </th:block>
                                 </div>
                             </div>

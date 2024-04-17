@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default}">
+      layout:decorate="~{layout/default_layout}">
 <!-- 사용자 정의 title -->
 <th:block layout:fragment="customTitle">
     <title th:text="${title}"></title>
@@ -19,7 +19,7 @@
         <tr th:if="${not #lists.isEmpty(memberList)}" th:each="l : ${memberList}">
             <td th:text="${l.member_id}"></td>
             <td th:text="${l.member_name}"></td>
-            <td th:text="${l.member_email}"></td>
+            <td th:text="${l.member_email}  "></td>
         </tr>
         <tr th:unless="${not #lists.isEmpty(memberList)}">
             <td colspan="7">등록된 회원의 정보가 없습니다.</td>

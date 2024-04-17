@@ -1,4 +1,4 @@
-package com.projectif.ooslibrary.admin.mapper;
-
-public interface AdPostMapper {
-}
+//package com.projectif.ooslibrary.admin.mapper;
+//
+//public interface AdPostMapper {
+//}
