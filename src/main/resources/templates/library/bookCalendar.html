@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+    <meta charset='utf-8' />
+    <script src="/fullcalendar-6.1.11/dist/index.global.js"></script>
+
+    <style>
+        .event-image {
+            width: 100px; /* 이미지 크기 조정 */
+            margin-top: 5px;
+        }
+    </style>
+    <title>MyCalendar</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <h1>MyCalendar</h1>
+        <div id='calendar'></div>
+
+        <script th:inline="javascript">
+
+            let bookCalendarList = JSON.parse([[${bookCalendarListJson}]]);
+
+            console.log(bookCalendarList)
+
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    editable: true,
+                    eventLimit: true,
+                    events: bookCalendarList.map(function(bookCalendar) {
+                        return {
+                            title: bookCalendar.bookTitle,
+                            start: new Date(bookCalendar.bookCalendarScheduleDate).toISOString().split('T')[0], // 날짜 형식 조정
+                            imageUrls: [bookCalendar.coverImagePath]
+                        };
+                    }),
+                    eventContent: function(arg) {
+                        // 이벤트 컨텐트를 커스터마이징하는 코드
+                        var arrayOfDomNodes = [];
+
+                        // 타이틀
+                        var title = document.createElement('div');
+                        title.innerHTML = arg.event.title;
+                        arrayOfDomNodes.push(title);
+
+                        // 이미지
+                        if (arg.event.extendedProps.imageUrls) {
+                            arg.event.extendedProps.imageUrls.forEach(function(imageUrl) {
+                                var img = document.createElement('img');
+                                img.src = imageUrl;
+                                img.classList.add('event-image');
+                                arrayOfDomNodes.push(img);
+                            });
+                        }
+
+                        return { domNodes: arrayOfDomNodes };
+                    }
+                });
+                calendar.render();
+            });
+        </script>
+    </div>
+</body>
+</html>

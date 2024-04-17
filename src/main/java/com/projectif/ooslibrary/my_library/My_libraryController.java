@@ -29,12 +29,13 @@ public class My_libraryController {
         return "members/myLibrary";
     }
 
+
     @PutMapping("/bookPlus")
     @ResponseBody
     public ResponseEntity<String> saveBookToLibrary(@RequestParam Long bookPk,
                                                     @RequestParam Long myLibraryPk) {
         myLibraryService.saveBookPlus(bookPk, myLibraryPk);
-        return ResponseEntity.ok("Book saved to library successfully");
+        return ResponseEntity.ok("내서재에 책이 추가 되었습니다.");
     }
 
 }

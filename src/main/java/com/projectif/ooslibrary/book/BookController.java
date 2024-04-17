@@ -1,23 +1,25 @@
 package com.projectif.ooslibrary.book;
 
+import com.projectif.ooslibrary.book.domain.Book;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@RequestMapping("/books")
+@Slf4j
+@Controller
+@RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
 
-    @Autowired
-    public BookController(BookService bookService) {
-        this.bookService = bookService;
-    }
-
-    @GetMapping
+    @GetMapping("/books")
+    @ResponseBody
     public List<BookDTO> getBooks(@RequestParam(required = false) String category,
                                   @RequestParam(required = false, defaultValue = "asc") String sortOrder) {
         if (category != null) {
@@ -27,9 +29,26 @@ public class BookController {
         }
     }
     //ebook 페이지
-    @GetMapping("/{book_pk}")
+    @GetMapping("/books/{book_pk}")
+    @ResponseBody
     public BookTextDTO getBookText(@PathVariable Long book_pk) {
         return bookService.getBookPath(book_pk);
+    }
+
+    //library 페이지 이동
+    @GetMapping("/library")
+    public String booksPage(Model model, @RequestParam(required = false) String category,
+                            @RequestParam(required = false, defaultValue = "asc") String sortOrder){
+        List<BookDTO> LibraryBooks;
+
+        if (category != null) {
+            LibraryBooks = bookService.getBooksByCategory(category, sortOrder);
+        } else {
+            LibraryBooks = bookService.getAllBooks(sortOrder);
+        }
+        model.addAttribute("bookList", LibraryBooks);
+
+        return "library/bookplus";
     }
 
 }

@@ -4,14 +4,12 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>내 서재</title>
 </head>
 <body>
     <div layout:fragment="content">
 
         <h1>여기는 내서재임</h1>
-
+        <a th:href="@{../calendar/{pk}(pk=${session.myLibraryPk})}">bookcalendar</a>
         <div>
             <div th:each="book, bookStat : ${bookList}">
                 <div>
@@ -49,6 +47,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 

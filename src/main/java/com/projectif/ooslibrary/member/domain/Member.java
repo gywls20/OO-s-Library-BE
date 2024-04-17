@@ -124,6 +124,14 @@ public class Member extends BaseEntity implements UserDetails {
         this.myLibrary = myLibrary;
     }
 
+    public void addTeam(Team team) {
+        this.team = team;
+    }
+
+    public void deleteTeam() {
+        this.team = null;
+    }
+
     public void memberUpdate(MemberUpdateRequestDTO dto) {
         this.memberName = dto.getMemberName();
         this.memberEmail = dto.getMemberEmail();

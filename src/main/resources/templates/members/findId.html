@@ -4,16 +4,23 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>인증받아 아이디 정보 받아오기</title>
+    <style>
+        #box {
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
     <main class="flex-shrink-0">
         <header class="py-5">
-            <div class="container px-5 pb-5">
+            <div class="container px-5 pb-5" id="box">
                 <h1>회원님의 아이디는</h1>
                 <h2 th:text="${memberId}"></h2>
+                <br>
+                <br>
+                <h3><a th:href="@{/login}" style="text-decoration: none">로그인하러가기</a></h3>
             </div>
         </header>
     </main>

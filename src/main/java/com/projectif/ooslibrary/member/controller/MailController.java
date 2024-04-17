@@ -1,6 +1,6 @@
 package com.projectif.ooslibrary.member.controller;
 
-import com.projectif.ooslibrary.member.dto.EmaiCodelVerifyDTO;
+import com.projectif.ooslibrary.member.dto.EmailCodeVerifyDTO;
 import com.projectif.ooslibrary.member.dto.EmailVerifyRequestDTO;
 import com.projectif.ooslibrary.member.service.MailService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +31,7 @@ public class MailController {
 
     // 이메일 인증 발송
     @PostMapping("")
+    @ResponseBody
     public boolean sendEmail(@RequestBody EmailVerifyRequestDTO dto) {
 
         String verifyCode = mailService.sendCertificationMail(dto.getEmail(), dto.getName());
@@ -42,11 +43,11 @@ public class MailController {
     // 이메일 인증 버튼 -> 이메일 인증
     @PostMapping("/verify")
     @ResponseBody
-    public String verifyEmail(@RequestBody EmaiCodelVerifyDTO code) {
+    public boolean verifyEmail(@RequestBody EmailCodeVerifyDTO code) {
 
         String verifiedEmail = mailService.verifyEmailByCode(code.getCode());
         log.info("[MailController] [verifyEmail] 인증된 이메일 : {}", verifiedEmail);
-        return verifiedEmail;
+        return true;
     }
 
     /**
@@ -55,9 +56,14 @@ public class MailController {
      * @return 새로운 패스워드 발송
      */
     @PostMapping("/findPassword")
-    public String findPassword(@RequestBody EmailVerifyRequestDTO dto) {
-        String newPassword = mailService.sendNewPasswordMail(dto.getEmail(), dto.getName());
-        log.info("새 비밀번호 = {}", newPassword);
+    public String findPassword(@ModelAttribute("dto") EmailVerifyRequestDTO dto, Model model) {
+        try {
+            String newPassword = mailService.sendNewPasswordMail(dto.getEmail(), dto.getName());
+            log.info("새 비밀번호 = {}", newPassword);
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "mail/findPassword";
+        }
         return "redirect:/login";
     }
 
@@ -67,9 +73,15 @@ public class MailController {
      * @return memberId
      */
     @PostMapping("/findId")
-    public String findMemberId(@RequestBody EmailVerifyRequestDTO dto, Model model) {
-        String memberId = mailService.sendMemberId(dto.getEmail(), dto.getName());
-        log.info("아이디 = {}", memberId);
+    public String findMemberId(@ModelAttribute("dto") EmailVerifyRequestDTO dto, Model model) {
+        String memberId = "";
+        try {
+            memberId = mailService.sendMemberId(dto.getEmail(), dto.getName());
+            log.info("아이디 = {}", memberId);
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "mail/findId";
+        }
         model.addAttribute("memberId", memberId);
         return "members/findId";
     }

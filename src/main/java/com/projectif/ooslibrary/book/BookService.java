@@ -63,4 +63,12 @@ public List<BookDTO> getAllBooks(String sortOrder) {
         return optionalBook.map(book -> new BookTextDTO(book.getBookTextPath()))
                 .orElseThrow(() -> new RuntimeException("해당하는 책을 찾을 수 없습니다."));
     }
+
+
+    public List<BookDTO> getLibraryBooks(String category){
+        ArrayList<Book> books = new ArrayList<>();
+
+
+        return getAllBooks("asc");
+    }
 }

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>문의</title>
+    <style>
+        .board-container {
+            /*font-family: 'Noto Serif KR', serif;*/
+            display: block;
+            justify-content: center;
+            align-items: center;
+            height: 80%;
+            margin: 0 auto;
+            width: 65%;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        table {
+            align-items: center;
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        /*tr:last-child {*/
+        /*   column-span: 4;*/
+        /*}*/
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        h1 {
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            height:300px;
+            padding: 12px 20px;
+            box-sizing: border-box;
+            /*border: 2px solid #ccc;*/
+            border: none;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            font-size: 16px;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="board-container">
+
+    <h1>문의 상세 내용 보기</h1>
+    <br>
+    <br>
+
+    <table th:object="${board}">
+        <tr>
+            <th>작성일</th>
+            <td th:text="*{createdDate}"></td>
+            <th>수정일</th>
+            <td th:text="*{modifiedDate}"></td>
+        </tr>
+        <tr>
+            <input th:type="hidden" th:value="${boardPk}" id="boardPk" />
+            <input th:type="hidden" th:value="${memberPk}" id="memberPk" />
+            <th>글번호</th>
+            <td th:text="*{boardPk}"></td>
+            <th>카테고리</th>
+            <td th:text="*{boardCategory}"></td>
+        </tr>
+        <tr>
+            <th>제목</th>
+            <td colspan="3" th:text="*{boardTitle}" style="text-align: center"></td>
+        </tr>
+        <tr>
+            <th>작성자</th>
+            <td colspan="3" th:text="*{memberName}" style="text-align: center"></td>
+        </tr>
+        <tr>
+            <th>내용</th>
+            <td colspan="3">
+                <textarea th:text="*{boardContent}" readonly></textarea>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <br>
+
+        <div class="col-auto">
+            <a class="small" th:href="@{/boards}" style="text-decoration-line: none; color: black; font-weight: bold">목록으로</a>
+            <th:block th:if="${session.name} == ${board.memberName} and ${session.pk} == ${board.memberPk}">
+                <span class="mx-1">&middot;</span>
+                <a class="small" th:href="@{/boards/{boardPk}/update(boardPk=${board.boardPk})}" style="text-decoration-line: none; color: black; font-weight: bold">글 수정</a>
+                <span class="mx-1">&middot;</span>
+                <a class="small" onclick="boardDelete()" style="text-decoration-line: none; color: black; font-weight: bold" onmouseover="this.style.cursor='pointer'">글 삭제</a>
+            </th:block>
+        </div>
+
+
+    <script th:inline="javascript">
+        function boardDelete() {
+            Swal.fire({
+                title: '정말로 삭제하시겠습니까?',
+                text: '한번 삭제하면 다시 되돌릴 수 없습니다',
+                icon: 'warning',
+
+                showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+                confirmButtonColor: 'gray', // confrim 버튼 색깔 지정
+                cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+                confirmButtonText: '삭제', // confirm 버튼 텍스트 지정
+                cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+
+                reverseButtons: true, // 버튼 순서 거꾸로
+
+            }).then(result => { // 만약 Promise리턴을 받으면,
+                if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+                    let boardPk = document.getElementById("boardPk").value;
+                    fetch("/boards/" + boardPk, {
+                        method : 'DELETE'
+                    })
+                        .then(res => res.json())
+                        .then(result => {
+                            if (result === true) {
+                                Swal.fire({
+                                    title : '성공적으로 게시글을 삭제하였습니다',
+                                    icon : 'success',
+                                    timer : 1500,
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    location.href="/boards";
+                                });
+                            } else {
+                                Swal.fire({
+                                    title : '게시글을 삭제하지 못했습니다',
+                                    icon : 'error',
+                                    timer : 1500,
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                });
+                            }
+                        });
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+
+  <h1>여기는 도서관임</h1>
+    <select name="category" id="category">
+        <option value="유아">유아</option>
+        <option value="대학교재/전문서적">대학교재/전문서적</option>
+        <option value="인문학">인문학</option>
+        <option value="소설/시/희곡">소설/시/희곡</option>
+        <option value="잡지">잡지</option>
+        <option value="에세이">에세이</option>
+        <option value="외국어">외국어</option>
+        <option value="어린이">어린이</option>
+        <option value="컴퓨터/모바일">컴퓨터/모바일</option>
+        <option value="사회과학">사회과학</option>
+        <option value="역사">역사</option>
+        <option value="과학">과학</option>
+        <option value="좋은부모">좋은부모</option>
+        <option value="청소년">청소년</option>
+        <option value="만화">만화</option>
+        <option value="여행">여행</option>
+        <option value="종교/역학">종교/역학</option>
+        <option value="초등학교참고서">초등학교참고서</option>
+        <option value="수험서/자격증">수험서/자격증</option>
+        <option value="경제경영">경제경영</option>
+        <option value="자기계발">자기계발</option>
+    </select>
+    <!-- 카테고리에 따른 도서 조회 버튼 추가 -->
+    <button onclick="loadBooks()">도서 조회</button>
+  <div>
+    <div th:each="book, bookStat : ${bookList}">
+      <div>
+        <hr>
+        <!-- Button trigger modal -->
+          <button type="button" class="btn btn-light" data-bs-toggle="modal" th:attr="data-bs-target='#exampleModal' + ${bookStat.index}">
+              <img th:src="${book.coverImagePath}" alt="북커버">
+          </button>
+          <input type="hidden" th:text="${book.bookPk}">
+        <p th:text="${book.bookTitle}" readonly/>
+        <p th:text="${book.bookAuthor}" readonly/>
+        <p th:text="${book.bookCategory}" readonly/>
+        <p th:text="${book.bookContent}" readonly/>
+        <p th:text="${book.bookPrice}" readonly/>
+        <p th:text="${book.bookPublisher}" readonly/>
+        <p th:text="${book.bookPublishDate}" readonly/>
+        <hr>
+      </div>
+
+      <!-- Modal -->
+        <div class="modal fade" th:id="'exampleModal' + ${bookStat.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+<!--              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>-->
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h3>내서재에 책을 추가 하려면 아래 PLUS 버튼을 눌러주세요.</h3>
+                <p th:text="${book.bookPk}" readonly/>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" th:attr="data-book-pk=${book.bookPk}, my-library-pk=${session.myLibraryPk}" onclick="addBookToLibrary(this)">PLUS</button>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <script>
+    function addBookToLibrary(element) {
+        const bookPk = element.getAttribute('data-book-pk');
+        const myLibraryPk = element.getAttribute('my-library-pk');
+      // API 호출에 사용할 URL과 쿼리 파라미터를 구성합니다.
+      const url = `/bookPlus?bookPk=${bookPk}&myLibraryPk=${myLibraryPk}`;
+
+      // fetch를 사용하여 HTTP PUT 요청을 보냅니다.
+      fetch(url, {
+        method: 'PUT', // HTTP 메소드
+      })
+              .then(response => {
+                return response.text(); // 응답 텍스트를 반환합니다.
+              })
+              .then(data => {
+                alert(data);
+              });
+    }
+  </script>
+    <script>
+        function loadBooks() {
+            const category = document.getElementById('category').value;
+            const sortOrder = 'asc'; // 정렬 순서, 필요에 따라 변경 가능
+            const url = `/library?category=${category}&sortOrder=${sortOrder}`;
+
+            window.location.href = url; // 새로운 URL로 페이지 이동
+        }
+    </script>
+</div>
+</body>
+</html>
