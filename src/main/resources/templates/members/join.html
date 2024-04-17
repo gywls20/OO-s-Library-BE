@@ -114,7 +114,7 @@
             .then(response => {
                 if (!response.ok) {
                     Swal.fire({
-                        title : '이메일 인증 실패',
+                        title : '이메일 인증 발송 실패',
                         icon : 'error',
                         timer : 1500,
                         showConfirmButton: false,
@@ -185,12 +185,11 @@
                             throw new Error('이메일  인증이 제대로 수행되지 않음')
                         });
                     }
-                    return response.text();
+                    return response.json();
                 })
                 .then(result => {
-                    console.log(result)
                     // 서버로부터의 응답을 이용한 작업을 수행
-                    if (result !== '') {
+                    if (result === true) {
                         // 서버로부터 true를 받았을 때의 처리
                         Swal.fire({
                             title : '이메일 인증 성공',

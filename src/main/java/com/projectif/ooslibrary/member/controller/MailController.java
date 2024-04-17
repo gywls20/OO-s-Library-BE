@@ -1,6 +1,6 @@
 package com.projectif.ooslibrary.member.controller;
 
-import com.projectif.ooslibrary.member.dto.EmaiCodelVerifyDTO;
+import com.projectif.ooslibrary.member.dto.EmailCodeVerifyDTO;
 import com.projectif.ooslibrary.member.dto.EmailVerifyRequestDTO;
 import com.projectif.ooslibrary.member.service.MailService;
 import lombok.RequiredArgsConstructor;
@@ -43,11 +43,11 @@ public class MailController {
     // 이메일 인증 버튼 -> 이메일 인증
     @PostMapping("/verify")
     @ResponseBody
-    public String verifyEmail(@RequestBody EmaiCodelVerifyDTO code) {
+    public boolean verifyEmail(@RequestBody EmailCodeVerifyDTO code) {
 
         String verifiedEmail = mailService.verifyEmailByCode(code.getCode());
         log.info("[MailController] [verifyEmail] 인증된 이메일 : {}", verifiedEmail);
-        return verifiedEmail;
+        return true;
     }
 
     /**
