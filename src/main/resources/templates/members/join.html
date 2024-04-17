@@ -7,7 +7,7 @@
     <style>
         form {
             max-width: 400px;
-            margin: 0 auto;
+            margin: 6% auto;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -31,6 +31,22 @@
             font-weight: bold;
             color: red;
         }
+        #memberGender {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #333;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        #memberGender option {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #003366;
+            background-color: #e6f2ff;
+        }
     </style>
 </head>
 <body>
@@ -48,7 +64,7 @@
         <input type="email" id="memberEmail" name="memberEmail" th:field="*{memberEmail}" required>
         <p th:if="${#fields.hasErrors('memberEmail')}" th:errors="*{memberEmail}" class="fieldErrors"></p>
         <button type="button" id="sendVerificationCodeBtn" onclick="sendVerificationCode()">인증번호 받기</button>
-        <label for="verificationCode">인증번호</label>
+        <label for="verificationCode" id="verificationCodeLabel">인증번호</label>
         <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호 입력" required readonly>
         <button type="button" id="verifyCodeBtn" onclick="verifyCode()">인증 하기</button>
         <label for="memberPassword">비밀번호</label>
@@ -56,11 +72,15 @@
         <p th:if="${#fields.hasErrors('memberPassword')}" th:errors="*{memberPassword}" class="fieldErrors"></p>
         <label for="memberPassword2">비밀번호 확인</label>
         <input type="password" id="memberPassword2" name="memberPassword2" required>
+        <br>
+        <br>
         <label for="memberGender">성별</label>
         <select id="memberGender" name="memberGender">
             <option value="0">남성</option>
             <option value="1">여성</option>
         </select>
+        <br>
+        <br>
         <button class="btn btn-primary" type="submit" disabled>회원가입</button>
     </form>
 
@@ -69,6 +89,7 @@
         document.addEventListener('DOMContentLoaded', e => {
             // 초기에는 인증번호 칸과 버튼을 숨김
             document.getElementById('verificationCode').style.display = 'none';
+            document.getElementById('verificationCodeLabel').style.display = 'none';
             document.getElementById('verifyCodeBtn').style.display = 'none';
         });
 
@@ -103,6 +124,7 @@
                     // 서버로부터 true를 받았을 때의 처리
                     alert('이메일 인증 발송 성공');
                     document.getElementById('verificationCode').style.display = 'block';
+                    document.getElementById('verificationCodeLabel').style.display = 'block';
                     document.getElementById('verifyCodeBtn').style.display = 'block';
                 } else {
                     // 서버로부터 false를 받았을 때의 처리

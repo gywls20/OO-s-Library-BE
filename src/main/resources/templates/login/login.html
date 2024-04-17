@@ -25,11 +25,11 @@
             background-color: #fff;
             padding: 20px;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
             text-align: center;
         }
         input {
-            width: 100%;
+            width: 60%;
             padding: 10px;
             margin: 10px 0;
             box-sizing: border-box;
@@ -37,12 +37,22 @@
             border-radius: 5px;
         }
         button {
-            width: 100%;
+            width: 27%;
             padding: 10px;
             margin: 10px 0;
             box-sizing: border-box;
             border: none;
-            border-radius: 5px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+        img {
+            width: 30%;
+            padding: 10px;
+            height: 20%;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 15px;
             cursor: pointer;
         }
         .btn-primary {
@@ -71,20 +81,28 @@
                             <p style="color: red;">아이디 혹은 비밀번호를 잘못 입력하셨습니다.</p>
                         </div>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <label for="username">아이디</label>
+                        <br>
+                        <label for="username" style="color: black; font-weight: bold">아이디&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                         <input type="text" name="username" id="username" placeholder="아이디 입력" required autofocus>
-                        <label for="password">비밀번호</label>
+                        <br>
+                        <br>
+                        <label for="password" style="color: black; font-weight: bold">비밀번호&nbsp;&nbsp;</label>
                         <input type="password" name="password" id="password" placeholder="비밀번호 입력" required autofocus>
                         <br>
                         <br>
-                        <button class="btn-primary" type="submit">로그인</button>
+                        <button class="btn-primary" type="submit" style="height: 50px">로그인</button>
+                        <br>
+                        <img th:src="@{/assets/btnG_완성형.png}" th:onclick="|location.href='@{/oauth2/authorization/naver}'|" alt="ㅇㅇ"/>
+<!--                        <button class="btn-naver" type="button" th:onclick="|location.href='@{/oauth2/authorization/naver}'|">네이버 로그인</button>-->
                         <br>
                         <br>
-                        <button class="btn-naver" type="button" th:onclick="|location.href='@{/oauth2/authorization/naver}'|">네이버 로그인</button>
-                        <br>
-                        <br>
-                        <a class="btn btn-primary" th:href="@{/mail/findId}">아이디 찾기</a>
-                        <a class="btn btn-primary" th:href="@{/mail/findPassword}">비밀번호 찾기</a>
+                        <div class="col-auto">
+                            <a class="small" th:href="@{/mail/findId}" style="text-decoration-line: none; color: black; font-weight: bold">아이디 찾기</a>
+                            <span class="mx-1">&middot;</span>
+                            <a class="small" th:href="@{/mail/findPassword}" style="text-decoration-line: none; color: black; font-weight: bold">비밀번호 찾기</a>
+                        </div>
+<!--                        <a class="btn btn-primary" th:href="@{/mail/findId}">아이디 찾기</a>-->
+<!--                        <a class="btn btn-primary" th:href="@{/mail/findPassword}">비밀번호 찾기</a>-->
                     </form>
                 </div>
             </header>
