@@ -19,7 +19,6 @@ public class Book_calendarDTO {
     private int bookCalendarReadPercent;
     private LocalDateTime bookCalendarScheduleDate;
 
-    //이건 왜 있어야하는거지?
     public Book_calendarDTO(String bookTitle, String coverImagePath, int bookCalendarReadPercent, LocalDateTime bookCalendarScheduleDate) {
         this.bookTitle = bookTitle;
         this.coverImagePath = coverImagePath;
