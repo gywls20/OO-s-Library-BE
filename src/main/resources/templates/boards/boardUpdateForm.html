@@ -130,10 +130,23 @@
                 .then(res => res.json())
                 .then(result => {
                     if (result === true) {
-                        alert('게시글을 수정했습니다');
-                        location.href='/boards/'+boardPk;
+                        Swal.fire({
+                            title : '성공적으로 게시글을 수정했습니다',
+                            icon : 'success',
+                            timer : 1500,
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {
+                            location.href='/boards/'+boardPk;
+                        });
                     } else {
-                        alert('게시글을 수정하지 못했습니다');
+                        Swal.fire({
+                            title : '게시글을 수정하지 못했습니다',
+                            icon : 'error',
+                            timer : 1500,
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        });
                     }
                 })
         }
