@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -36,9 +37,17 @@ public class BookController {
 
     //library 페이지 이동
     @GetMapping("/library")
-    public String booksPage(Model model){
-        List<BookDTO> LibraryBooks = bookService.getLibraryBooks();
+    public String booksPage(Model model, @RequestParam(required = false) String category,
+                            @RequestParam(required = false, defaultValue = "asc") String sortOrder){
+        List<BookDTO> LibraryBooks;
+
+        if (category != null) {
+            LibraryBooks = bookService.getBooksByCategory(category, sortOrder);
+        } else {
+            LibraryBooks = bookService.getAllBooks(sortOrder);
+        }
         model.addAttribute("bookList", LibraryBooks);
+
         return "library/bookplus";
     }
 
