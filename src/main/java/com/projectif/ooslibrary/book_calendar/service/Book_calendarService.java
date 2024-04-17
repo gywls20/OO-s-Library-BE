@@ -10,6 +10,7 @@ import com.projectif.ooslibrary.my_library.repository.MyLibraryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -40,6 +41,12 @@ public class Book_calendarService {
     public List<Book_calendarDTO> getBookCalendar (Long myLibrary){
 
         return book_calendarRepository.findBookCalendarInfoByMyLibrary(myLibrary);
+    }
+
+    //book calendar page
+    @Transactional
+    public  List<Book_calendarDTO> BookCalendarpage(Long pk){
+        return getBookCalendar(pk);
     }
 
 }
