@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+  <h2>코멘트 수정</h2>
+    <h1>왜 값이 안나오죠? 나오게 해줴요ㅠㅠ</h1>
+  <form id="updateForm" th:action="@{/comments/updateComment}" method="post" onsubmit="submitForm(); return false;"> <!--onsubmit="window.onunload = window.opener.location.reload(); window.close();" -->
+          <input type="hidden" name="comment_pk" th:value="${comment.comment_pk}"/>
+          <input type="hidden" name="book_pk" th:value="${comment.book_pk}" />
+          <div>
+              <p id="member_pk" th:value="${comment.member_pk}" th:text="${session.name}" readonly></p>
+          </div>
+          <div>
+            <label for="comment_title">제목</label>
+            <input type="text" id="comment_title" name="comment_title" placeholder="제목을 입력하시오" required>
+          </div>
+          <div>
+            <label for="comment_content">내용</label>
+            <textarea id="comment_content" name="comment_content" cols="50" rows="5" placeholder="내용을 입력하시오" required></textarea>
+      <button type="submit">수정</button>
+      <button type="reset" onclick="closeFrom()">취소</button>
+    </div>
+  </form>
+
+    <script>
+      function submitForm() {
+        var form = document.getElementById('updateForm');
+        var formData = new FormData(form);
+
+        // AJAX를 사용하여 폼 데이터를 서버에 비동기적으로 전송
+        fetch(form.action, {
+          method: 'POST',
+          body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    // 현재 창 닫기
+                    window.close();
+                    // 부모 창 새로고침
+                    window.opener.location.reload();
+                    alert("댓글 수정이 완료되었습니다.");
+                  } else {
+                    alert('댓글 수정에 실패했습니다.');
+                  }
+                })
+                .catch(error => console.error('Error:', error));
+      }
+
+      function closeFrom() {
+          window.close();
+      }
+    </script>
+</body>
+</html>

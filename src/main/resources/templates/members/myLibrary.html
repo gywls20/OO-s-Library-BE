@@ -4,63 +4,276 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 <body>
-    <div layout:fragment="content">
+<div layout:fragment="content">
 
-        <h1>여기는 내서재임</h1>
-        <a th:href="@{../calendar/{pk}(pk=${session.myLibraryPk})}">bookcalendar</a>
-        <div>
-            <div th:each="book, bookStat : ${bookList}">
-                <div>
-                    <hr>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <img th:src="${book.coverImagePath}" alt="북커버">
-                    </button>
-                    <input type="hidden" th:text="${book.bookPk}">
-                    <p th:text="${book.bookTitle}" readonly/>
-                    <p th:text="${book.bookAuthor}" readonly/>
-                    <p th:text="${book.bookCategory}" readonly/>
-                    <p th:text="${book.bookContent}" readonly/>
-                    <p th:text="${book.bookPrice}" readonly/>
-                    <p th:text="${book.bookPublisher}" readonly/>
-                    <p th:text="${book.bookPublishDate}" readonly/>
-                    <hr>
-                </div>
+    <h1>여기는 내서재임</h1>
+    <a th:href="@{../calendar/{pk}(pk=${session.myLibraryPk})}">bookcalendar</a>
+    <div>
+        <div th:each="book, bookStat : ${bookList}">
+            <div>
+                <hr>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-light open-modal" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#exampleModal' + ${bookStat.index},
+                            data-book-pk=${book.bookPk},
+                            data-index=${bookStat.index},
+                            data-user=${session.pk}">
+                    <img th:src="${book.coverImagePath}" alt="북커버">
+                </button>
+                <input type="hidden" th:text="${book.bookPk}">
+                <p th:text="${book.bookTitle}" readonly/>
+                <p th:text="${book.bookAuthor}" readonly/>
+                <p th:text="${book.bookCategory}" readonly/>
+                <p th:text="${book.bookContent}" readonly/>
+                <p th:text="${book.bookPrice}" readonly/>
+                <p th:text="${book.bookPublisher}" readonly/>
+                <p th:text="${book.bookPublishDate}" readonly/>
+                <hr>
+            </div>
 
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Modal -->
+            <div class="modal fade" th:id="'exampleModal' + ${bookStat.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h1>Comment List (미치겠어요~)</h1>
+                            <div th:id="'commentsContainer' + ${bookStat.index}"> <!-- 책들 마다 인덱스 부여 -->
+                                <!-- 코멘트가 표시되는 곳 -->
                             </div>
-                            <div class="modal-body">
-                                <h1>여기에 대충 댓글 넣고 쓰기 되게 하기</h1>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
+                            <!-- 코멘트 작성 폼-->
+                            <form id="commentForm" th:action="@{/comments/insert}" method="post" onclick="getFromUrl(); return false;">
+                                <input type="hidden" th:name="book_pk" th:value="${book.bookPk}">
+                                <input type="hidden" th:name="member_pk" th:value="${session.pk}">
+                                <!--<div>
+                                    <p type="text" id="member_pk" name="member_pk" th:value="${session.pk}" th:text="${session.name}" required>
+                                </div>-->
+                                <div>
+                                    <label for="comment_title">제목</label>
+                                    <input type="text" id="comment_title" name="comment_title" placeholder="제목을 입력하시오" required>
+                                    <div class="error-message" id="titleError"></div>
+                                </div>
+                                <div>
+                                    <label for="comment_content">내용</label>
+                                    <textarea id="comment_content" name="comment_content" cols="50" rows="5" placeholder="내용을 입력하시오" required></textarea>
+                                    <div class="error-message" id="contentError"></div>
+                                </div>
+                                <button type="submit" id="submitCommentBtn">등록</button>
+                                <button type="reset" class="btn btn-secondary">취소</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <!--<button type="button" class="btn btn-primary">Save changes</button>-->
                         </div>
                     </div>
                 </div>
-
             </div>
+
         </div>
-
-
-
-        <script type="text/javascript">
-            // const myModal = document.getElementById('myModal')
-            // const myInput = document.getElementById('myInput')
-            //
-            // myModal.addEventListener('shown.bs.modal', () => {
-            //     myInput.focus()
-            // })
-        </script>
     </div>
+
+    <script>
+
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // 기본 폼 제출 동작을 방지
+
+            var formData = new FormData(this); // 폼 데이터 수집
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if(response.ok) {
+                        // 성공적으로 데이터가 처리되었을 때 페이지 새로고침
+                        window.location.reload();
+                    } else {
+                        // 서버에서 오류 응답이 올 경우 처리
+                        alert('데이터 처리 중 오류가 발생했습니다.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+
+            document.getElementById("commentForm").reset();
+        });
+
+
+        function getFromUrl() {
+            return lastSegment;
+        }
+
+        //url에서 my_library_pk 값 가져오기
+        var url = window.location.href;
+        const lastSegment = url.split('/').pop();
+        console.log(lastSegment);
+
+        //ajax로 데이터 가져오기
+        $(document).ready(function(){
+            $('.open-modal').click(function() {
+                var user = $(this).data('user');
+                var bookPk = $(this).data('book-pk');
+                var my_library_pk = lastSegment;
+                var index = $(this).data('index'); // 인덱스
+                console.log(bookPk);
+                console.log(index);
+
+                fetch(`/comments/${bookPk}/${my_library_pk}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        const commentsContainer = document.getElementById('commentsContainer' + index);
+                        commentsContainer.innerHTML = ''; // 기존 내용을 지웁니다.
+                        data.forEach(comment => {
+                            const commentElement = document.createElement('div');
+                            commentElement.innerHTML = `작성자: ${comment.member_pk}      <br>
+                                                            <button class="fas fa-heart" data-liked="false" onclick="likeComment(this, ${comment.comment_pk}, ${comment.member_pk})"></button> ${comment.total_like} &nbsp;&nbsp;
+                                                            <button class="fas fa-flag" onclick="reportComment(${comment.comment_pk}, ${comment.member_pk})"></button><br>
+                                                            작성 일자: ${comment.created_date}  <br>
+                                                            ${comment.modified_date ? `수정 일자: ${comment.modified_date} <br>` : ''}
+                                                            제목: ${comment.comment_title}     <br>
+                                                            내용: ${comment.comment_content}`;
+
+                            // 사용자 ID와 댓글 작성자 ID가 같을 경우에만 수정 및 삭제 버튼
+                            if (user === comment.member_pk) {
+                                const formElement = document.createElement('form');
+                                formElement.innerHTML = `<input type="button" value="수정" onclick="openEditModal(${comment.comment_pk})">
+                                                             <input type="button" value="삭제" onclick="isDelete(${comment.comment_pk})">`;
+                                commentElement.appendChild(formElement);
+                            }
+                            commentsContainer.appendChild(commentElement);
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            })
+        })
+
+        //코멘트 수정
+        function openEditModal(comment_pk) {
+            console.log(comment_pk);
+            var url = "/comments/updateComment?comment_pk=" + comment_pk;
+            var width = 600; // 창의 너비
+            var height = 400; // 창의 높이
+            //오픈 시 화면 가운데에 위치
+            var left = window.screen.width / 2 - width / 2;
+            var top = window.screen.height / 2 - height / 2;
+
+            //미니창 오픈
+            window.open(url, "Comment Edit", "width=" + width + ",height=" + height + ",top=" + top + ",left=" + left);
+            //window.open(url, "Comment Edit", "width=600,height=400");
+        }
+
+        //삭제 확인 여부
+        function isDelete(comment_pk) {
+            var is_delete = confirm("정말 삭제하시겠습니까?");
+            if (is_delete) {
+                deleteComment(comment_pk)
+            }
+        }
+        // 댓글 삭제
+        function deleteComment(comment_pk) {
+            console.log(`Deleting comment ${comment_pk}`);
+            fetch(`/comments/delete/${comment_pk}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if(response.ok) {
+                        // 요청이 성공적으로 완료되면, 해당 댓글 요소를 제거
+                        const commentElement = document.getElementById(`comment-${comment_pk}`);
+                        if(commentElement) {
+                            commentElement.remove();
+                        }
+                        console.log('코멘트가 성공적으로 삭제되었습니다.');
+                        alert("코멘트가 삭제 되었습니다.");
+                        location.reload();
+
+                    } else {
+                        // 서버로부터 오류 응답을 받았을 때 처리
+                        console.error('코멘트 삭제 중 오류가 발생했습니다.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+
+        //좋아요
+        //좋아요
+        function likeComment(button, comment_pk, member_pk) {
+            const isLiked = button.getAttribute('data-liked') === 'true';
+
+            // 좋아요 상태를 토글합니다.
+            button.setAttribute('data-liked', !isLiked);
+
+            // 버튼 색상을 변경합니다.
+            button.style.color = !isLiked ? 'red' : 'black'; // 좋아요 상태에 따라 색상을 변경
+
+            // 적절한 액션을 수행합니다.
+            if (!isLiked) {
+                // 좋아요 등록
+                registerLike(comment_pk, member_pk);
+            } else {
+                // 좋아요 취소
+                cancelLike(comment_pk, member_pk);
+            }
+        }
+
+
+        function registerLike(comment_pk, member_pk) {
+            // AJAX 요청을 통해 서버에 좋아요 등록을 요청합니다.
+            fetch(`/comments/likes/${comment_pk}/${member_pk}`, {
+                method: 'POST'
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to register like');
+                }
+                console.log('Like registered');
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function cancelLike(comment_pk, member_pk) {
+            // AJAX 요청을 통해 서버에 좋아요 취소를 요청합니다.
+            fetch(`/comments/likes/${comment_pk}/${member_pk}`, {
+                method: 'DELETE'
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to cancel like');
+                }
+                console.log('Like canceled');
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        //신고
+        function reportComment(comment_pk, member_pk){
+            console.log(comment_pk);
+            var url = "/comments/report?comment_pk=" + comment_pk + "&member_pk=" + member_pk;
+            var width = 600; // 창의 너비
+            var height = 400; // 창의 높이
+            //오픈 시 화면 가운데에 위치
+            var left = window.screen.width / 2 - width / 2;
+            var top = window.screen.height / 2 - height / 2;
+
+            //미니창 오픈
+            window.open(url, "Comment Edit", "width=" + width + ",height=" + height + ",top=" + top + ",left=" + left);
+
+        }
+
+    </script>
+
+</div>
 </body>
 </html>
