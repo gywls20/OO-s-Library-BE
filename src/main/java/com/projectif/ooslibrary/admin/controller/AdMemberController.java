@@ -3,13 +3,11 @@ package com.projectif.ooslibrary.admin.controller;
 import com.projectif.ooslibrary.admin.domain.MemberVO;
 import com.projectif.ooslibrary.admin.service.AdMemberService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -25,9 +23,10 @@ public class AdMemberController {
 
 
     @GetMapping("/memberList")
-    public String findMemberList(MemberVO vo, Model model) { // 회원
+    public String findMemberList(Model model) { // 회원
         // 목록 폼
         List<MemberVO> memberlist = adMemberService.findAllMember();
+
 
         log.info("회원목록요청");	//로그
 
