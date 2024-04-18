@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지</title>
+</head>
+<body>
+<h1>admin</h1>
+<h2 th:text="${session.id}"></h2>
+<ul>
+    <li><a th:href="@{/memberlist}">회원 목록</a></li>
+    <li><a th:href="@{/editpost}">게시글 관리</a></li>
+    <li><a th:href="@{/reportlist}">신고 게시글 목록</a></li>
+</ul>
+</body>
+</html>
