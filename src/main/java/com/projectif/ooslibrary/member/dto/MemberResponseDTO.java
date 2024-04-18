@@ -26,6 +26,7 @@ public class MemberResponseDTO {
     private String memberPassword;
     private Integer memberGender;
     private String memberProfileImg;
+    private String role;
     private Long myLibraryPk;
 
 }

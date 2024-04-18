@@ -52,7 +52,9 @@ public class LoginController {
             session.setAttribute("name", member.getMemberName());
             session.setAttribute("profile", member.getMemberProfileImg());
             session.setAttribute("myLibraryPk", member.getMyLibraryPk());
+            session.setAttribute("role", member.getRole());
             log.info("member.getMyLibraryPk() = {}", member.getMyLibraryPk());
+            log.info("member.getRole() = {}", member.getRole());
         } catch (Exception e) {
             log.info("error ", e);
             throw new OAuth2LoginNoSessionValueException("해당 회원은 없거나 탈퇴 처리된 회원입니다");

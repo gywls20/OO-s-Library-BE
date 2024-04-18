@@ -80,10 +80,14 @@
                 <tr th:each="board : ${boardList}" class="board-item"
                     th:onclick="|location.href='@{/boards/{pk}(pk=${board.boardPk})}'|"  onmouseover="this.style.cursor='pointer'">
                     <td th:text="${board.boardPk}">글번호</td>
-                    <td th:text="${board.boardTitle}">제목</td>
+                    <td>
+                        <th:block th:if="${board.level} > 0">
+                            <span>[답글]</span>
+                        </th:block>
+                        <p th:text="${board.boardTitle}"></p>
+                    </td>
                     <td th:text="${board.boardCategory}">카테고리</td>
                     <td th:text="${board.memberName}">작성자</td>
-<!--                    <td th:text="${board.boardContent}">내용</td>-->
                     <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd')}">작성일</td>
                     <td th:text="${#temporals.format(board.modifiedDate, 'yyyy-MM-dd')}">수정일</td>
                 </tr>

@@ -4,6 +4,7 @@ import com.projectif.ooslibrary.board.domain.Board;
 import com.projectif.ooslibrary.board.dto.BoardInsertDTO;
 import com.projectif.ooslibrary.board.dto.BoardResponseDTO;
 import com.projectif.ooslibrary.board.dto.BoardUpdateDTO;
+import com.projectif.ooslibrary.board.repository.BoardRepository;
 import com.projectif.ooslibrary.board.service.BoardService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final HttpSession session;
+    private final BoardRepository boardRepository;
 
     @GetMapping("/{boardPk}")
     public String getBoard(@PathVariable("boardPk") Long boardPk, Model model) {
@@ -50,23 +52,28 @@ public class BoardController {
     // @PageableDefault(size = 10, page = 0, sort = "boardPk", direction = Sort.Direction.DESC) Pageable pageable, Model model
     @GetMapping("")
     public String getBoardList(@PageableDefault(size = 5, page = 0, sort = "boardPk", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
-        Page<Board> boardPage = boardService.getBoardList(pageable);
-        Page<BoardResponseDTO> list = boardPage.map(board ->
-                BoardResponseDTO.builder()
-                        .boardPk(board.getBoardPk())
-                        .boardTitle(board.getBoardTitle())
-                        .boardContent(board.getBoardContent())
-                        .boardCategory(board.getBoardCategory())
-                        .memberName(board.getMember().getMemberName())
-                        .createdDate(board.getCreatedDate())
-                        .modifiedDate(board.getModifiedDate())
-                        .build()
-        );
+        Page<BoardResponseDTO> boardPage = boardService.getBoardList(pageable);
+
+//        Page<Board> boardPage = boardService.getBoardList(pageable);
+//        Page<BoardResponseDTO> list = boardPage.map(board ->
+//                BoardResponseDTO.builder()
+//                        .boardPk(board.getBoardPk())
+//                        .boardTitle(board.getBoardTitle())
+//                        .boardContent(board.getBoardContent())
+//                        .boardCategory(board.getBoardCategory())
+//                        .memberName(board.getMember().getMemberName())
+//                        .memberPk(board.getMember().getMemberPk())
+//                        .level(board.getLevel())
+//                        .createdDate(board.getCreatedDate())
+//                        .modifiedDate(board.getModifiedDate())
+//                        .build()
+//        );
 
         int startPage = Math.max(1, boardPage.getPageable().getPageNumber() - 10);
         int endPage = Math.min(boardPage.getTotalPages(), boardPage.getPageable().getPageNumber() + 10);
 
-        model.addAttribute("boardList", list);
+//        model.addAttribute("boardList", list);
+        model.addAttribute("boardList", boardPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
@@ -112,6 +119,7 @@ public class BoardController {
                 .boardContent(findBoard.getBoardContent())
                 .boardCategory(findBoard.getBoardCategory())
                 .memberName(findBoard.getMember().getMemberName())
+                .memberPk(findBoard.getMember().getMemberPk())
                 .createdDate(findBoard.getCreatedDate())
                 .modifiedDate(findBoard.getModifiedDate())
                 .build();
@@ -135,4 +143,5 @@ public class BoardController {
         }
         return boardService.deleteBoard(boardPk);
     }
+
 }
