@@ -1,8 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -74,7 +73,7 @@
             <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">회원관리</h6>
-                    <a class="collapse-item" href="login.html">회원목록</a>
+                    <a class="collapse-item" th:href="@{/adminPage/memberList}">회원목록</a>
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">책관리</h6>
                     <a class="collapse-item" href="404.html">게시글</a>
