@@ -50,6 +50,7 @@ public class BoardService {
         if (saved.getBoardPk() == null) {
             throw new RuntimeException("게시물 저장을 실패하였습니다");
         }
+        saved.addBoardGroup(saved.getBoardGroup()); // 원 글일시, root와 같으므로 그룹에 자기 pk 넣기
         return true;
     }
 

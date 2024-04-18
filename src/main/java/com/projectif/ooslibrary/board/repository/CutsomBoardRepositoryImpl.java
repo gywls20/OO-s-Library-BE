@@ -1,6 +1,7 @@
 package com.projectif.ooslibrary.board.repository;
 
 import com.projectif.ooslibrary.board.domain.Board;
+import com.projectif.ooslibrary.board.dto.BoardResponseDTO;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.projectif.ooslibrary.board.domain.QBoard.*;
 
@@ -33,8 +37,8 @@ public class CutsomBoardRepositoryImpl implements CutsomBoardRepository {
                         isDeletedIs0()
                 )
                 .orderBy(
-                        board.parent.boardPk.asc().nullsFirst(),
-                        board.createdDate.asc()
+                        board.parent.boardPk.desc().nullsFirst(),
+                        board.createdDate.desc()
                 ).fetch();
     }
 
