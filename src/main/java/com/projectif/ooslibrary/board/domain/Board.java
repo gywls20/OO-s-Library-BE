@@ -1,5 +1,6 @@
 package com.projectif.ooslibrary.board.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projectif.ooslibrary.board.dto.BoardResponseDTO;
 import com.projectif.ooslibrary.config.auditing.BaseEntity;
 import com.projectif.ooslibrary.member.domain.Member;

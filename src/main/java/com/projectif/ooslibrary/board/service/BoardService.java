@@ -2,6 +2,7 @@ package com.projectif.ooslibrary.board.service;
 
 import com.projectif.ooslibrary.board.domain.Board;
 import com.projectif.ooslibrary.board.dto.BoardInsertDTO;
+import com.projectif.ooslibrary.board.dto.BoardResponseDTO;
 import com.projectif.ooslibrary.board.dto.BoardUpdateDTO;
 import com.projectif.ooslibrary.board.exception.NoSuchBoardException;
 import com.projectif.ooslibrary.board.repository.BoardRepository;
@@ -33,24 +34,27 @@ public class BoardService {
     }
 
     // 여러건 조회 -> 간단 페이징
-    public Page<Board> getBoardList(Pageable pageable) {
+    public Page<BoardResponseDTO> getBoardList(Pageable pageable) {
 //        return boardRepository.findAllByIsDeletedIs(0, pageable);
 //        return boardRepository.boardPage(pageable);
 //        return boardRepository.findAllByIsDeletedIsOrderByBoardPkDesc(0);
-        return boardRepository.findAllByIsDeletedIs(0, pageable);
+//        return boardRepository.findAllByIsDeletedIs(0, pageable);
+        return boardRepository.boardPage(pageable);
     }
 
     // 원글 등록
     @Transactional
     public boolean insertBoard(BoardInsertDTO board) {
+
         Member member = memberRepository.findByIdNotDeleted(board.getMemberPk())
                 .orElseThrow(() -> new NoSuchMemberException("회원이 존재하지 않습니다"));
         Board newBoard = new Board(board.getBoardTitle(), board.getBoardCategory(), board.getBoardContent(), member, null);
         Board saved = boardRepository.save(newBoard);
+
         if (saved.getBoardPk() == null) {
             throw new RuntimeException("게시물 저장을 실패하였습니다");
         }
-        saved.addBoardGroup(saved.getBoardGroup()); // 원 글일시, root와 같으므로 그룹에 자기 pk 넣기
+        saved.addBoardGroup(saved.getBoardPk()); // 원 글일시, root와 같으므로 그룹에 자기 pk 넣기
         return true;
     }
 

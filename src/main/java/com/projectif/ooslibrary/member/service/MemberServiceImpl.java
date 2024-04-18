@@ -126,6 +126,7 @@ public class MemberServiceImpl implements MemberService {
                 .memberPassword(findMember.getMemberPassword())
                 .memberGender(findMember.getMemberGender())
                 .memberProfileImg(findMember.getMemberProfileImg())
+                .role(findMember.getRole().name())
                 .myLibraryPk(findMember.getMyLibrary().getMyLibraryPk())
                 .build();
     }
@@ -145,6 +146,7 @@ public class MemberServiceImpl implements MemberService {
                 .memberPassword(findMember.getMemberPassword())
                 .memberGender(findMember.getMemberGender())
                 .memberProfileImg(findMember.getMemberProfileImg())
+                .role(findMember.getRole().name())
                 .myLibraryPk(findMember.getMyLibrary().getMyLibraryPk())
                 .build();
 
