@@ -5,13 +5,16 @@
 
     <select id="findAllMember" resultType="com.projectif.ooslibrary.admin.domain.MemberVO">
         select
-                member_id,
-                member_name,
-                member_email
+            member_id,
+            member_name,
+            member_email,
+            member_gender,
+            created_date,
+            is_deleted
         from
-                member
+            member
         order by
-                member_id asc
+            member_id asc
     </select>
 
     <delete id="deleteMember" parameterType="String">
