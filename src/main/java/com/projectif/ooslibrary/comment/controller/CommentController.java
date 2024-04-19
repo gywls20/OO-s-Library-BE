@@ -22,6 +22,7 @@ public class CommentController {
 
     //코멘트 생성
     @PostMapping("/comments/insert")
+    @ResponseBody
     public ResponseEntity<String> insertComment(CommentRequestDTO commentRequestDTO) {
         commentService.insertComment(commentRequestDTO);
         return ResponseEntity.ok().build();
