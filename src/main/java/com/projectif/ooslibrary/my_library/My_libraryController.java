@@ -5,6 +5,7 @@ import com.projectif.ooslibrary.member.repository.MemberRepository;
 import com.projectif.ooslibrary.my_library.domain.MyLibrary;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,5 +38,14 @@ public class My_libraryController {
         myLibraryService.saveBookPlus(bookPk, myLibraryPk);
         return ResponseEntity.ok("내서재에 책이 추가 되었습니다.");
     }
+
+    @DeleteMapping("/bookPlus") //내서재 책 삭제
+    @ResponseBody
+    public ResponseEntity<String> DeleteBookToLibrary(@RequestParam Long bookPk,
+                                                          @RequestParam Long myLibraryPk) {
+        myLibraryService.DeleteBookToLibrary(bookPk, myLibraryPk);
+        return ResponseEntity.ok("내서재에 책이 삭제 되었습니다.");
+    }
+
 
 }

@@ -135,6 +135,13 @@ public class MemberController {
         boolean updated = memberService.memberUpdate(dto);
         log.info("회원 정보 수정 성공 여부 = {}", updated);
 
+        // 현재 세션 정보 변경
+        if (updated) {
+            MemberResponseDTO member = memberService.getMember((Long) session.getAttribute("pk"));
+            session.setAttribute("name", member.getMemberName());
+            session.setAttribute("profile", member.getMemberProfileImg());
+        }
+
         return "redirect:/members/" + id + "/update";
     }
 

@@ -31,6 +31,9 @@
                                         <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" th:href="@{/myLibrary/{pk}(pk=${session.myLibraryPk})}">내서재로</a>
                                         <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" th:href="@{/logout}">Log Out</a>
                                     </th:block>
+                                    <th:block th:if="${#strings.equals(session.role, 'ADMIN')}">
+                                        <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" th:href="@{/adminPage}">관리자페이지</a>
+                                    </th:block>
                                 </div>
                             </div>
                         </div>

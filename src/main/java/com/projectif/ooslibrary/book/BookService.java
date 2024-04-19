@@ -65,7 +65,7 @@ public List<BookDTO> getAllBooks(String sortOrder) {
     }
 
 
-    public List<BookDTO> getLibraryBooks(){
+    public List<BookDTO> getLibraryBooks(String category){
         ArrayList<Book> books = new ArrayList<>();
 
 

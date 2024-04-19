@@ -1,5 +1,7 @@
 package com.projectif.ooslibrary.board.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.projectif.ooslibrary.board.dto.BoardResponseDTO;
 import com.projectif.ooslibrary.config.auditing.BaseEntity;
 import com.projectif.ooslibrary.member.domain.Member;
 import jakarta.persistence.*;
@@ -28,6 +30,8 @@ public class Board extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_pk")
     private Member member;
+    // Query용 댓글 그룹 모음 -> 최상위 원글의 board_pk
+    private Long boardGroup;
     // 부모 원글
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="parent_pk")
@@ -61,6 +65,8 @@ public class Board extends BaseEntity {
         this.modifiedDate = LocalDateTime.now();
     }
 
-
-
+    // 쿼리용 댓글 그룹 넣기
+    public void addBoardGroup(Long boardGroup) {
+        this.boardGroup = boardGroup;
+    }
 }

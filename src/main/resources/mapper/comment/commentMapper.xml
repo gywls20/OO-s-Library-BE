@@ -114,5 +114,4 @@
     <select id="getAll" resultType="com.projectif.ooslibrary.comment.domain.CommentVO">
         select * from comment;
     </select>
-
 </mapper>

@@ -1,0 +1,65 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en"-->
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<!--<head>-->
+<!--    <meta charset="utf-8" />-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />-->
+<!--    <meta name="description" content="" />-->
+<!--    <meta name="author" content="" />-->
+<!--    <title>Personal - Start Bootstrap Theme</title>-->
+<!--    &lt;!&ndash; Favicon&ndash;&gt;-->
+<!--    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />-->
+<!--    &lt;!&ndash; Custom Google font&ndash;&gt;-->
+<!--    <link rel="preconnect" href="https://fonts.googleapis.com" />-->
+<!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />-->
+<!--    &lt;!&ndash; Bootstrap icons&ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />-->
+<!--    &lt;!&ndash; Core theme CSS (includes Bootstrap)&ndash;&gt;-->
+<!--    <link href="css/styles.css" rel="stylesheet" />-->
+<!--</head>-->
+<!--<body class="d-flex flex-column h-100">-->
+<!--<div layout:fragment="content">-->
+<!--    <main class="flex-shrink-0">-->
+<!--        <header class="py-5">-->
+<!--            <div class="container px-5 pb-5">-->
+<!--                <div class="row gx-5 align-items-center">-->
+<!--                    <div class="col-xxl-5">-->
+<!--                        &lt;!&ndash; Header text content&ndash;&gt;-->
+<!--                        <div class="text-center text-xxl-start">-->
+<!--                            <div class="badge bg-gradient-primary-to-secondary text-white mb-4"><div class="text-uppercase">Knowledge &middot; Philosophy &middot; Development</div></div>-->
+<!--                            <div class="fs-3 fw-light text-muted">Welcome To Your Library</div>-->
+<!--&lt;!&ndash;                            <th:block th:if="${session.id} == null">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <h1 class="display-3 fw-bolder mb-5"><span class="text-gradient d-inline">OO의 서재</span></h1>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </th:block>&ndash;&gt;-->
+<!--                            <th:block th:if="${session.id} != null">-->
+<!--                                <h1 class="display-3 fw-bolder mb-5"><span class="text-gradient d-inline" th:text="'관리자: ' + ${session.name}"></span></h1>-->
+<!--                            </th:block>-->
+<!--                            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xxl-start mb-3">-->
+<!--                                &lt;!&ndash;<th:block th:if="${session.id} == null">-->
+<!--                                    <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" th:href="@{/login}">Log In</a>-->
+<!--                                    <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" th:href="@{/members/join}">Join Us</a>-->
+<!--                                </th:block>&ndash;&gt;-->
+<!--                                <th:block th:if="${session.id} != null">-->
+<!--                                    <a class="btn btn-primary btn-lg px-5 py-3 me-sm-3 fs-6 fw-bolder" th:href="@{/adminPage/memberList}">회원목록</a>-->
+<!--                                    <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" th:href="@{/editpost}">게시글 관리</a>-->
+<!--                                    <a class="btn btn-outline-dark btn-lg px-5 py-3 fs-6 fw-bolder" th:href="@{/reportlist}">신고 게시글 목록</a>-->
+<!--                                </th:block>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-xxl-7">-->
+<!--                        &lt;!&ndash; Header profile picture&ndash;&gt;-->
+<!--                        <div class="d-flex justify-content-center mt-5 mt-xxl-0">-->
+<!--                            <img class="profile-img" src="assets/profile.png" alt="..." />-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </header>-->
+<!--    </main>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

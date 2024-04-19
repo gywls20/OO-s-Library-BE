@@ -1,3 +1,6 @@
+server:
+  port: 9999
+
 spring:
   application:
     name: OOsLibrary
@@ -20,10 +23,10 @@ spring:
       ddl-auto: update
 
   datasource:
-    driver-class-name: ${DB_DRIVER_CLASS}
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://db-m2gjj-kr.vpc-pub-cdb.ntruss.com:3306/webproject?serverTimezone=Asia/Seoul
+    username: projectIf
+    password: if123!@#
 
   security:
     oauth2:
@@ -75,10 +78,11 @@ logging:
 
 mybatis:
   mapper-locations: mapper/**/*.xml
-  type-aliases-package: com.projectif.ooslibrary.mapper
+#  type-aliases-package: com.projectif.ooslibrary.mapper
 
-mail-id: ${NAVER_LOGIN_MAIL_ID}
 mail-password: ${NAVER_LOGIN_MAIL_PASSOWRD}
+mail-id: ${NAVER_LOGIN_MAIL_ID}
+
 
 ---
 
