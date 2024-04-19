@@ -1,9 +1,15 @@
 package com.projectif.ooslibrary.comment.domain;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class CommentVO { //데이터 저장하는 공간
     private Long comment_pk;
     private Long member_pk;

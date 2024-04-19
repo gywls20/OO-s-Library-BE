@@ -20,10 +20,9 @@ public class CommentReportServiceImpl implements CommentReportService{
     }
     //신고 등록
     @Override
-    public boolean insertReportComment(CommentReportRequestDTO commentReportRequestDTO) {
+    public void insertReportComment(CommentReportRequestDTO commentReportRequestDTO) {
         commentReportMapper.insertReportComment(commentReportRequestDTO);
         commentReportMapper.add_total_report(commentReportRequestDTO);
-        return true;
     }
     //신고 수정
     @Override

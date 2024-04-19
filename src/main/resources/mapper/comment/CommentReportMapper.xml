@@ -14,11 +14,11 @@
                                    report_content,
                                    comment_pk,
                                    member_pk)
-                            values(#{report_category},
-                                   #{report_name},
-                                   #{report_content},
-                                   #{comment_pk},
-                                   #{member_pk})
+        values(#{report_category},
+               #{report_name},
+               #{report_content},
+               #{comment_pk},
+               #{member_pk})
     </insert>
     <!-- 등록 시 total_report 증가 -->
     <update id="add_total_report" parameterType="com.projectif.ooslibrary.comment.dto.CommentReportRequestDTO">

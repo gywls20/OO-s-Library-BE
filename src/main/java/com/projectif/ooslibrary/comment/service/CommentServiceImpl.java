@@ -1,13 +1,17 @@
 package com.projectif.ooslibrary.comment.service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.projectif.ooslibrary.comment.domain.CommentVO;
 import com.projectif.ooslibrary.comment.dto.CommentRequestDTO;
-import com.projectif.ooslibrary.comment.dto.PageInfo;
+import com.projectif.ooslibrary.comment.dto.PageRequestDTO;
 import com.projectif.ooslibrary.mapper.CommentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -16,28 +20,15 @@ public class CommentServiceImpl implements  CommentService{
 
     //코멘트 등록
     @Override
-    public Long insertComment(CommentRequestDTO commentRequestDTO) {
+    public void insertComment(CommentRequestDTO commentRequestDTO) {
         commentMapper.insertComment(commentRequestDTO);
-        return commentRequestDTO.getComment_pk();
-    }
-    //코멘트 리스트로 조회(페이징 처리)
-    @Override
-    public PageInfo<CommentVO> getComments(int pageIndex, int pageSize, Long book_pk, Long my_library_pk) {
-        int totalCount = commentMapper.getCount();
-        List<CommentVO> commentVOList = commentMapper.getComments((pageIndex - 1) * pageSize, pageSize, book_pk, my_library_pk);
-        return new PageInfo<>(pageIndex, pageSize, totalCount, commentVOList);
+        //commentRequestDTO.getComment_pk();
     }
 
-    /*@Override
-    public List<CommentVO> getComments() {
-        return commentMapper.getComments();
-    }*/
-
-    //특정 아이디로 코멘트 조회
-    @Override
-    public CommentVO getCommentsById(Long member_pk) {
-        return commentMapper.getCommentsById(member_pk);
-    }
+//    @Override
+//    public List<CommentVO> getComments(Long bookPk, Long my_library_pk) {
+//        return commentMapper.getComments(bookPk, my_library_pk);
+//    }
 
     //코멘트 수정
     @Override
@@ -47,10 +38,21 @@ public class CommentServiceImpl implements  CommentService{
 
     //코멘트 삭제
     @Override
-    public Long deleteComment(Long comment_pk) {
+    public void deleteComment(Long comment_pk) {
         commentMapper.deleteComment(comment_pk);
-        return comment_pk;
     }
+    //코멘트 수정에 필요한 정보
+    @Override
+    public List<CommentVO> getById(Long comment_pk) {
+        return commentMapper.getById(comment_pk);
+    }
+
+    @Override
+    public List<CommentVO> getComments(PageRequestDTO pageRequestDTO) {
+        PageHelper.startPage(pageRequestDTO.getPageNum(), pageRequestDTO.getPageSize());
+        return commentMapper.getComments(pageRequestDTO);
+    }
+
 
 }
 
