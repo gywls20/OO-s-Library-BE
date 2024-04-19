@@ -58,10 +58,11 @@ public List<BookDTO> getAllBooks(String sortOrder) {
         return bookDTO;
     }
 
-    public BookTextDTO getBookPath(Long book_pk) {
-        Optional<Book> optionalBook = bookRepository.findById(book_pk);
-        return optionalBook.map(book -> new BookTextDTO(book.getBookTextPath()))
-                .orElseThrow(() -> new RuntimeException("해당하는 책을 찾을 수 없습니다."));
+
+    public BookTextDTO findBookTextDTOByBookPk(Long bookPk) {
+        Book book = bookRepository.findById(bookPk)
+                .orElseThrow(() -> new IllegalArgumentException("해당 책을 찾을 수 없습니다. bookPk=" + bookPk));
+        return new BookTextDTO(book.getBookTextPath(), book.getCoverImagePath());
     }
 
 

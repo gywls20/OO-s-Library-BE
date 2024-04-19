@@ -14,6 +14,8 @@
                     'opsz' 24
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 </head>
 <body>
     <div layout:fragment="content">
@@ -28,7 +30,10 @@
                     <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <img th:src="${book.coverImagePath}" alt="북커버">
                     </button>
-                    <input type="hidden" th:text="${book.bookPk}">
+                    <input type="hidden" th:text="${book.bookPk}">  <!--나중에 지울예정입니다.-->
+                    <a th:href="@{../eBook(book_plus=${book.bookPlusPk},book_pk=${book.bookPk})}" class="material-symbols-outlined" >Menu_Book</a>
+                    <button class="material-symbols-outlined" id="deleteBookBtn" onclick="deleteBook(this)" th:attr="data-book-pk=${book.bookPk}, my-library-pk=${session.myLibraryPk}">Delete</button>
+<!--                    <input type="text" th:text="${book.bookPlusPk}" readonly/>-->
                     <p th:text="${book.bookTitle}" readonly/>
                     <p th:text="${book.bookAuthor}" readonly/>
                     <p th:text="${book.bookCategory}" readonly/>
@@ -58,18 +63,37 @@
                     </div>
                 </div>
 
+
+
             </div>
         </div>
 
 
 
-        <script type="text/javascript">
-            // const myModal = document.getElementById('myModal')
-            // const myInput = document.getElementById('myInput')
-            //
-            // myModal.addEventListener('shown.bs.modal', () => {
-            //     myInput.focus()
-            // })
+        <script th:inline="javascript">
+            function deleteBook(element) {
+                const bookPk = element.getAttribute('data-book-pk');
+                const myLibraryPk = element.getAttribute('my-library-pk');
+
+                $.ajax({
+                    url: '/bookPlus',
+                    type: 'DELETE',
+                    data: {
+                        bookPk: bookPk,
+                        myLibraryPk: myLibraryPk
+                    },
+                    success: function(response) {
+                        alert(response);
+                        // 필요한 경우, 성공 후 페이지 새로고침 또는 리다이렉트
+                        location.reload();
+                        //window.location.href = '/someOtherPage';
+                    },
+                    error: function(xhr, status, error) {
+                        // 에러 처리
+                        alert("에러 발생");
+                    }
+                });
+            }
         </script>
     </div>
 </body>

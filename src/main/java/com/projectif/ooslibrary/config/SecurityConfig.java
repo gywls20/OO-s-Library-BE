@@ -136,6 +136,7 @@ hu       * AccessDeniedHandler : 권한(인가) 예외처리, 403(Forbidden) 상
                                 .requestMatchers("/readData/**").permitAll()
                                 .requestMatchers("/library/**").permitAll()
                                 .requestMatchers("/calendar/**").permitAll()
+                                .requestMatchers("/eBook/**").permitAll()
                                 .anyRequest().authenticated() 
                 )
                 // 세션 관리 기능

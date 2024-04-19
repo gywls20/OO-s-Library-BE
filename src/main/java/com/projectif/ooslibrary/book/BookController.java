@@ -29,11 +29,11 @@ public class BookController {
         }
     }
     //ebook 페이지
-    @GetMapping("/books/{book_pk}")
-    @ResponseBody
-    public BookTextDTO getBookText(@PathVariable Long book_pk) {
-        return bookService.getBookPath(book_pk);
-    }
+//    @GetMapping("/books/{book_pk}")
+//    @ResponseBody
+//    public BookTextDTO getBookText(@PathVariable Long book_pk) {
+//        return bookService.getBookPath(book_pk);
+//    }
 
     //library 페이지 이동
     @GetMapping("/library")
@@ -49,6 +49,17 @@ public class BookController {
         model.addAttribute("bookList", LibraryBooks);
 
         return "library/bookplus";
+    }
+
+    @GetMapping("/eBook")
+    public String eBook(Model model, @RequestParam Long book_plus, @RequestParam Long book_pk) {
+        BookTextDTO bookTextDTO = bookService.findBookTextDTOByBookPk(book_pk);
+
+        model.addAttribute("bookTextPath", bookTextDTO.getBookTextPath());
+        model.addAttribute("coverImagePath", bookTextDTO.getCoverImagePath());
+        model.addAttribute("bookPlus", book_plus);
+
+        return "eBook/e_book";
     }
 
 }
