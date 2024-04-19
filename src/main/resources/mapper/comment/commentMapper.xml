@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN"
-            "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.projectif.ooslibrary.mapper.CommentMapper">
     <sql id="commentColumns">
         member_pk,
@@ -27,51 +27,51 @@
     <!-- 코멘트 저장 -->
     <insert id="insertComment" parameterType="com.projectif.ooslibrary.comment.dto.CommentRequestDTO" useGeneratedKeys="true" keyProperty="comment_pk">
         INSERT INTO comment (
-            <include refid="commentColumns" />
+        <include refid="commentColumns" />
         ) VALUES (
-            #{member_pk},
-            #{comment_title},
-            #{comment_content},
-            0,
-            0,
-            0,
-            null,
-            #{book_pk},
-            4
+        #{member_pk},
+        #{comment_title},
+        #{comment_content},
+        0,
+        0,
+        0,
+        null,
+        #{book_pk},
+        #{my_library_pk}
         )
     </insert>
     <!-- 코멘트 리스트 조회 & 페이징 처리-->
-    <select id="getComments" parameterType="long" resultType="com.projectif.ooslibrary.comment.domain.CommentVO">
+    <select id="getComments" parameterType="com.projectif.ooslibrary.comment.dto.PageRequestDTO" resultType="com.projectif.ooslibrary.comment.domain.CommentVO">
         SELECT
-        *,
+            *,
             CASE
-             WHEN modified_date IS NULL THEN created_date
-             ELSE modified_date
-        END
+                WHEN modified_date IS NULL THEN created_date
+                ELSE modified_date
+                END
         FROM
-        comment
+            comment
         WHERE
-           book_pk = #{bookPk}
-        and
-            my_library_pk = #{my_library_pk}
-        and
+            book_pk = #{bookPk}
+          and
+            my_library_pk = #{myLibraryPk}
+          and
             is_deleted = 0
         ORDER BY created_date DESC
     </select>
 
-<!--    <select id="getComments" resultType="com.projectif.ooslibrary.comment.domain.CommentVO" parameterType="map">-->
-<!--        SELECT-->
-<!--            <include refid="commentList" />-->
-<!--        FROM-->
-<!--            comment-->
-<!--        WHERE-->
-<!--            is_deleted = 0-->
-<!--        and-->
-<!--            book_pk = #{book_pk}-->
-<!--        and-->
-<!--            my_library_pk=#{my_library_pk}-->
-<!--        LIMIT #{limit} OFFSET #{offset}-->
-<!--    </select>-->
+    <!--    <select id="getComments" resultType="com.projectif.ooslibrary.comment.domain.CommentVO" parameterType="map">-->
+    <!--        SELECT-->
+    <!--            <include refid="commentList" />-->
+    <!--        FROM-->
+    <!--            comment-->
+    <!--        WHERE-->
+    <!--            is_deleted = 0-->
+    <!--        and-->
+    <!--            book_pk = #{book_pk}-->
+    <!--        and-->
+    <!--            my_library_pk=#{my_library_pk}-->
+    <!--        LIMIT #{limit} OFFSET #{offset}-->
+    <!--    </select>-->
     <!-- -->
     <select id="getCount" resultType="int">
         SELECT COUNT(*)
@@ -88,7 +88,7 @@
             comment
         where
             comment_pk = #{comment_pk}
-        and
+          and
             is_deleted = 0
     </select>
 

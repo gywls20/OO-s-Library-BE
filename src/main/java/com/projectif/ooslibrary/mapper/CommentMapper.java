@@ -1,7 +1,9 @@
 package com.projectif.ooslibrary.mapper;
 
+import com.github.pagehelper.Page;
 import com.projectif.ooslibrary.comment.domain.CommentVO;
 import com.projectif.ooslibrary.comment.dto.CommentRequestDTO;
+import com.projectif.ooslibrary.comment.dto.PageRequestDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,10 +14,6 @@ public interface CommentMapper {
 
     void insertComment(CommentRequestDTO commentRequestDTO);
 
-    //댓글 리스트 조회 / return : 댓글 리스트
-    //List<CommentVO> getComments(int offset, int limit, Long book_pk, Long my_library_pk);
-    List<CommentVO> getComments(Long bookPk, Long my_library_pk);
-
     //댓글 수 카운팅 / return : 댓글 수
     int getCount();
 
@@ -25,4 +23,5 @@ public interface CommentMapper {
 
     List<CommentVO> getById(Long comment_pk);
 
+    List<CommentVO> getComments(PageRequestDTO pageRequestDTO);
 }

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-//@RequestMapping("/comment")
 @RequiredArgsConstructor
 public class CommentReportController {
     private final CommentReportService commentReportService;
@@ -22,8 +21,8 @@ public class CommentReportController {
     //신고 추가
     @PostMapping("/comments/report")
     public ResponseEntity<String> insertReportComment(CommentReportRequestDTO commentReportRequestDTO) {
-       System.out.println(commentReportRequestDTO);
-       commentReportService.insertReportComment(commentReportRequestDTO);
+        System.out.println(commentReportRequestDTO);
+        commentReportService.insertReportComment(commentReportRequestDTO);
 
         return ResponseEntity.ok().body("신고 되었습니다.");
     }

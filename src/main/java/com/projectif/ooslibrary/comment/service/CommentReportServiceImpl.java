@@ -37,6 +37,4 @@ public class CommentReportServiceImpl implements CommentReportService{
         commentReportMapper.remove_total_report(comment_pk);
         return true;
     }
-
-
 }

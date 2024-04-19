@@ -1,7 +1,6 @@
 package com.projectif.ooslibrary.comment.controller;
 
 import com.projectif.ooslibrary.comment.domain.CommentLikeVO;
-import com.projectif.ooslibrary.comment.dto.CommentLikeRequestDTO;
 import com.projectif.ooslibrary.comment.service.CommentLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor

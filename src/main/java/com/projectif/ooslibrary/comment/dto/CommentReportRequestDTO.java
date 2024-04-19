@@ -2,8 +2,10 @@ package com.projectif.ooslibrary.comment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class CommentReportRequestDTO {
     private String report_category;

@@ -2,13 +2,9 @@ package com.projectif.ooslibrary.comment.controller;
 
 import com.projectif.ooslibrary.comment.domain.CommentVO;
 import com.projectif.ooslibrary.comment.dto.CommentRequestDTO;
-import com.projectif.ooslibrary.comment.dto.PageInfo;
+import com.projectif.ooslibrary.comment.dto.PageRequestDTO;
 import com.projectif.ooslibrary.comment.service.CommentService;
-import com.projectif.ooslibrary.member.exception.SessionMemberNotMatchException;
-import jakarta.servlet.http.HttpSession;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
@@ -16,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 //@Slf4j
 @Controller
@@ -27,38 +22,20 @@ public class CommentController {
 
     //코멘트 생성
     @PostMapping("/comments/insert")
-    public ResponseEntity<?> insertComment(CommentRequestDTO commentRequestDTO) {
-
-         commentService.insertComment(commentRequestDTO);
-         return ResponseEntity.ok().build();
+    public ResponseEntity<String> insertComment(CommentRequestDTO commentRequestDTO) {
+        commentService.insertComment(commentRequestDTO);
+        return ResponseEntity.ok().build();
     }
-
-//    @GetMapping("/{bookPk}")
-//    @ResponseBody
-//    public String getComments(@PathVariable Long bookPk,
-//                              Model model) {
-//        List<CommentVO> commentList = commentService.getComments(bookPk);
-//        model.addAttribute("commentList", commentList);
-//        model.addAttribute("book_pk", bookPk);
-//        return "members/myLibrary";
-//    }
-    //코멘트 리스트
-@GetMapping("/comments/{bookPk}/{my_library_pk}")
-@ResponseBody
-public List<CommentVO> getComments(@PathVariable Long bookPk,
-                                   @PathVariable Long my_library_pk) {
-    return commentService.getComments(bookPk, my_library_pk);
-}
-
-    //코멘트 조회(+ 페이징)
-//    @GetMapping("")
-//    public PageInfo<CommentVO> getComments(@RequestParam(defaultValue = "1") int pageIndex,
-//                                           @RequestParam(defaultValue = "10") int pageSize,
-//                                           @RequestBody Map<String, Long> comment) {
-//        Long book_pk = comment.get("book_pk");
-//        Long my_library_pk = comment.get("my_library_pk");
-//        return commentService.getComments(pageIndex, pageSize, book_pk, my_library_pk);
-//    }
+    //코멘트 리스트(페이징 처리)
+    @PostMapping("/comments/list")
+    @ResponseBody
+    public ResponseEntity<List<CommentVO>> list(@RequestBody PageRequestDTO pageRequestDTO) throws Exception {
+        System.out.println(pageRequestDTO);
+        List<CommentVO> comments = commentService.getComments(pageRequestDTO);
+        System.out.println(comments);
+        //html - body로 데이터 이동
+        return ResponseEntity.ok().body(comments);
+    }
 
     //코멘트 수정
     @GetMapping("/comments/updateComment")
@@ -81,7 +58,6 @@ public List<CommentVO> getComments(@PathVariable Long bookPk,
     }
 
     //코멘트 삭제
-
     @DeleteMapping("/comments/delete/{comment_pk}")
     public ResponseEntity<String> deleteComment(@PathVariable Long comment_pk) {
         commentService.deleteComment(comment_pk);
