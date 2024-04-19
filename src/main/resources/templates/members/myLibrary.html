@@ -14,8 +14,6 @@
                     'opsz' 24
         }
     </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
 </head>
 <body>
     <div layout:fragment="content">
@@ -27,7 +25,12 @@
                 <div>
                     <hr>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" class="btn btn-light open-modal" data-bs-toggle="modal"
+                            th:attr="data-bs-target='#exampleModal' + ${bookStat.index},
+                            data-book-pk=${book.bookPk},
+                            data-index=${bookStat.index},
+                            data-user=${session.pk},
+                            data-name=${session.name}">
                         <img th:src="${book.coverImagePath}" alt="북커버">
                     </button>
                     <input type="hidden" th:text="${book.bookPk}">  <!--나중에 지울예정입니다.-->
@@ -62,8 +65,6 @@
                         </div>
                     </div>
                 </div>
-
-
 
             </div>
         </div>

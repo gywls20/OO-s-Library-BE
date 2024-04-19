@@ -8,13 +8,13 @@
     </select>
 
     <!-- 좋아요 추가 -->
-    <insert id="likeComment" parameterType="com.projectif.ooslibrary.comment.dto.CommentLikeRequestDTO">
+    <insert id="likeComment" parameterType="long">
         insert into comment_like(comment_pk, member_pk)
         values(#{comment_pk}, #{member_pk})
     </insert>
     <!-- 추가 시 total_like 증가 -->
-    <update id="add_total_like" parameterType="com.projectif.ooslibrary.comment.dto.CommentLikeRequestDTO">
-        update comment set total_like = total_like + 1 where comment_pk=#{comment_pk}
+    <update id="add_total_like" parameterType="long">
+        update comment set total_like = total_like + 1 where comment_pk = #{comment_pk}
     </update>
 
     <!-- 좋아요 취소(삭제)-->

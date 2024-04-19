@@ -1,24 +1,27 @@
 package com.projectif.ooslibrary.comment.controller;
 
 import com.projectif.ooslibrary.comment.domain.CommentLikeVO;
-import com.projectif.ooslibrary.comment.dto.CommentLikeRequestDTO;
 import com.projectif.ooslibrary.comment.service.CommentLikeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
-@RestController
-@RequestMapping("/comment")
+@Controller
 @RequiredArgsConstructor
 public class CommentLikeController {
     private final CommentLikeService commentLikeService;
 
     //특정 코멘트의 좋아요 추가
-    @PostMapping("/likes")
-    public void likeComment(@RequestBody CommentLikeRequestDTO commentLikeRequestDTO) {;
-        commentLikeService.likeComment(commentLikeRequestDTO);
+    @PostMapping("comments/likes/{comment_pk}/{member_pk}")
+    public ResponseEntity<?> likeComment(@PathVariable Long comment_pk,
+                                         @PathVariable Long member_pk) {
+        commentLikeService.likeComment(comment_pk, member_pk);
+
+        return ResponseEntity.ok().build();
     }
 
     //특정 코멘트의 좋아요 수
@@ -33,10 +36,11 @@ public class CommentLikeController {
         return commentLikeService.listLikeComment(comment_pk);
     }
     //특정 코멘트의 좋아요 취소
-    @DeleteMapping("/likes")
-    public void deleteLikeComment(@RequestBody Map<String, Long> likeComment) {
-        Long comment_pk = likeComment.get("comment_pk");
-        Long member_pk = likeComment.get("member_pk");
+    @DeleteMapping("/comments/likes/{comment_pk}/{member_pk}")
+    public ResponseEntity<?> deleteLikeComment(@PathVariable Long comment_pk,
+                                               @PathVariable Long member_pk) {
         commentLikeService.deleteLikeComment(comment_pk, member_pk);
+
+        return ResponseEntity.ok().build();
     }
 }
