@@ -4,6 +4,37 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}">
 <head>
+    <style>
+        .book-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* 아이템들을 중앙 정렬합니다. */
+            gap: 10px; /* 각 아이템 사이의 간격 */
+        }
+
+        .book-item {
+            flex: 1 0 18%; /* 기본적으로 한 줄에 5개 아이템 */
+            border: 1px solid #ddd; /* 시각적으로 구분하기 위한 테두리 */
+            padding: 10px;
+            box-sizing: border-box;
+            max-width: 340px; /* 아이템의 최대 너비를 설정합니다. */
+            margin: 10px; /* 아이템 주변에 여백을 추가합니다. */
+        }
+        /* 화면 크기가 768px ~ 1199px일 때 한 줄에 3개 아이템 */
+        @media (max-width: 1199px) {
+            .book-item {
+                flex: 1 0 30%;
+            }
+        }
+
+        /* 화면 크기가 767px 이하일 때 한 줄에 1개 아이템 */
+        @media (max-width: 670px) {
+            .book-item {
+                max-width: none; /* 작은 화면에서는 너비 제한을 해제합니다. */
+                flex-basis: 100%; /* 아이템이 화면 전체 너비를 차지하도록 설정합니다. */
+            }
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -35,8 +66,8 @@
     </select>
     <!-- 카테고리에 따른 도서 조회 버튼 추가 -->
     <button onclick="loadBooks()">도서 조회</button>
-  <div>
-    <div th:each="book, bookStat : ${bookList}">
+  <div class="book-gallery">
+    <div th:each="book, bookStat : ${bookList}" class="book-item">
       <div>
         <hr>
         <!-- Button trigger modal -->
