@@ -5,6 +5,7 @@
       layout:decorate="~{layout/default_layout}">
 <head>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         .material-symbols-outlined {
             font-variation-settings:
@@ -14,29 +15,106 @@
                     'opsz' 24
         }
     </style>
+    <style>
+        .book-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* 아이템들을 중앙 정렬합니다. */
+            gap: 10px; /* 각 아이템 사이의 간격 */
+        }
+
+        .book-item {
+            flex: 1 0 18%; /* 기본적으로 한 줄에 5개 아이템 */
+            border: 1px solid #ddd; /* 시각적으로 구분하기 위한 테두리 */
+            padding: 10px;
+            box-sizing: border-box;
+            max-width: 340px; /* 아이템의 최대 너비를 설정합니다. */
+            margin: 10px; /* 아이템 주변에 여백을 추가합니다. */
+        }
+        .book_center{
+            justify-content: center; /* 아이템들을 중앙 정렬합니다. */
+        }
+        /* 화면 크기가 768px ~ 1199px일 때 한 줄에 3개 아이템 */
+        @media (max-width: 1199px) {
+            .book-item {
+                flex: 1 0 30%;
+            }
+        }
+
+        /* 화면 크기가 767px 이하일 때 한 줄에 1개 아이템 */
+        @media (max-width: 670px) {
+            .book-item {
+                max-width: none; /* 작은 화면에서는 너비 제한을 해제합니다. */
+                flex-basis: 100%; /* 아이템이 화면 전체 너비를 차지하도록 설정합니다. */
+            }
+        }
+        .header-container {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* 아이콘과 제목 사이의 간격 */
+            padding-left: 20px; /* 왼쪽에서부터의 간격 */
+        }
+        .book-container{
+            display: flex;
+            gap: 10px; /* 아이콘과 제목 사이의 간격 */
+
+        }
+        .header-container p {
+            font-size: 50px; /* 아이콘 크기 조절 */
+        }
+        .header-container a{
+            text-decoration: none; /* 링크의 밑줄 제거 */
+        }
+        .header-container h1 {
+            margin: 0; /* 기본 마진 제거 */
+        }
+        .delete-button-container a{
+            text-decoration: none; /* 링크의 밑줄 제거 */
+        }
+        .eBook-container a {
+            display: flex; /* flexbox 레이아웃 사용 */
+            align-items: center; /* 수직 방향 가운데 정렬 */
+            justify-content: center; /* 수평 방향 가운데 정렬 */
+            text-decoration: none; /* a 태그 기본 밑줄 스타일 제거 */
+        }
+
+        .eBook-container a .material-symbols-outlined {
+            margin-right: 8px; /* 아이콘과 텍스트 사이 간격 조정 */
+        }
+    </style>
 </head>
 <body>
     <div layout:fragment="content">
-
-        <h1>여기는 내서재임</h1>
-        <a th:href="@{../calendar/{pk}(pk=${session.myLibraryPk})}" class="material-symbols-outlined">calendar_month</a>
-        <div>
-            <div th:each="book, bookStat : ${bookList}">
-                <div>
+        <br>
+        <div class="header-container">
+            <p class="material-symbols-outlined">Book</p>
+            <h1>My Library </h1>
+            <h1> |  </h1>
+            <h1><a th:href="@{../calendar/{pk}(pk=${session.myLibraryPk})}" class="material-symbols-outlined">MyCalendar</a></h1>
+        </div>
+        <br>
+        <div class="book-gallery">
+            <div th:each="book, bookStat : ${bookList}" class="book-item">
+                <div class="book_center">
                     <hr>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-light open-modal" data-bs-toggle="modal"
-                            th:attr="data-bs-target='#exampleModal' + ${bookStat.index},
+                    <div class="book-container">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-light open-modal" data-bs-toggle="modal"
+                                th:attr="data-bs-target='#exampleModal' + ${bookStat.index},
                             data-book-pk=${book.bookPk},
                             data-index=${bookStat.index},
                             data-user=${session.pk},
                             data-name=${session.name}">
-                        <img th:src="${book.coverImagePath}" alt="북커버">
-                    </button>
-                    <input type="hidden" th:text="${book.bookPk}">  <!--나중에 지울예정입니다.-->
-                    <a th:href="@{../eBook(book_plus=${book.bookPlusPk},book_pk=${book.bookPk})}" class="material-symbols-outlined" >Menu_Book</a>
-                    <button class="material-symbols-outlined" id="deleteBookBtn" onclick="deleteBook(this)" th:attr="data-book-pk=${book.bookPk}, my-library-pk=${session.myLibraryPk}">Delete</button>
-<!--                    <input type="text" th:text="${book.bookPlusPk}" readonly/>-->
+                            <img th:src="${book.coverImagePath}" alt="북커버">
+                        </button>
+
+                        <div class="delete-button-container">
+                            <a href="javascript:void(0)" class="material-symbols-outlined" id="deleteBookBtn" onclick="deleteBook(this)" th:attr="data-book-pk=${book.bookPk}, my-library-pk=${session.myLibraryPk}">Delete</a>
+                        </div>
+                    </div>
+                    <div class="eBook-container">
+                        <a th:href="@{../eBook(book_plus=${book.bookPlusPk},book_pk=${book.bookPk})}" class="material-symbols-outlined" >Menu_Book<p>보러가기</p></a>
+                    </div>
                     <p th:text="${book.bookTitle}" readonly/>
                     <p th:text="${book.bookAuthor}" readonly/>
                     <p th:text="${book.bookCategory}" readonly/>
@@ -48,7 +126,7 @@
                 </div>
 
                 <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" th:id="'exampleModal' + ${bookStat.index}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -56,11 +134,35 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <h1>여기에 대충 댓글 넣고 쓰기 되게 하기</h1>
+                                <h1>Comment List (미치겠어요~)</h1>
+                                <div th:id="'commentsContainer' + ${bookStat.index}"> <!-- 책들 마다 인덱스 부여 -->
+                                    <!-- 코멘트가 표시되는 곳 -->
+                                </div>
+                                <button id="searchMoreNotify">더보기</button>
+                                <!-- 코멘트 작성 폼-->
+                                <form id="commentForm" th:action="@{/comments/insert}" method="post" onsubmit="submitForm();">
+                                    <input type="hidden" th:name="book_pk" th:value="${book.bookPk}">
+                                    <input type="hidden" th:name="member_pk" th:value="${session.pk}">
+                                    <!--<div>
+                                        <p type="text" id="member_pk" name="member_pk" th:value="${session.pk}" th:text="${session.name}" required>
+                                    </div>-->
+                                    <div>
+                                        <label for="comment_title">제목</label>
+                                        <input type="text" id="comment_title" name="comment_title" placeholder="제목을 입력하시오" required>
+                                        <div class="error-message" id="titleError"></div>
+                                    </div>
+                                    <div>
+                                        <label for="comment_content">내용</label>
+                                        <textarea id="comment_content" name="comment_content" cols="50" rows="5" placeholder="내용을 입력하시오" required></textarea>
+                                        <div class="error-message" id="contentError"></div>
+                                    </div>
+                                    <button type="submit" id="submitCommentBtn" >등록</button>
+                                    <button type="reset" class="btn btn-secondary" >취소</button>
+                                </form>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
+                                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
                             </div>
                         </div>
                     </div>
