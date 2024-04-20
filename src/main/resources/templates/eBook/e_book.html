@@ -15,25 +15,25 @@
                     'GRAD' 200,
                     'opsz' 24
         }
+        .center-container {
+            padding-left: 20%; /* 왼쪽에서부터의 간격 */
+        }
     </style>
-
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/js/e_book.js"></script>
 </head>
 <body>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="/js/e_book.js"></script>
+<div class="center-container">
+    <div id="book">
+        <div class="cover" th:style="'background-image: url(' + ${coverImagePath} + ')'"></div>
 
-<div id="book">
-    <div class="cover" th:style="'background-image: url(' + ${coverImagePath} + ')'"></div>
-
+    </div>
+    <div id="controls">
+        <label for="page-number">Page:</label> <input type="text" size="3" id="page-number"> of <span id="number-pages"></span>
+        <button class="material-symbols-outlined" onclick="SaveData(this)" th:attr="data-book-plus=${bookPlus}, my-library-pk=${session.myLibraryPk}">Book</button>
+        <a th:href="@{../myLibrary/{pk}(pk=${session.myLibraryPk})}" class="material-symbols-outlined">Close</a>
+    </div>
 </div>
-</div>
-
-<div id="controls">
-    <label for="page-number">Page:</label> <input type="text" size="3" id="page-number"> of <span id="number-pages"></span>
-    <button class="material-symbols-outlined" onclick="SaveData(this)" th:attr="data-book-plus=${bookPlus}, my-library-pk=${session.myLibraryPk}">Book</button>
-    <a th:href="@{../myLibrary/{pk}(pk=${session.myLibraryPk})}" class="material-symbols-outlined">Close</a>
-</div>
-
 <script type="text/javascript">
     var textData = [];
     textData[1]="날개\n" +
@@ -440,7 +440,7 @@
         " 나는 편히 잘 잤다."
     // Sample using dynamic pages with turn.js
 
-    var numberOfPages = textData.length+1;
+    var numberOfPages = textData.length;
     let my_page=1;
 
     // Adds the pages that the book will need
@@ -525,11 +525,6 @@
         });
 
     }
-
-
-
-
-
 </script>
 </body>
 </html>

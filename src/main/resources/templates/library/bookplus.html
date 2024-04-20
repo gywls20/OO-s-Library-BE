@@ -54,6 +54,10 @@
         .header-container h1 {
             margin: 0; /* 기본 마진 제거 */
         }
+        .category_{
+            gap: 10px; /* 각 아이템 사이의 간격 */
+            padding-left: 80px; /* 왼쪽에서부터의 간격 */
+        }
     </style>
 </head>
 <body>
@@ -62,32 +66,38 @@
         <span class="material-symbols-outlined">book_4</span>
         <h1>Library</h1>
     </div>
-    <select name="category" id="category" class="category_">
-        <option value="none">=== 선택 ===</option>
-        <option value="유아">유아</option>
-        <option value="대학교재/전문서적">대학교재/전문서적</option>
-        <option value="인문학">인문학</option>
-        <option value="소설/시/희곡">소설/시/희곡</option>
-        <option value="잡지">잡지</option>
-        <option value="에세이">에세이</option>
-        <option value="외국어">외국어</option>
-        <option value="어린이">어린이</option>
-        <option value="컴퓨터/모바일">컴퓨터/모바일</option>
-        <option value="사회과학">사회과학</option>
-        <option value="역사">역사</option>
-        <option value="과학">과학</option>
-        <option value="좋은부모">좋은부모</option>
-        <option value="청소년">청소년</option>
-        <option value="만화">만화</option>
-        <option value="여행">여행</option>
-        <option value="종교/역학">종교/역학</option>
-        <option value="초등학교참고서">초등학교참고서</option>
-        <option value="수험서/자격증">수험서/자격증</option>
-        <option value="경제경영">경제경영</option>
-        <option value="자기계발">자기계발</option>
-    </select>
-    <!-- 카테고리에 따른 도서 조회 버튼 추가 -->
-    <button onclick="loadBooks()">도서 조회</button>
+    <br><br>
+    <div class="category_">
+        <span>카테고리</span>
+        <select name="category" id="category" >
+            <option value="none">=== 선택 ===</option>
+            <option value="유아">유아</option>
+            <option value="대학교재/전문서적">대학교재/전문서적</option>
+            <option value="인문학">인문학</option>
+            <option value="소설/시/희곡">소설/시/희곡</option>
+            <option value="잡지">잡지</option>
+            <option value="에세이">에세이</option>
+            <option value="외국어">외국어</option>
+            <option value="어린이">어린이</option>
+            <option value="컴퓨터/모바일">컴퓨터/모바일</option>
+            <option value="사회과학">사회과학</option>
+            <option value="역사">역사</option>
+            <option value="과학">과학</option>
+            <option value="좋은부모">좋은부모</option>
+            <option value="청소년">청소년</option>
+            <option value="만화">만화</option>
+            <option value="여행">여행</option>
+            <option value="종교/역학">종교/역학</option>
+            <option value="초등학교참고서">초등학교참고서</option>
+            <option value="수험서/자격증">수험서/자격증</option>
+            <option value="경제경영">경제경영</option>
+            <option value="자기계발">자기계발</option>
+        </select>
+        <!-- 카테고리에 따른 도서 조회 버튼 추가 -->
+        <button onclick="loadBooks()" id="submitCommentBtn">도서 조회</button>
+    </div>
+
+
   <div class="book-gallery">
     <div th:each="book, bookStat : ${bookList}" class="book-item">
       <div>
