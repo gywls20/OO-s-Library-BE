@@ -26,7 +26,7 @@
             padding-left: 20px; /* 왼쪽에서부터의 간격 */
         }
 
-        .header-container p {
+        .header-container span {
             font-size: 50px; /* 아이콘 크기 조절 */
         }
         .header-container a{
@@ -42,7 +42,7 @@
 <body>
     <div layout:fragment="content">
         <div class="header-container">
-            <p class="material-symbols-outlined">calendar_month</p>
+            <span class="material-symbols-outlined">calendar_month</span>
             <h1>My Calendar </h1>
             <h1> |  </h1>
             <h1><a th:href="@{../myLibrary/{pk}(pk=${session.myLibraryPk})}" class="material-symbols-outlined">MyLibrary</a></h1>

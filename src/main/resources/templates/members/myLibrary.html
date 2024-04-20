@@ -59,7 +59,7 @@
             gap: 10px; /* 아이콘과 제목 사이의 간격 */
 
         }
-        .header-container p {
+        .header-container span {
             font-size: 50px; /* 아이콘 크기 조절 */
         }
         .header-container a{
@@ -87,7 +87,7 @@
     <div layout:fragment="content">
         <br>
         <div class="header-container">
-            <p class="material-symbols-outlined">Book</p>
+            <span class="material-symbols-outlined">Book</span>
             <h1>My Library </h1>
             <h1> |  </h1>
             <h1><a th:href="@{../calendar/{pk}(pk=${session.myLibraryPk})}" class="material-symbols-outlined">MyCalendar</a></h1>
