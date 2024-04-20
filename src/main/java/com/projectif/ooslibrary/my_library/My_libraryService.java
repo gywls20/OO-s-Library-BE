@@ -63,7 +63,7 @@ public class My_libraryService {
         bookPlusRepository.delete(bookPlus);
     }
 
-    public List<Book> getMyLibraryBooks(Long myLibraryPk) {
+    public List<MyLibraryBookDTO> getMyLibraryBooks(Long myLibraryPk) {
 
         MyLibrary findMyLibrary = myLibraryRepository.findById(myLibraryPk)
                 .orElseThrow(() -> new RuntimeException("내 서재가 존재하지 않습니다"));
@@ -71,9 +71,21 @@ public class My_libraryService {
         log.info(findMyLibrary.toString());
 
         List<BookPlus> bookPlusList = findMyLibrary.getBookPlusList();
-        ArrayList<Book> books = new ArrayList<>();
+        ArrayList<MyLibraryBookDTO> books = new ArrayList<>();
         for (BookPlus bookPlus : bookPlusList) {
-            books.add(bookPlus.getBook());
+            MyLibraryBookDTO dto = MyLibraryBookDTO.builder()
+                    .bookAuthor(bookPlus.getBook().getBookAuthor())
+                    .bookPrice(bookPlus.getBook().getBookPrice())
+                    .bookPublishDate(bookPlus.getBook().getBookPublishDate())
+                    .bookPublisher(bookPlus.getBook().getBookPublisher())
+                    .bookPk(bookPlus.getBook().getBookPk())
+                    .bookCategory(bookPlus.getBook().getBookCategory())
+                    .bookContent(bookPlus.getBook().getBookContent())
+                    .bookPlusPk(bookPlus.getBookPlusPk())
+                    .coverImagePath(bookPlus.getBook().getCoverImagePath())
+                    .bookTitle(bookPlus.getBook().getBookTitle())
+                    .build();
+            books.add(dto);
         }
 
         return books;

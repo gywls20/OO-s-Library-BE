@@ -1,0 +1,60 @@
+body{
+    background:#ccc;
+}
+#book{
+    width:800px;
+    height:500px;
+}
+
+#book .turn-page{
+    background-color:white;
+}
+
+#book .cover{
+    background-size: cover;
+    background-position: center; /* 이미지가 중앙에 위치하도록 설정 */
+}
+
+#book .cover h1{
+    color:white;
+    text-align:center;
+    font-size:50px;
+    line-height:500px;
+    margin:0px;
+}
+
+#book .loader{
+    background-image:url(static/assets/EAF27272-05DC-4D15-A1AC-249028AD6DB8_1_105_c.jpeg);
+    width:24px;
+    height:24px;
+    display:block;
+    position:absolute;
+    top:238px;
+    left:188px;
+}
+
+#book .data{
+    text-align:center;
+    font-size:40px;
+    color:#999;
+    line-height:500px;
+}
+
+#controls{
+    width:800px;
+    text-align:center;
+    margin:20px 0px;
+    font:30px arial;
+}
+
+#controls input, #controls label{
+    font:30px arial;
+}
+
+#book .odd {
+    background-image: linear-gradient(to right, #FFF 95%, #ddd 100%);
+}
+
+#book .even {
+    background-image: linear-gradient(to left, #FFF 95%, #ddd 100%);
+}

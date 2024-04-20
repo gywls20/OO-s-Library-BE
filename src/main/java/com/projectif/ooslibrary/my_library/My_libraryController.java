@@ -25,8 +25,9 @@ public class My_libraryController {
     @GetMapping("/myLibrary/{myLibraryPk}")
     public String myLibrary(@PathVariable("myLibraryPk") Long myLibraryPk, Model model) {
         // 내 서재에 등록된 책 리스트 가져오기
-        List<Book> myLibraryBooks = myLibraryService.getMyLibraryBooks(myLibraryPk);
+        List<MyLibraryBookDTO> myLibraryBooks = myLibraryService.getMyLibraryBooks(myLibraryPk);
         model.addAttribute("bookList", myLibraryBooks);
+        System.out.println("myLibraryBooks = " + myLibraryBooks);
         return "members/myLibrary";
     }
 
