@@ -8,28 +8,41 @@
 </head>
 <body>
 <div layout:fragment="content">
-<h2>코멘트 수정</h2>
     <section class="py-5">
         <div class="container px-5">
             <div class="bg-light rounded-4 py-5 px-4 px-md-5">
+                <h2 style="text-align: center">코멘트 신고🚨</h2>
                 <div class="row gx-5 justify-content-center">
                     <div class="col-lg-8 col-xl-6">
-                        <form id="updateForm" data-sb-form-api-token="API_TOKEN" th:action="@{/comments/updateComment}" method="post" onsubmit="submitForm(); return false;"> <!--onsubmit="window.onunload = window.opener.location.reload(); window.close();" -->
-                            <input type="hidden" name="comment_pk" th:value="${comment.comment_pk}"/>
-                            <input type="hidden" name="book_pk" th:value="${comment.book_pk}" />
+                        <form id="reportForm" th:action="@{/comments/report}" method="post" onsubmit="submitForm(); return false;"> <!--onsubmit="window.onunload = window.opener.location.reload(); window.close();" -->
+                            <input type="hidden" name="member_pk" th:value="${member_pk}"/>
+                            <input type="hidden" name="comment_pk" th:value="${comment_pk}"/>
                             <div class="bg-light p-4 rounded-4">
-                                <div id="member_pk" style="color: black" class="text-primary fw-bolder mb-2"
-                                   th:value="${comment.member_pk}" th:text="${session.name}" readonly></div>
+                                <div>
+                                    <p id="member_pk" th:text="'신고자 : ' + ${session.name}" readonly></p>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <label for="report_category"></label>
+                                    <select name="report_category" id="report_category">
+                                        <option value="">----- 선택하세요 -----</option>
+                                        <option value="스팸">스팸/홍보</option>
+                                        <option value="불법정보">불법정보 포함</option>
+                                        <option value="유해">청소년에게 유해한 내용</option>
+                                        <option value="욕설">욕설/혐오/차별적 표현</option>
+                                        <option value="개인정보">개인정보 노출</option>
+                                    </select>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input class="form-control" type="text" id="report_name" name="report_name" placeholder="신고 제목을 입력하세요" required>
+                                    <label for="report_name">신고 제목</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" style="height: 10rem" id="report_content" name="report_content" placeholder="사유에 대해 자세히 알려주세요." required></textarea>
+                                    <label for="report_content">신고 내용</label>
+                                </div>
+                                <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">수정</button></div><br>
+                                <div class="d-grid"><button class="btn btn-primary btn-lg" onclick="closeFrom()" type="reset">취소</button></div>
                             </div>
-                            <div class="form-floating mb-3">
-                                <label for="comment_title">제목</label>
-                                <input class="form-control" type="text" id="comment_title" name="comment_title" placeholder="제목을 입력하시오" data-sb-validations="required">
-                            </div>
-                            <div class="form-floating mb-3">
-                                <textarea class="form-control" style="height: 10rem" id="comment_content" name="comment_content" cols="50" rows="5" placeholder="내용을 입력하시오" required></textarea>
-                            </div>
-                            <div class="d-grid"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">수정</button></div><br>
-                            <div class="d-grid"><button class="btn btn-primary btn-lg disabled" onclick="closeFrom()" type="reset">취소</button></div>
                         </form>
                     </div>
                 </div>
@@ -37,10 +50,9 @@
         </div>
     </section>
 
-
     <script>
         function submitForm() {
-            var form = document.getElementById('updateForm');
+            var form = document.getElementById('reportForm');
             var formData = new FormData(form);
 
             // AJAX를 사용하여 폼 데이터를 서버에 비동기적으로 전송
@@ -54,9 +66,9 @@
                         window.close();
                         // 부모 창 새로고침
                         window.opener.location.reload();
-                        alert("댓글 수정이 완료되었습니다.");
+                        alert("신고가 완료되었습니다.");
                     } else {
-                        alert('댓글 수정에 실패했습니다.');
+                        alert('신고에 실패했습니다.');
                     }
                 })
                 .catch(error => console.error('Error:', error));
